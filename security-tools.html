@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Security Tools – Password, Bcrypt, Hash Generators &amp; AES / RSA Encryption</title>
+<meta name="description" content="Free private security tools: strong password generator, UUID/GUID generator, MD5/SHA-256 hash generator, bcrypt hash generator and checker, and AES / RSA text encryption with your own or generated keys. Everything runs on your device.">
+<meta name="keywords" content="security tools online, password generator, strong password generator, random password, UUID generator, GUID generator, hash generator, SHA256 generator, MD5 generator, SHA512 hash, bcrypt generator, bcrypt checker, AES encryption online, RSA encryption online, encrypt text, free security tools online">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://toolbox.smilu.net/security-tools.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="FreeToolBox">
+<meta property="og:url" content="https://toolbox.smilu.net/security-tools.html">
+<meta property="og:title" content="Free Security Tools – Password, Bcrypt, Hash Generators &amp; AES / RSA Encryption">
+<meta property="og:description" content="Free private security tools: strong password generator, UUID/GUID generator, MD5/SHA-256 hash generator, bcrypt hash generator and checker, and AES / RSA text encryption with your own or generated keys. Everything runs on your device.">
+<meta property="og:image" content="https://toolbox.smilu.net/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Security Tools</h1>
+<p class="lead">Generate strong passwords, unique IDs and hashes, hash passwords with bcrypt, and encrypt text with AES or RSA. Nothing leaves your device.</p>
+
+<section class="cat"><div class="tools">
+<a href="password-generator.html"><b>Secure Password Generator</b><span>Strong passwords from a cryptographic random source</span></a>
+<a href="uuid-generator.html"><b>UUID / GUID Generator</b><span>Bulk random version 4 UUIDs</span></a>
+<a href="hash-generator.html"><b>MD5 / SHA-256 Hash Generator</b><span>MD5, SHA-1, SHA-256, SHA-384 and SHA-512</span></a>
+<a href="bcrypt-generator.html"><b>Bcrypt Hash Generator &amp; Checker</b><span>Hash passwords with bcrypt and verify existing hashes</span></a>
+<a href="encryption-tool.html"><b>Encrypt &amp; Decrypt Text</b><span>AES-GCM, AES-CBC, AES-CTR and RSA-OAEP with your own or generated keys</span></a>
+</div></section>
+
+<section class="about">
+  <h2>About these tools</h2>
+  <p>The security tools use the Web Crypto API built into your browser, so passwords, IDs, hashes and encryption keys are generated on your device and never transmitted. Bcrypt hashing uses the open-source bcrypt.js library, also in your browser.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Are the generated passwords really random?</summary><p>Yes. They come from crypto.getRandomValues, the browser's cryptographically secure random number generator, with no bias between characters.</p></details>
+  <details><summary>Is MD5 safe for storing passwords?</summary><p>No. MD5 and SHA-1 are fine for checksums but not for passwords. Use a slow password hash such as bcrypt or Argon2 on your server.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>

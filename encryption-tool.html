@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Encrypt &amp; Decrypt Text Online – AES-256-GCM, AES-CBC, AES-CTR, RSA-OAEP</title>
+<meta name="description" content="Free online encryption tool. Encrypt and decrypt text with AES-256-GCM, AES-CBC, AES-CTR or RSA-OAEP using a passphrase, your own key or a securely generated key. Runs in your browser; nothing is uploaded.">
+<meta name="keywords" content="encryption tool, encrypt text online, decrypt text online, AES encryption online, AES-256-GCM, AES-CBC, AES-CTR, RSA encryption online, RSA-OAEP, generate AES key, generate RSA key pair, PEM key, encrypt with password, PBKDF2, how to encrypt text, free online encryption tool">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://toolbox.smilu.net/encryption-tool.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="FreeToolBox">
+<meta property="og:url" content="https://toolbox.smilu.net/encryption-tool.html">
+<meta property="og:title" content="Encrypt &amp; Decrypt Text Online – AES-256-GCM, AES-CBC, AES-CTR, RSA-OAEP">
+<meta property="og:description" content="Free online encryption tool. Encrypt and decrypt text with AES-256-GCM, AES-CBC, AES-CTR or RSA-OAEP using a passphrase, your own key or a securely generated key. Runs in your browser; nothing is uploaded.">
+<meta property="og:image" content="https://toolbox.smilu.net/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>#key,#pub,#priv,#out,#in{font-family:ui-monospace,Consolas,monospace;font-size:.85rem}#pub,#priv{min-height:150px}#in,#out{min-height:130px}</style>
+</head>
+<body>
+<main class="wrap">
+<h1>Encrypt &amp; Decrypt Text</h1>
+<p class="lead">Encrypt text with AES or RSA using a passphrase, your own key or a freshly generated one. Everything happens in your browser.</p>
+
+<section class="card">
+  <div class="grid">
+    <label>Algorithm<select id="alg">
+      <option value="AES-GCM">AES-GCM (recommended)</option>
+      <option value="AES-CBC">AES-CBC</option>
+      <option value="AES-CTR">AES-CTR</option>
+      <option value="RSA-OAEP">RSA-OAEP (public / private key)</option>
+    </select></label>
+    <label class="aes">Key from<select id="src"><option value="key">Own or generated key</option><option value="pass">Passphrase</option></select></label>
+    <label class="aes">Key length<select id="bits"><option value="256">256-bit</option><option value="128">128-bit</option></select></label>
+    <label class="rsa">RSA key size<select id="rsabits"><option>2048</option><option selected>3072</option><option>4096</option></select></label>
+  </div>
+
+  <div class="aes key" style="margin-top:14px">
+    <label>Key (hex or Base64)<input id="key" autocomplete="off" spellcheck="false"></label>
+    <div class="btns"><button class="btn alt" id="genKey">Generate random key</button><button class="btn alt" data-copy="#key">Copy key</button></div>
+  </div>
+  <div class="aes pass" style="margin-top:14px">
+    <label>Passphrase<input id="pass" autocomplete="off" spellcheck="false"></label>
+    <p class="hint">The key is derived with PBKDF2-SHA256 (600,000 iterations) and a random salt. Decrypt with the same passphrase and key length.</p>
+  </div>
+  <div class="rsa" style="margin-top:14px">
+    <div class="cols2">
+      <label>Public key (encrypts), PEM<textarea id="pub" spellcheck="false" placeholder="-----BEGIN PUBLIC KEY-----"></textarea></label>
+      <label>Private key (decrypts), PEM<textarea id="priv" spellcheck="false" placeholder="-----BEGIN PRIVATE KEY-----"></textarea></label>
+    </div>
+    <div class="btns"><button class="btn alt" id="genRsa">Generate key pair</button><button class="btn alt" data-copy="#pub">Copy public key</button><button class="btn alt" data-copy="#priv">Copy private key</button></div>
+  </div>
+
+  <label>Input: text to encrypt, or Base64 data to decrypt<textarea id="in" spellcheck="false">Meet me at the usual place at 7.</textarea></label>
+  <div class="btns"><button class="btn" id="enc">Encrypt</button><button class="btn alt" id="dec">Decrypt</button><span id="msg" role="status"></span></div>
+  <label>Output<textarea id="out" readonly></textarea></label>
+  <div class="btns"><button class="btn alt" data-copy="#out">Copy output</button><button class="btn alt" id="swap">Move output to input</button></div>
+  <p class="hint">Keys and passphrases never leave this page. Save your key: without it, encrypted data cannot be recovered.</p>
+</section>
+
+<section class="about">
+  <h2>Which algorithm should I use?</h2>
+  <p><b>AES-GCM</b> is the right choice for almost everything: it encrypts and also detects any tampering or a wrong key. <b>AES-CBC</b> and <b>AES-CTR</b> are included for compatibility with older systems; they do not detect changes to the data. <b>RSA-OAEP</b> lets anyone with your public key encrypt a short message that only your private key can decrypt. It is limited to about 190 bytes with a 2048-bit key (318 bytes at 3072, 446 at 4096), so it is normally used to encrypt an AES key rather than the message itself.</p>
+  <h2>Output format</h2>
+  <p>The output is Base64 so it is easy to copy and paste. With your own key it contains the IV followed by the ciphertext; with a passphrase it starts with the 16-byte PBKDF2 salt. The IV is 12 bytes for AES-GCM (the 16-byte authentication tag is at the end of the ciphertext) and 16 bytes for AES-CBC (PKCS#7 padding) and AES-CTR (counter block, 64-bit counter). RSA output is the raw RSA-OAEP ciphertext using SHA-256. This lets you decrypt the data with OpenSSL, Python, Java or Node using the same parameters.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Is this safe to use for real secrets?</summary><p>The encryption uses the Web Crypto API built into your browser, the same audited code browsers use for HTTPS. Keys are generated with a cryptographically secure random generator and nothing is sent to a server. As with any tool, the security depends on keeping your key or passphrase secret and choosing a strong passphrase.</p></details>
+  <details><summary>What is the difference between a passphrase and a key?</summary><p>A key is 128 or 256 random bits used directly by AES. A passphrase is text you can remember; it is turned into a key with PBKDF2, which is deliberately slow so that guessing passphrases is expensive. A long random key is stronger than a typical passphrase.</p></details>
+  <details><summary>Can I use my own RSA keys?</summary><p>Yes. Paste a PEM public key (SPKI, "BEGIN PUBLIC KEY") and private key (PKCS#8, "BEGIN PRIVATE KEY"). Keys in the older "BEGIN RSA PRIVATE KEY" format can be converted with <code>openssl pkcs8 -topk8 -nocrypt -in key.pem</code>.</p></details>
+  <details><summary>Why does decrypting give an error?</summary><p>The algorithm, key (or passphrase and key length) must match the ones used to encrypt, and the Base64 data must be complete. AES-GCM refuses to decrypt if even one character was changed.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+var IV = { 'AES-GCM': 12, 'AES-CBC': 16, 'AES-CTR': 16 }, ITER = 600000, SALT = 16, te = new TextEncoder();
+var RSA = { name: 'RSA-OAEP', hash: 'SHA-256' };
+
+function rand(n) { return crypto.getRandomValues(new Uint8Array(n)); }
+function hex(u) { return Array.from(u, function (b) { return b.toString(16).padStart(2, '0'); }).join(''); }
+function b64(u) { var s = ''; for (var i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }
+function unb64(s) { var b = atob(s.replace(/\s/g, '').replace(/-/g, '+').replace(/_/g, '/')), u = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
+function concat(parts) { var out = new Uint8Array(sum(parts, 'length')), o = 0; parts.forEach(function (p) { out.set(p, o); o += p.length; }); return out; }
+function text(buf) { return new TextDecoder('utf-8', { fatal: true }).decode(buf); }
+function keyBytes(s) { s = s.trim(); return /^([0-9a-f]{2})+$/i.test(s) ? new Uint8Array(s.match(/../g).map(function (h) { return parseInt(h, 16); })) : unb64(s); }
+function toPem(buf, label) { return '-----BEGIN ' + label + '-----\n' + b64(new Uint8Array(buf)).match(/.{1,64}/g).join('\n') + '\n-----END ' + label + '-----'; }
+function pemBytes(pem, which) {
+  if (/BEGIN RSA (PUBLIC|PRIVATE) KEY/.test(pem)) throw new Error('This is a PKCS#1 key. Convert it to PKCS#8 / SPKI first (see the FAQ below).');
+  var body = pem.replace(/-----[^-]+-----/g, '').trim();
+  if (!body) throw new Error('Paste or generate the ' + which + ' key.');
+  return unb64(body);
+}
+
+function aesKey(o, salt) {
+  if (o.src === 'pass') {
+    if (!o.pass) throw new Error('Enter a passphrase.');
+    return crypto.subtle.importKey('raw', te.encode(o.pass), 'PBKDF2', false, ['deriveKey']).then(function (k) {
+      return crypto.subtle.deriveKey({ name: 'PBKDF2', salt: salt, iterations: ITER, hash: 'SHA-256' }, k, { name: o.alg, length: +o.bits }, false, ['encrypt', 'decrypt']);
+    });
+  }
+  if (!o.key.trim()) throw new Error('Enter a key or generate one.');
+  var raw = keyBytes(o.key);
+  if (raw.length !== 16 && raw.length !== 32) throw new Error('The key must be 128 or 256 bits (32 or 64 hex characters); this one is ' + raw.length * 8 + ' bits.');
+  return crypto.subtle.importKey('raw', raw, o.alg, false, ['encrypt', 'decrypt']);
+}
+
+// dir: 'enc' | 'dec'. o: { alg, src: 'key' | 'pass', key, pass, bits, pub, priv }. Resolves to Base64 (enc) or text (dec).
+function crypt(dir, o, input) {
+  return Promise.resolve().then(function () {
+    if (o.alg === 'RSA-OAEP') {
+      if (dir === 'dec') return crypto.subtle.importKey('pkcs8', pemBytes(o.priv, 'private'), RSA, false, ['decrypt'])
+        .then(function (k) { return crypto.subtle.decrypt(RSA, k, unb64(input)); }).then(text);
+      return crypto.subtle.importKey('spki', pemBytes(o.pub, 'public'), RSA, false, ['encrypt']).then(function (k) {
+        var data = te.encode(input), bits = k.algorithm.modulusLength, max = bits / 8 - 66;
+        if (data.length > max) throw new Error('RSA-' + bits + ' can encrypt at most ' + max + ' bytes; this text is ' + data.length + '. Use AES for longer text.');
+        return crypto.subtle.encrypt(RSA, k, data);
+      }).then(function (c) { return b64(new Uint8Array(c)); });
+    }
+    var pass = o.src === 'pass', n = IV[o.alg], salt, iv, data;
+    if (dir === 'enc') { salt = rand(SALT); iv = rand(n); data = te.encode(input); }
+    else {
+      var all = unb64(input), s = pass ? SALT : 0;
+      salt = all.slice(0, s); iv = all.slice(s, s + n); data = all.slice(s + n);
+      if (!data.length) throw new Error('This is too short to be data encrypted with these settings.');
+    }
+    var params = o.alg === 'AES-CTR' ? { name: o.alg, counter: iv, length: 64 } : { name: o.alg, iv: iv };
+    return aesKey(o, salt).then(function (k) { return crypto.subtle[dir === 'enc' ? 'encrypt' : 'decrypt'](params, k, data); }).then(function (r) {
+      return dir === 'enc' ? b64(concat([pass ? salt : new Uint8Array(0), iv, new Uint8Array(r)])) : text(r);
+    });
+  });
+}
+
+function friendly(e, dir) {
+  if (e.name === 'InvalidCharacterError') return dir === 'dec' ? 'The input is not valid Base64.' : 'The key is not valid hex or Base64.';
+  if (e.name === 'DataError') return 'The key is not valid for this algorithm.';
+  if (dir === 'dec' && (e.name === 'OperationError' || e.name === 'TypeError')) return 'Decryption failed. Check the algorithm, the key (or passphrase and key length) and that the data is complete.';
+  return e.message || 'Something went wrong (' + e.name + ').';
+}
+
+function opts() {
+  return { alg: $('#alg').val(), src: $('#src').val(), key: $('#key').val(), pass: $('#pass').val(), bits: $('#bits').val(), pub: $('#pub').val(), priv: $('#priv').val() };
+}
+function go(dir) {
+  $('#msg').removeClass('ok err').text(dir === 'enc' ? 'Encrypting…' : 'Decrypting…');
+  crypt(dir, opts(), $('#in').val()).then(function (r) {
+    $('#out').val(r); $('#msg').addClass('ok').text(dir === 'enc' ? 'Encrypted.' : 'Decrypted.');
+  }, function (e) { $('#out').val(''); $('#msg').addClass('err').text(friendly(e, dir)); });
+}
+function genKey() { $('#key').val(hex(rand(+$('#bits').val() / 8))); }
+function genRsa() {
+  var b = $('#genRsa').prop('disabled', true).text('Generating…');
+  crypto.subtle.generateKey($.extend({ modulusLength: +$('#rsabits').val(), publicExponent: new Uint8Array([1, 0, 1]) }, RSA), true, ['encrypt', 'decrypt'])
+    .then(function (kp) { return Promise.all([crypto.subtle.exportKey('spki', kp.publicKey), crypto.subtle.exportKey('pkcs8', kp.privateKey)]); })
+    .then(function (k) { $('#pub').val(toPem(k[0], 'PUBLIC KEY')); $('#priv').val(toPem(k[1], 'PRIVATE KEY')); })
+    .finally(function () { b.prop('disabled', false).text('Generate key pair'); });
+}
+function ui() {
+  var rsa = $('#alg').val() === 'RSA-OAEP', pass = $('#src').val() === 'pass';
+  $('.aes').toggle(!rsa); $('.rsa').toggle(rsa);
+  $('.aes.key').toggle(!rsa && !pass); $('.aes.pass').toggle(!rsa && pass);
+  if (rsa && !$('#pub').val() && !$('#priv').val()) genRsa();
+}
+$('#alg, #src').on('change', ui);
+$('#genKey').on('click', genKey);
+$('#genRsa').on('click', genRsa);
+$('#enc').on('click', function () { go('enc'); });
+$('#dec').on('click', function () { go('dec'); });
+$('#swap').on('click', function () { $('#in').val($('#out').val()); $('#out').val(''); $('#msg').text(''); });
+genKey(); ui();
+</script>
+</body>
+</html>

@@ -1,11 +1,12 @@
 # FreeToolBox
 
-> 59 free, private, browser-based tools: financial calculators, unit converters, developer and text utilities, CSS generators, security tools, health calculators, timers and media tools. Everything runs client-side; no sign-up and no data is uploaded. Open source: https://github.com/smiluv/toolbox
+> 61 free, private, browser-based tools: financial calculators, unit converters, developer and text utilities, CSS generators, security tools, health calculators, timers and media tools. Everything runs client-side; no sign-up and no data is uploaded. Open source: https://github.com/smiluv/toolbox
 
 ## Tool collections (category home pages)
 - [Finance & Tax Calculators](https://toolbox.smilu.net/finance-calculators.html): India income tax, TDS, GST and GST invoices; loans and mortgages; investing; everyday money
 - [Text & Code Tools](https://toolbox.smilu.net/text-code-tools.html): text counters and cleaners; JSON, Markdown, Base64, URL and regex developer tools
-- [CSS Generators & Security Tools](https://toolbox.smilu.net/css-security-tools.html): visual CSS generators; password, UUID and hash generators
+- [CSS Generators](https://toolbox.smilu.net/css-generators.html): visual box shadow, gradient, border radius and keyframe animation generators
+- [Security Tools](https://toolbox.smilu.net/security-tools.html): password, UUID and hash generators
 - [Converters & Generators](https://toolbox.smilu.net/converters-generators.html): unit, time zone and colour converters; QR codes, barcodes, placeholders; random pickers
 - [Health & Time Tools](https://toolbox.smilu.net/health-time-tools.html): BMI, calories, fitness and pregnancy calculators; timers and date calculators
 - [Media Tools](https://toolbox.smilu.net/media-tools.html): image compressor, whiteboard, metronome, white noise
@@ -40,14 +41,18 @@
 - [URL Encoder / Decoder](https://toolbox.smilu.net/url-encoder-decoder.html): percent-encoding for URLs and query strings
 - [Regex Tester](https://toolbox.smilu.net/regex-tester.html): JavaScript regex with highlighting, groups and replace
 
-## CSS Generators & Security
+## CSS Generators
 - [Box Shadow Generator](https://toolbox.smilu.net/box-shadow-generator.html): visual CSS box-shadow editor
 - [CSS Gradient Generator](https://toolbox.smilu.net/css-gradient-generator.html): linear, radial and conic gradients
 - [Border Radius Generator](https://toolbox.smilu.net/border-radius-generator.html): rounded corners and shapes
 - [CSS Animation Generator](https://toolbox.smilu.net/css-animation-generator.html): @keyframes builder with presets
+
+## Security Tools
 - [Password Generator](https://toolbox.smilu.net/password-generator.html): cryptographically secure random passwords
 - [UUID Generator](https://toolbox.smilu.net/uuid-generator.html): bulk random UUID v4 / GUID
 - [Hash Generator](https://toolbox.smilu.net/hash-generator.html): MD5, SHA-1, SHA-256, SHA-384, SHA-512
+- [Bcrypt Hash Generator & Checker](https://toolbox.smilu.net/bcrypt-generator.html): hash passwords with bcrypt at any cost factor and verify $2a$/$2b$/$2y$ hashes
+- [Encrypt & Decrypt Text](https://toolbox.smilu.net/encryption-tool.html): AES-256-GCM, AES-CBC, AES-CTR and RSA-OAEP with a passphrase, your own key or a generated key / RSA key pair (PEM)
 
 ## Converters & Generators
 - [Length Converter](https://toolbox.smilu.net/length-converter.html): metric and imperial lengths

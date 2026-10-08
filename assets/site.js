@@ -33,15 +33,19 @@ var TOOLS = [
     ['url-encoder-decoder', 'URL Encoder / Decoder'],
     ['regex-tester', 'Regex Tester']
   ], 'text-code-tools'],
-  ['CSS & Security', 'DeveloperApplication', [
+  ['CSS', 'DeveloperApplication', [
     ['box-shadow-generator', 'CSS Box Shadow Generator'],
     ['css-gradient-generator', 'CSS Gradient Generator'],
     ['border-radius-generator', 'Border Radius Generator'],
-    ['css-animation-generator', 'CSS Keyframe Animation Generator'],
+    ['css-animation-generator', 'CSS Keyframe Animation Generator']
+  ], 'css-generators'],
+  ['Security', 'SecurityApplication', [
     ['password-generator', 'Secure Password Generator'],
     ['uuid-generator', 'UUID / GUID Generator'],
-    ['hash-generator', 'MD5 / SHA256 Hash Generator']
-  ], 'css-security-tools'],
+    ['hash-generator', 'MD5 / SHA256 Hash Generator'],
+    ['bcrypt-generator', 'Bcrypt Hash Generator & Checker'],
+    ['encryption-tool', 'Encrypt & Decrypt Text (AES / RSA)']
+  ], 'security-tools'],
   ['Converters', 'UtilitiesApplication', [
     ['length-converter', 'Length Converter'],
     ['weight-converter', 'Weight Converter'],
@@ -122,8 +126,19 @@ $(function () {
   if (crumbs.length) $('main h1').first().before('<nav class="crumbs" aria-label="Breadcrumb">' + crumbs.map(function (c, i) {
     return i < crumbs.length - 1 ? '<a href="' + c[0] + '">' + esc(c[1]) + '</a>' : '<span aria-current="page">' + esc(c[1]) + '</span>';
   }).join(' <span aria-hidden="true">&rsaquo;</span> ') + '</nav>');
+  // Privacy notice under the intro. <main data-network="..."> = this page's honest exception (e.g. it fetches exchange rates).
+  var net = $('main').data('network');
+  $('<details class="privacy">').append(
+    $('<summary>').html('&#128274; <b>Private by design.</b> ').append(document.createTextNode(net || 'Everything runs in your browser. Nothing you type, paste or upload is sent to a server.')),
+    '<ul><li>There is no backend: no database, no accounts and no uploads. The site is only static files.</li>' +
+    '<li>Calculations, conversions, encryption and file processing happen on your device with JavaScript.</li>' +
+    '<li>Google Analytics counts page visits (which page, browser and country). It never receives what you enter.</li>' +
+    '<li>Libraries such as jQuery are downloaded from public CDNs and receive no data from you.</li>' +
+    '<li>Check it yourself: open your browser\'s developer tools (F12), watch the Network tab while you use a tool, or <a href="' + REPO_URL + '" target="_blank" rel="noopener">read the source code</a>.</li></ul>'
+  ).insertAfter($('main .lead').first().length ? $('main .lead').first() : $('main h1').first());
+
   $('body').append('<footer class="foot"><div class="wrap">' + related +
-    '<p class="muted">All tools run 100% in your browser: no sign-up, no tracking of your inputs, nothing is stored on a server. <a href="index.html">Browse all free online tools</a>.</p>' +
+    '<p class="muted">Tools run in your browser: no sign-up, no tracking of your inputs, nothing is stored on a server. <a href="index.html">Browse all free online tools</a>.</p>' +
     '<p class="muted">' + SITE_NAME + ' is open source, so anyone can check exactly what runs on these pages. <a href="' + REPO_URL + '" target="_blank" rel="noopener">View the code on GitHub</a> &middot; ' +
     '<a href="' + REPO_URL + '/issues" target="_blank" rel="noopener">Report a bug</a> &middot; <a href="' + REPO_URL + '#contributing" target="_blank" rel="noopener">Contribute</a></p>' +
     '<p class="muted">&copy; ' + new Date().getFullYear() + ' <a href="https://smilu.net" target="_blank" rel="noopener">smilu.net</a>. ' + SITE_NAME + ' is a smilu.net project.</p></div></footer>');

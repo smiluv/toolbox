@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bcrypt Hash Generator &amp; Checker – Hash and Verify Passwords Online</title>
+<meta name="description" content="Free bcrypt generator. Hash a password with bcrypt at any cost factor and verify a password against an existing bcrypt hash ($2a$, $2b$, $2y$). Runs in your browser; passwords are never uploaded.">
+<meta name="keywords" content="bcrypt generator, bcrypt hash generator, bcrypt online, bcrypt checker, bcrypt verify, bcrypt compare, password hash generator, hash password online, bcrypt cost factor, bcrypt rounds, $2y$ hash, $2b$ hash, laravel bcrypt, php password_hash, how to hash a password, free online security tool">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://toolbox.smilu.net/bcrypt-generator.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="FreeToolBox">
+<meta property="og:url" content="https://toolbox.smilu.net/bcrypt-generator.html">
+<meta property="og:title" content="Bcrypt Hash Generator &amp; Checker – Hash and Verify Passwords Online">
+<meta property="og:description" content="Free bcrypt generator. Hash a password with bcrypt at any cost factor and verify a password against an existing bcrypt hash ($2a$, $2b$, $2y$). Runs in your browser; passwords are never uploaded.">
+<meta property="og:image" content="https://toolbox.smilu.net/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>#hash,#vhash{font-family:ui-monospace,Consolas,monospace;font-size:.85rem}</style>
+</head>
+<body>
+<main class="wrap">
+<h1>Bcrypt Hash Generator &amp; Checker</h1>
+<p class="lead">Hash a password with bcrypt, or check whether a password matches an existing bcrypt hash.</p>
+
+<section class="card">
+  <h2 class="ct">Generate a bcrypt hash</h2>
+  <div class="grid">
+    <label>Password<input id="pw" autocomplete="off" spellcheck="false" value="correct horse battery staple"></label>
+    <label>Cost factor (rounds): <span class="v"></span><input type="range" id="cost" min="4" max="15" value="12"></label>
+  </div>
+  <p class="hint" id="pwHint">Each extra round doubles the time. 10–12 is typical for web logins.</p>
+  <div class="btns"><button class="btn" id="gen">Generate hash</button><span id="genMsg" role="status"></span></div>
+  <label>Bcrypt hash<input id="hash" readonly></label>
+  <div class="btns"><button class="btn alt" data-copy="#hash">Copy hash</button><button class="btn alt" id="toVerify">Check this hash below</button></div>
+</section>
+
+<section class="card">
+  <h2 class="ct">Verify a password against a hash</h2>
+  <label>Password<input id="vpw" autocomplete="off" spellcheck="false"></label>
+  <label style="margin-top:12px">Bcrypt hash<input id="vhash" autocomplete="off" spellcheck="false" placeholder="$2b$12$..."></label>
+  <div class="btns"><button class="btn" id="verify">Verify</button><span id="vMsg" role="status"></span></div>
+  <p class="hint" id="info"></p>
+</section>
+
+<section class="about">
+  <h2>What is bcrypt?</h2>
+  <p>Bcrypt is a password hashing function designed to be slow. A random 16-byte salt is built into every hash, so the same password gives a different hash each time, and the cost factor sets how much work each guess takes. A hash looks like <code>$2b$12$</code> followed by 22 characters of salt and 31 characters of hash. Hashing uses the open-source <a href="https://github.com/dcodeIO/bcrypt.js" target="_blank" rel="noopener">bcrypt.js</a> library, entirely in your browser.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Which cost factor should I use?</summary><p>Pick the highest cost that keeps a login under about a quarter of a second on your server. That is usually 10 to 12 today; OWASP recommends at least 10. Raise it over time as hardware gets faster.</p></details>
+  <details><summary>What is the difference between $2a$, $2b$ and $2y$?</summary><p>They are version markers for the same algorithm. $2b$ and $2y$ were introduced to fix a bug in old implementations; for normal passwords all three produce compatible hashes. This tool creates $2a$ hashes and verifies all three, so it works with hashes from PHP and Laravel ($2y$), Node.js and Python ($2b$).</p></details>
+  <details><summary>Is there a maximum password length?</summary><p>Yes. Bcrypt only uses the first 72 bytes of a password; anything after that is ignored. Accented letters and emoji take more than one byte each.</p></details>
+  <details><summary>Can a bcrypt hash be decrypted?</summary><p>No. Bcrypt is a one-way hash, not encryption. The only way to find the password is to guess it, and the cost factor makes every guess slow. To encrypt data so it can be decrypted later, use the <a href="encryption-tool.html">encryption tool</a>.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js" integrity="sha384-qGFE4FIJLgCFuYs3nzg39XpCtvT5AZUhaBdjB3e1+vpKQa03AkyWOyBSFb9OcQ/g" crossorigin="anonymous"></script>
+<script>
+var bcrypt = window.dcodeIO && dcodeIO.bcrypt;
+function say(sel, cls, msg) { $(sel).removeClass('ok err').addClass(cls).text(msg); }
+
+$('#pw').on('input', function () {
+  var n = new TextEncoder().encode(this.value).length;
+  $('#pwHint').toggleClass('err', n > 72).text(n > 72 ? 'This password is ' + n + ' bytes; bcrypt ignores everything after the first 72 bytes.' : 'Each extra round doubles the time. 10–12 is typical for web logins.');
+});
+
+$('#gen').on('click', function () {
+  if (!bcrypt) return say('#genMsg', 'err', 'The bcrypt library failed to load. Check your connection and reload.');
+  var b = $(this).prop('disabled', true), t0 = performance.now();
+  say('#genMsg', '', 'Hashing… 0%');
+  bcrypt.hash($('#pw').val(), +$('#cost').val(), function (err, hash) {
+    b.prop('disabled', false);
+    if (err) return say('#genMsg', 'err', err.message || String(err));
+    $('#hash').val(hash);
+    say('#genMsg', 'ok', 'Done in ' + fmt((performance.now() - t0) / 1000, 2) + ' s');
+  }, function (p) { $('#genMsg').text('Hashing… ' + Math.round(p * 100) + '%'); });
+});
+
+$('#toVerify').on('click', function () { $('#vpw').val($('#pw').val()); $('#vhash').val($('#hash').val()).trigger('input'); });
+
+$('#vhash').on('input', function () {
+  var m = /^\$(2[aby]?)\$(\d\d)\$([./A-Za-z0-9]{22})([./A-Za-z0-9]{31})$/.exec(this.value.trim());
+  $('#info').text(m ? 'Version $' + m[1] + '$, cost ' + +m[2] + ' (' + Math.pow(2, +m[2]).toLocaleString() + ' iterations), salt ' + m[3] : '');
+});
+
+$('#verify').on('click', function () {
+  if (!bcrypt) return say('#vMsg', 'err', 'The bcrypt library failed to load. Check your connection and reload.');
+  var h = $('#vhash').val().trim();
+  if (!/^\$2[aby]?\$\d\d\$[./A-Za-z0-9]{53}$/.test(h)) return say('#vMsg', 'err', 'That does not look like a bcrypt hash (60 characters starting with $2a$, $2b$ or $2y$).');
+  var b = $(this).prop('disabled', true);
+  say('#vMsg', '', 'Checking…');
+  bcrypt.compare($('#vpw').val(), h, function (err, ok) {
+    b.prop('disabled', false);
+    if (err) return say('#vMsg', 'err', err.message || String(err));
+    say('#vMsg', ok ? 'ok' : 'err', ok ? 'Match: the password is correct.' : 'No match: the password is different.');
+  });
+});
+</script>
+</body>
+</html>

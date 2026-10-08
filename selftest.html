@@ -26,7 +26,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
 // [page, inputs (set in order, each triggers change), output selector, expected regex]
-// or [page, function (pageWindow) returning a value, null, expected regex] to test a page function directly.
+// or [page, function (pageWindow) returning a value or a promise, null, expected regex] to test a page function directly.
 var TESTS = [
   ['temperature-converter.html', { val: 100, from: 'Celsius (°C)', to: 'Fahrenheit (°F)' }, '#out', /= ?212 /],
   ['length-converter.html', { val: 6, from: 'Foot (ft)', to: 'Centimeter (cm)' }, '#out', /182\.88/],
@@ -72,13 +72,25 @@ var TESTS = [
     var bos = w.bill({ items: items, sState: '27', bState: '29', round: true, doc: 'Bill of Supply' });
     return [inter.grand, inter.ig, intra.c, intra.grand, odd.taxable, odd.c, odd.roundOff, odd.grand, bos.grand].join('|');
   }, null, /^2649\|349\|174\.5\|2649\|999\.99\|90\|0\.01\|1180\|2300$/],
-  ['finance-calculators.html', 'text-code-tools.html', 'css-security-tools.html', 'converters-generators.html', 'health-time-tools.html', 'media-tools.html'].map(function (p) {
+  ['finance-calculators.html', 'text-code-tools.html', 'css-generators.html', 'security-tools.html', 'converters-generators.html', 'health-time-tools.html', 'media-tools.html'].map(function (p) {
     return [p, function (w) {
       var c = w.TOOLS.filter(function (c) { return c[3] + '.html' === p; })[0];
       var links = w.$('.tools a').map(function () { return w.$(this).attr('href').replace('.html', ''); }).get().sort().join();
       return (links === c[2].map(function (t) { return t[0]; }).sort().join()) + '|' + w.$('.crumbs').text();
     }, null, /^true\|Home › .+ tools$/];
   }),
+  ['bcrypt-generator.html', function (w) { return w.bcrypt.compareSync('U*U', '$2a$05$CCCCCCCCCCCCCCCCCCCCC.E5YPO9kmyuRGyh0XouQYb4YMJKvyOeW'); }, null, /^true$/],
+  ['encryption-tool.html', function (w) {
+    var key = { alg: 'AES-GCM', src: 'key', key: '000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f' };
+    var pass = { alg: 'AES-GCM', src: 'pass', pass: 'correct horse', bits: '256' };
+    return Promise.all([
+      w.crypt('dec', key, 'AgICAgICAgICAgIC801119bY8uhAPl0BM3Wdsx3s6UFb'),
+      w.crypt('dec', pass, 'AQEBAQEBAQEBAQEBAQEBAQICAgICAgICAgICAqnjRhgjtYKb3PL8W8ULI7sWmfkWsQ=='),
+      w.crypt('enc', $.extend({}, key, { alg: 'AES-CTR' }), 'ctr ✓').then(function (c) { return w.crypt('dec', $.extend({}, key, { alg: 'AES-CTR' }), c); })
+    ]).then(function (r) { return r.join('|'); });
+  }, null, /^hello\|hello\|ctr ✓$/],
+  ['tip-calculator.html', function (w) { return w.$('main > .privacy summary').text(); }, null, /Private by design\. Everything runs in your browser/],
+  ['currency-converter.html', function (w) { return w.$('main > .privacy summary').text(); }, null, /Private by design\. Exchange rates are downloaded from open\.er-api\.com/],
   ['percentage-calculator.html', { a1: 15, b1: 200 }, '#r1', /^30$/],
   ['bmi-calculator.html', { sys: 'met', kg: 70, cm: 175 }, '#bmi', /^22\.9$/],
   ['days-between-dates-calculator.html', { a: '2024-01-01', b: '2024-12-31' }, '#bd', /^261$/],
@@ -92,12 +104,13 @@ function run(i) {
   var t = TESTS[i];
   $('<iframe>').attr('src', t[0]).appendTo('#frames').on('load', function () { var w = this.contentWindow; setTimeout(function () { check(w); }, 150); });
   function check(w) {
-    var $$ = w.jQuery, got;
-    if (typeof t[1] === 'function') got = String(t[1](w));
-    else {
-      Object.keys(t[1]).forEach(function (k) { $$('#' + k).val(t[1][k]).trigger('change'); });
-      var $o = $$(t[2]); got = ($o.is(':input') ? $o.val() : $o.text()).trim();
-    }
+    var $$ = w.jQuery;
+    if (typeof t[1] === 'function') return Promise.resolve().then(function () { return t[1](w); }).then(done, function (e) { done('Error: ' + (e.message || e.name)); });
+    Object.keys(t[1]).forEach(function (k) { $$('#' + k).val(t[1][k]).trigger('change'); });
+    var $o = $$(t[2]); done(($o.is(':input') ? $o.val() : $o.text()).trim());
+  }
+  function done(got) {
+    got = String(got);
     var ok = t[3].test(got);
     if (ok) pass++;
     $('#res').append($('<tr>').append($('<td>').text(t[0]), $('<td>').text(t[3]), $('<td>').text(got), $('<td>').html(ok ? '<span class="ok">PASS</span>' : '<span class="err">FAIL</span>')));

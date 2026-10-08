@@ -40,7 +40,8 @@ Then open http://localhost:8080.
 index.html                  Home page listing every tool
 *-tools.html,
 finance-calculators.html,
-converters-generators.html  Category home pages
+css-generators.html,
+converters-generators.html  Category home pages (one per menu)
 <tool-name>.html            One page per tool
 assets/                     Shared CSS and JS
 selftest.html               Browser-based regression tests
@@ -84,7 +85,7 @@ Contributions are welcome: new tools, bug fixes, accuracy fixes (especially tax 
 
 ### Guidelines
 
-- **Keep it client-side.** No server calls with user data, no tracking of user inputs, no sign-up walls.
+- **Keep it client-side.** No server calls with user data, no tracking of user inputs, no sign-up walls. Every page shows a "Private by design" notice (added by `site.js`). If a tool really must contact another service, say so honestly with `<main class="wrap" data-network="...">`, as `currency-converter.html` does, and never put user input in the page URL.
 - **No build tooling.** Plain HTML, CSS and JS that works when served as-is.
 - **Reuse before adding.** Check the helpers in `assets/site.js` and the classes in `assets/site.css` before writing new ones. Avoid new dependencies; if one is truly needed, load it from a CDN only on the page that uses it.
 - **Escape user input** with `esc()` before inserting it as HTML.
