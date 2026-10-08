@@ -2,6 +2,7 @@
    To add a tool: add it to TOOLS, then to index.html, its category home page, sitemap.xml and llms.txt.
    TOOLS: [category, schema.org application category, tools, category home page]. */
 var SITE_NAME = 'FreeToolBox';
+var REPO_URL = 'https://github.com/smiluv/toolbox';
 var TOOLS = [
   ['Finance', 'FinanceApplication', [
     ['compound-interest-calculator', 'Compound Interest Calculator'],
@@ -89,7 +90,10 @@ $(function () {
       '<a class="hub' + (c === hub ? ' on" aria-current="page' : '') + '" href="' + c[3] + '.html">See all ' + c[2].length + ' ' + c[0] + ' tools &rarr;</a>' + links + '</div></details>';
   }).join('');
   $('body').prepend('<header class="top"><div class="wrap site-bar"><a class="brand" href="index.html">Free<span>ToolBox</span></a>' +
-    '<nav class="nav" aria-label="All tools">' + nav + '</nav><button class="theme-btn"></button>' +
+    '<nav class="nav" aria-label="All tools">' + nav + '</nav>' +
+    '<a class="gh-btn" href="' + REPO_URL + '" target="_blank" rel="noopener" title="Open source: view the code on GitHub" aria-label="Open source: view the code on GitHub">' +
+    '<svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>' +
+    '<span>Open source</span></a><button class="theme-btn"></button>' +
     '<button class="menu-btn" aria-label="Open menu" aria-expanded="false">&#9776;</button></div></header>');
 
   // Theme toggle; the saved choice is applied early by the one-line script in each page's <head>.
@@ -120,7 +124,9 @@ $(function () {
   }).join(' <span aria-hidden="true">&rsaquo;</span> ') + '</nav>');
   $('body').append('<footer class="foot"><div class="wrap">' + related +
     '<p class="muted">All tools run 100% in your browser: no sign-up, no tracking of your inputs, nothing is stored on a server. <a href="index.html">Browse all free online tools</a>.</p>' +
-    '<p class="muted">&copy; ' + new Date().getFullYear() + ' ' + SITE_NAME + '</p></div></footer>');
+    '<p class="muted">' + SITE_NAME + ' is open source, so anyone can check exactly what runs on these pages. <a href="' + REPO_URL + '" target="_blank" rel="noopener">View the code on GitHub</a> &middot; ' +
+    '<a href="' + REPO_URL + '/issues" target="_blank" rel="noopener">Report a bug</a> &middot; <a href="' + REPO_URL + '#contributing" target="_blank" rel="noopener">Contribute</a></p>' +
+    '<p class="muted">&copy; ' + new Date().getFullYear() + ' <a href="https://smilu.net" target="_blank" rel="noopener">smilu.net</a>. ' + SITE_NAME + ' is a smilu.net project.</p></div></footer>');
 
   // <select data-deeplink="param">: page.html?param=<option data-slug or value> opens that option, and its data-h1 /
   // data-title / data-desc replace the H1, <title> and meta description, so each option is its own indexable URL.

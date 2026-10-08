@@ -34,8 +34,9 @@ code{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding
 .crumbs a:hover{color:var(--acc);text-decoration:underline}
 .menu-btn,.theme-btn{background:none;border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:4px 12px;font-size:1.2rem;line-height:1.4;cursor:pointer}
 .menu-btn{display:none}
-.theme-btn{margin-left:auto}
-.theme-btn:hover,.menu-btn:hover{border-color:var(--acc)}
+.gh-btn{margin-left:auto;display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:8px;padding:6px 10px;color:var(--fg);text-decoration:none;font-size:.9rem;font-weight:500;white-space:nowrap}
+.theme-btn:hover,.menu-btn:hover,.gh-btn:hover{border-color:var(--acc)}
+@media (max-width:560px){.gh-btn span{display:none}}
 @media (max-width:900px){
   .menu-btn{display:block}
   .nav{display:none;position:absolute;top:56px;left:-16px;right:-16px;background:var(--card);border-bottom:1px solid var(--line);flex-direction:column;padding:8px 16px;max-height:80vh;overflow:auto}
