@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Border Radius Generator – CSS Rounded Corners Previewer</title>
+<meta name="description" content="Free CSS border-radius generator. Set each corner individually or all at once in px or %, preview rounded corners and blob shapes live and copy the CSS.">
+<meta name="keywords" content="border radius generator, css border radius, rounded corners css, border-radius previewer, css shape generator, blob shape css, circle css, pill button css, round corners generator, how to make rounded corners in css, AI css generator, free online css tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>#box{width:260px;height:190px;background:linear-gradient(135deg,#6366f1,#ec4899)}</style>
+</head>
+<body>
+<main class="wrap">
+<h1>Border Radius Generator</h1>
+<p class="lead">Round each corner and copy the border-radius CSS.</p>
+
+<section class="card">
+  <div class="cols2">
+    <div class="grid" style="grid-template-columns:1fr 1fr">
+      <label>Top left: <span class="v"></span><input type="range" class="corner" id="tl" min="0" max="200" value="30"></label>
+      <label>Top right: <span class="v"></span><input type="range" class="corner" id="tr" min="0" max="200" value="80"></label>
+      <label>Bottom left: <span class="v"></span><input type="range" class="corner" id="bl" min="0" max="200" value="80"></label>
+      <label>Bottom right: <span class="v"></span><input type="range" class="corner" id="br" min="0" max="200" value="30"></label>
+      <label>Unit<select id="unit"><option>px</option><option>%</option></select></label>
+      <label class="inline"><input type="checkbox" id="link"> Same value for all corners</label>
+    </div>
+    <div class="preview"><div id="box"></div></div>
+  </div>
+  <pre class="code" id="css"></pre>
+  <div class="btns"><button class="btn" data-copy="#css">Copy CSS</button></div>
+</section>
+
+<section class="about">
+  <h2>border-radius shorthand</h2>
+  <p><code>border-radius: top-left top-right bottom-right bottom-left;</code> Values in % are relative to the element's size, so 50% on all corners makes a circle or ellipse. Large unequal values create organic blob shapes.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>How do I make a circle with CSS?</summary><p>Give a square element <code>border-radius: 50%</code>.</p></details>
+  <details><summary>How do I make a pill-shaped button?</summary><p>Use a very large px value such as <code>border-radius: 999px</code>; it is limited to half the element's height automatically.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+$('.corner').on('input', function () { if ($('#link').prop('checked')) $('.corner').val(this.value); });
+$('#unit').on('change', function () { $('.corner').attr('max', this.value === '%' ? 100 : 200); });
+function calc() {
+  var u = $('#unit').val(), v = ['tl', 'tr', 'br', 'bl'].map(function (k) { return $('#' + k).val() + u; }).join(' ');
+  $('#box').css('border-radius', v);
+  $('#css').text('border-radius: ' + v + ';');
+}
+</script>
+</body>
+</html>

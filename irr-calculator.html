@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IRR Calculator – Internal Rate of Return &amp; NPV Calculator</title>
+<meta name="description" content="Free IRR calculator. Enter your cash flows to calculate the internal rate of return, net present value (NPV) and payback period of any investment or project.">
+<meta name="keywords" content="IRR calculator, internal rate of return calculator, NPV calculator, net present value, cash flow calculator, payback period calculator, investment appraisal, how to calculate IRR, what is a good IRR, IRR vs ROI, AI investment calculator, free online IRR tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>IRR Calculator (Internal Rate of Return)</h1>
+<p class="lead">Enter cash flows one per line, starting with the initial investment as a negative number.</p>
+
+<section class="card">
+  <div class="cols2">
+    <label>Cash flows (period 0, 1, 2 …)<textarea id="cf">-10000
+3000
+4200
+6800</textarea></label>
+    <div>
+      <label>Discount rate for NPV (%)<input id="dr" type="number" value="8" step="0.1"></label>
+      <div class="stats">
+        <div class="stat"><b id="irr"></b><span>IRR</span></div>
+        <div class="stat"><b id="npv"></b><span>NPV at discount rate</span></div>
+        <div class="stat"><b id="sum"></b><span>Net cash flow</span></div>
+        <div class="stat"><b id="pb"></b><span>Payback period</span></div>
+      </div>
+      <p class="hint" id="verdict"></p>
+    </div>
+  </div>
+</section>
+
+<div class="panes">
+<section class="card">
+  <h2 class="ct">Cash flows</h2>
+  <div class="chart"><canvas id="flows" aria-label="Cash flow per period and cumulative total"></canvas></div>
+</section>
+<section class="card">
+  <h2 class="ct">NPV at different discount rates</h2>
+  <div class="chart"><canvas id="profile" aria-label="Net present value against discount rate"></canvas></div>
+</section>
+</div>
+
+<section class="about">
+  <h2>What is IRR?</h2>
+  <p>The internal rate of return is the discount rate at which the net present value of all cash flows equals zero: <code>Σ CF<sub>t</sub> / (1 + IRR)<sup>t</sup> = 0</code>. This calculator finds it numerically using the bisection method.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>What is a good IRR?</summary><p>An investment is usually attractive when its IRR is higher than your cost of capital or required return. Many businesses look for an IRR above 10–15%.</p></details>
+  <details><summary>Why does it say no IRR was found?</summary><p>IRR only exists when the cash flows contain at least one negative and one positive value. Unusual cash-flow patterns can also have more than one IRR; this tool returns one of them.</p></details>
+  <details><summary>What is the difference between IRR and ROI?</summary><p>ROI is a simple total percentage gain. IRR accounts for the timing of every cash flow, so it is the better measure for multi-year projects.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+function npv(r, cf) { return cf.reduce(function (s, c, t) { return s + c / Math.pow(1 + r, t); }, 0); }
+function irr(cf) {
+  var lo = -0.9999, hi = 10, flo = npv(lo, cf);
+  if (!(flo * npv(hi, cf) < 0)) return NaN;
+  for (var k = 0; k < 300; k++) {
+    var mid = (lo + hi) / 2, f = npv(mid, cf);
+    if (flo * f <= 0) hi = mid; else { lo = mid; flo = f; }
+  }
+  return (lo + hi) / 2;
+}
+function calc() {
+  var cf = $('#cf').val().split('\n').map(function (s) { return parseFloat(s.replace(/[,\s]/g, '')); }).filter(function (v) { return !isNaN(v); });
+  var r = irr(cf), cum = 0, pb = '—';
+  for (var t = 0; t < cf.length; t++) { var prev = cum; cum += cf[t]; if (t && prev < 0 && cum >= 0) { pb = fmt(t - 1 + -prev / cf[t]) + ' periods'; break; } }
+  $('#irr').html(isNaN(r) ? '<span class="err">No IRR found</span>' : fmt(r * 100) + '%');
+  $('#npv').text(fmt(npv(num('#dr') / 100, cf)));
+  $('#sum').text(fmt(cf.reduce(function (a, b) { return a + b; }, 0)));
+  $('#pb').text(pb);
+  var dr = num('#dr'), v = npv(dr / 100, cf);
+  $('#verdict').html(!cf.length ? '' : v >= 0 ? '<span class="ok">At ' + fmt(dr, 1) + '% the investment adds value (NPV is positive).</span>'
+    : '<span class="err">At ' + fmt(dr, 1) + '% the investment loses value (NPV is negative).</span>');
+
+  var run = 0;
+  drawChart('flows', {
+    type: 'bar',
+    data: { labels: cf.map(function (c, t) { return t; }), datasets: [
+      { label: 'Cash flow', data: cf, backgroundColor: cf.map(function (c) { return c < 0 ? COLORS[4] : COLORS[2]; }), borderRadius: 4, order: 1 },
+      { type: 'line', label: 'Cumulative', data: cf.map(function (c) { return run += c; }), borderColor: COLORS[0], tension: 0.3, pointRadius: 3, order: 0 }
+    ] },
+    options: { interaction: { mode: 'index', intersect: false }, scales: { x: { title: { display: true, text: 'Period' }, grid: { display: false } }, y: { ticks: { callback: compact } } },
+      plugins: { tooltip: { callbacks: { title: function (t) { return 'Period ' + t[0].label; } } } } }
+  });
+  var top = Math.max(30, isNaN(r) ? 0 : Math.ceil(r * 200 / 5) * 5, dr * 2), pts = [];
+  for (var x = 0; x <= top; x += top / 60) pts.push({ x: x, y: npv(x / 100, cf) });
+  drawChart('profile', {
+    type: 'line',
+    data: { datasets: [
+      { label: 'NPV', data: pts, borderColor: COLORS[0], backgroundColor: 'rgba(37,99,235,.12)', fill: 'origin', tension: 0.3, pointRadius: 0, pointHoverRadius: 4 },
+      { label: 'IRR', data: isNaN(r) ? [] : [{ x: r * 100, y: 0 }], borderColor: COLORS[1], backgroundColor: COLORS[1], pointRadius: 7, pointHoverRadius: 9, showLine: false },
+      { label: 'Your discount rate', data: [{ x: dr, y: v }], borderColor: COLORS[3], backgroundColor: COLORS[3], pointRadius: 6, pointHoverRadius: 8, showLine: false }
+    ] },
+    options: {
+      scales: { x: { type: 'linear', min: 0, max: top, title: { display: true, text: 'Discount rate (%)' } }, y: { ticks: { callback: compact } } },
+      plugins: { tooltip: { callbacks: { label: function (t) { return ' ' + t.dataset.label + ' · ' + fmt(t.parsed.x) + '% → NPV ' + fmt(t.parsed.y); } } } }
+    }
+  });
+}
+</script>
+</body>
+</html>

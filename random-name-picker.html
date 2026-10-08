@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Random Name Picker Wheel – Spin the Wheel to Choose a Winner</title>
+<meta name="description" content="Free random name picker wheel. Enter names, spin the wheel and pick a random winner for giveaways, classrooms, raffles and team decisions. Fair, secure randomness.">
+<meta name="keywords" content="random name picker, spin the wheel, wheel of names, name wheel spinner, random winner picker, giveaway picker, raffle generator, classroom name picker, decision wheel, random choice generator, how to pick a random winner, AI random picker, free online wheel spinner">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>.wheel{position:relative;max-width:440px;margin:0 auto}.wheel canvas{width:100%;height:auto;display:block}.wheel::after{content:"";position:absolute;top:-4px;left:50%;transform:translateX(-50%);border:14px solid transparent;border-top:26px solid var(--fg)}#win{text-align:center;font-size:1.8rem;font-weight:700;color:var(--acc);min-height:2.4rem}</style>
+</head>
+<body>
+<main class="wrap">
+<h1>Random Name Picker Wheel</h1>
+<p class="lead">Enter one name per line, then spin the wheel to pick a random winner.</p>
+
+<section class="card">
+  <div class="cols2">
+    <div>
+      <label>Names (one per line)<textarea id="names" style="min-height:300px;font-family:inherit">Aisha
+Ben
+Carlos
+Diana
+Ethan
+Fatima
+George
+Hana</textarea></label>
+      <div class="btns"><label class="inline"><input type="checkbox" id="rm"> Remove winner after each spin</label></div>
+    </div>
+    <div>
+      <div class="wheel"><canvas id="wheel" width="840" height="840"></canvas></div>
+      <div class="btns" style="justify-content:center"><button class="btn" id="spin">Spin the wheel</button></div>
+      <div id="win" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<section class="about">
+  <h2>Is the wheel really random?</h2>
+  <p>Yes. The final stopping angle is chosen with the browser's cryptographically secure random number generator, so every name has an equal chance. The winner is the segment under the pointer at the top.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Can I use this for a giveaway or raffle?</summary><p>Yes. Paste the entrants' names, spin, and screen-record the result for transparency. Tick "Remove winner" to draw several winners in a row.</p></details>
+  <details><summary>Is there a limit on the number of names?</summary><p>No hard limit, but the wheel stays readable up to about 100 names.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+var rot = 0, spinning = false, COLORS = ['#2563eb', '#16a34a', '#f59e0b', '#dc2626', '#7c3aed', '#0891b2', '#db2777', '#65a30d'];
+function names() { return $('#names').val().split('\n').map(function (s) { return s.trim(); }).filter(Boolean); }
+function draw() {
+  var n = names(), c = $('#wheel')[0], x = c.getContext('2d'), R = c.width / 2, seg = 2 * Math.PI / Math.max(n.length, 1);
+  x.clearRect(0, 0, c.width, c.height);
+  if (!n.length) { x.fillStyle = '#888'; x.font = '40px system-ui'; x.textAlign = 'center'; x.fillText('Add some names', R, R); return; }
+  n.forEach(function (nm, i) {
+    x.beginPath(); x.moveTo(R, R); x.arc(R, R, R - 8, rot + i * seg, rot + (i + 1) * seg); x.closePath();
+    x.fillStyle = COLORS[(i === n.length - 1 && i % COLORS.length === 0 && i) ? 1 : i % COLORS.length]; x.fill();
+    x.save(); x.translate(R, R); x.rotate(rot + (i + 0.5) * seg); x.textAlign = 'right'; x.fillStyle = '#fff';
+    x.font = 'bold ' + Math.max(14, Math.min(36, 600 / n.length)) + 'px system-ui'; x.fillText(nm.slice(0, 20), R - 30, 12); x.restore();
+  });
+}
+function winner(n) { var a = ((-Math.PI / 2 - rot) % (2 * Math.PI) + 4 * Math.PI) % (2 * Math.PI); return Math.floor(a / (2 * Math.PI / n)); }
+$('#names').on('input', draw);
+$('#spin').on('click', function () {
+  var n = names();
+  if (spinning || n.length < 2) return;
+  spinning = true; $('#win').text('');
+  var start = rot, delta = 2 * Math.PI * (5 + randInt(0, 1e6) / 1e6 * 3), t0 = performance.now(), D = 4500;
+  (function step(now) {
+    var p = Math.min((now - t0) / D, 1);
+    rot = start + delta * (1 - Math.pow(1 - p, 3)); draw();
+    if (p < 1) return requestAnimationFrame(step);
+    spinning = false;
+    var i = winner(n.length);
+    $('#win').text('🎉 ' + n[i]);
+    if ($('#rm').prop('checked')) { n.splice(i, 1); $('#names').val(n.join('\n')); draw(); }
+  })(t0);
+});
+draw();
+</script>
+</body>
+</html>

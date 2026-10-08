@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Auto Loan Calculator – Car Payment Estimator with Tax &amp; Trade-In</title>
+<meta name="description" content="Free auto loan calculator. Estimate your monthly car payment, total interest and total cost including down payment, trade-in value and sales tax.">
+<meta name="keywords" content="auto loan calculator, car payment calculator, car loan estimator, vehicle finance calculator, monthly car payment, car loan interest, trade-in calculator, how much will my car payment be, what car can I afford, AI car loan calculator, free online auto finance tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Auto Loan Calculator</h1>
+<p class="lead">Estimate your monthly car payment including down payment, trade-in and sales tax.</p>
+
+<div class="panes">
+<section class="card">
+  <h2 class="ct">Your car loan</h2>
+  <div class="grid f">
+    <label>Vehicle price<input id="price" type="number" value="35000" min="0"></label>
+    <label>Down payment<input id="down" type="number" value="5000" min="0"></label>
+    <label>Trade-in value<input id="trade" type="number" value="0" min="0"></label>
+    <label>Sales tax (%)<input id="tax" type="number" value="5" step="0.01" min="0"></label>
+  </div>
+  <label class="f">Interest rate / APR (%)<input id="r" type="number" value="6.9" step="0.01" min="0"></label>
+  <label>Loan term: <span class="v"></span> months<input type="range" id="n" min="12" max="96" value="60"></label>
+  <div data-term="#n"><button class="btn alt" data-v="36">36 mo</button><button class="btn alt" data-v="48">48 mo</button><button class="btn alt" data-v="60">60 mo</button><button class="btn alt" data-v="72">72 mo</button><button class="btn alt" data-v="84">84 mo</button></div>
+</section>
+
+<section class="card">
+  <div class="hero"><small>Monthly payment</small><b id="pay"></b><small id="paySub"></small></div>
+  <div class="donut-wrap">
+    <div class="donut"><canvas id="pie" aria-label="Total cost breakdown"></canvas><div class="mid"><span>Total cost</span><b id="mid"></b></div></div>
+    <ul class="legend" id="legend"></ul>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="loan"></b><span>Amount financed</span></div>
+    <div class="stat"><b id="int"></b><span>Total interest</span></div>
+    <div class="stat"><b id="taxv"></b><span>Sales tax</span></div>
+    <div class="stat"><b id="cost"></b><span>Total cost of the car</span></div>
+  </div>
+</section>
+</div>
+
+<section class="card">
+  <h2 class="ct">Repayment by year</h2>
+  <div class="chart"><canvas id="bars" aria-label="Yearly principal, interest and balance"></canvas></div>
+</section>
+
+<section class="card">
+  <h2 class="ct">Compare loan terms</h2>
+  <p class="hint">Click a row to use that term.</p>
+  <div class="tblwrap"><table class="tbl" id="terms"></table></div>
+</section>
+
+<section class="about">
+  <h2>How the car payment is calculated</h2>
+  <p>Sales tax is applied to the price minus your trade-in. The amount financed is price plus tax minus down payment and trade-in. The monthly payment uses the standard loan amortization formula.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Is a longer car loan better?</summary><p>A longer term lowers the monthly payment but increases the total interest you pay. Compare 48, 60 and 72 months to see the trade-off.</p></details>
+  <details><summary>How much should I put down on a car?</summary><p>A common guideline is 10–20% of the price. A bigger down payment means a smaller loan, lower payments and less interest.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+$('#terms').on('click', 'tr[data-n]', function () { $('#n').val($(this).data('n')).trigger('input'); });
+function calc() {
+  var price = num('#price'), trade = num('#trade'), down = num('#down'), tax = Math.max(price - trade, 0) * num('#tax') / 100;
+  var L = Math.max(price + tax - down - trade, 0), i = num('#r') / 1200, N = num('#n'), M = emiFor(L, i, N), interest = M * N - L;
+  $('#pay').text(fmt(M)); $('#paySub').text('for ' + N + ' months (' + dur(N) + ')');
+  $('#loan').text(fmt(L)); $('#int').text(fmt(interest)); $('#taxv').text(fmt(tax)); $('#cost').text(fmt(down + trade + M * N)); $('#mid').text(fmt(down + trade + M * N, 0));
+  donut('pie', '#legend', [['Vehicle price', price, COLORS[0]], ['Interest', interest, COLORS[1]], ['Sales tax', tax, COLORS[3]]]);
+  amortChart('bars', amortize(L, i, M));
+  $('#terms').html('<tr><th>Term</th><th>Monthly payment</th><th>Total interest</th><th>Total cost</th></tr>' + [24, 36, 48, 60, 72, 84, 96].map(function (n) {
+    var m = emiFor(L, i, n);
+    return '<tr data-n="' + n + '" style="cursor:pointer' + (n === N ? ';font-weight:700;color:var(--acc)' : '') + '"><td>' + n + ' months</td><td>' + fmt(m) + '</td><td>' + fmt(m * n - L) + '</td><td>' + fmt(down + trade + m * n) + '</td></tr>';
+  }).join(''));
+}
+</script>
+</body>
+</html>

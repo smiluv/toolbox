@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSS Animation Generator – Keyframe Animation Builder with Live Preview</title>
+<meta name="description" content="Free CSS keyframe animation generator. Start from presets like fade, slide, bounce, spin, pulse and shake, edit the @keyframes, tune timing and copy the CSS animation code.">
+<meta name="keywords" content="css animation generator, keyframe animation builder, css keyframes generator, @keyframes maker, css animation code, bounce animation css, fade in css, spin animation css, pulse animation, shake animation css, how to animate with css, AI css generator, free online css tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>#demo{width:110px;height:110px;border-radius:16px;background:linear-gradient(135deg,#6366f1,#ec4899)}</style>
+<style id="dyn"></style>
+</head>
+<body>
+<main class="wrap">
+<h1>CSS Keyframe Animation Generator</h1>
+<p class="lead">Pick a preset, adjust the timing or edit the keyframes, then copy the CSS.</p>
+
+<section class="card">
+  <div class="grid">
+    <label>Preset<select id="preset">
+      <option value="fadeIn">Fade in</option><option value="slideIn">Slide in from left</option><option value="bounce" selected>Bounce</option>
+      <option value="spin">Spin</option><option value="pulse">Pulse</option><option value="shake">Shake</option>
+      <option value="zoomIn">Zoom in</option><option value="flip">Flip</option><option value="colors">Color shift</option>
+    </select></label>
+    <label>Duration: <span class="v"></span>s<input type="range" id="dur" min="0.1" max="5" step="0.1" value="1.2"></label>
+    <label>Timing function<select id="ease">
+      <option>ease</option><option>linear</option><option>ease-in</option><option>ease-out</option><option>ease-in-out</option><option value="cubic-bezier(0.68, -0.55, 0.27, 1.55)">back (overshoot)</option>
+    </select></label>
+    <label>Delay: <span class="v"></span>s<input type="range" id="delay" min="0" max="3" step="0.1" value="0"></label>
+    <label>Iterations<select id="iter"><option>infinite</option><option>1</option><option>2</option><option>3</option><option>5</option></select></label>
+    <label>Direction<select id="dir"><option>normal</option><option>reverse</option><option>alternate</option><option>alternate-reverse</option></select></label>
+  </div>
+  <div class="cols2" style="margin-top:16px">
+    <label>@keyframes (editable)<textarea id="kf" style="min-height:220px"></textarea></label>
+    <div class="preview"><div id="demo"></div></div>
+  </div>
+  <pre class="code" id="css"></pre>
+  <div class="btns"><button class="btn" data-copy="#css">Copy CSS</button><button class="btn alt" id="replay">Replay</button></div>
+</section>
+
+<section class="about">
+  <h2>How CSS animations work</h2>
+  <p><code>@keyframes</code> defines the styles at points from 0% to 100%. The <code>animation</code> shorthand then applies it to an element with a duration, timing function, delay, iteration count, direction and fill mode. Animating <code>transform</code> and <code>opacity</code> gives the smoothest performance.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>How do I make an animation loop forever?</summary><p>Set the iteration count to <code>infinite</code>. Use <code>alternate</code> direction for a smooth back-and-forth motion.</p></details>
+  <details><summary>Should I respect reduced motion settings?</summary><p>Yes. Wrap large animations in <code>@media (prefers-reduced-motion: no-preference)</code> so users who are sensitive to motion are not affected.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+var P = {
+  fadeIn: '0% { opacity: 0; }\n100% { opacity: 1; }',
+  slideIn: '0% { transform: translateX(-150%); opacity: 0; }\n100% { transform: translateX(0); opacity: 1; }',
+  bounce: '0%, 20%, 50%, 80%, 100% { transform: translateY(0); }\n40% { transform: translateY(-40px); }\n60% { transform: translateY(-20px); }',
+  spin: '0% { transform: rotate(0deg); }\n100% { transform: rotate(360deg); }',
+  pulse: '0%, 100% { transform: scale(1); }\n50% { transform: scale(1.2); }',
+  shake: '0%, 100% { transform: translateX(0); }\n20%, 60% { transform: translateX(-12px); }\n40%, 80% { transform: translateX(12px); }',
+  zoomIn: '0% { transform: scale(0); opacity: 0; }\n100% { transform: scale(1); opacity: 1; }',
+  flip: '0% { transform: perspective(400px) rotateY(0); }\n100% { transform: perspective(400px) rotateY(360deg); }',
+  colors: '0% { background: #6366f1; }\n50% { background: #ec4899; }\n100% { background: #f59e0b; }'
+};
+$('#preset').on('change', function () { $('#kf').val(P[this.value]); });
+$('#kf').val(P.bounce);
+function calc() {
+  var kf = $('#kf').val().split('\n').map(function (l) { return '  ' + l.trim(); }).join('\n');
+  var anim = 'myAnimation ' + $('#dur').val() + 's ' + $('#ease').val() + ' ' + $('#delay').val() + 's ' + $('#iter').val() + ' ' + $('#dir').val() + ' both';
+  var css = '@keyframes myAnimation {\n' + kf + '\n}\n\n.animated {\n  animation: ' + anim + ';\n}';
+  $('#dyn').text(css.replace('.animated', '#demo.animated'));
+  $('#css').text(css);
+  var d = $('#demo').removeClass('animated'); d[0].offsetWidth; d.addClass('animated');
+}
+$('#replay').on('click', calc);
+</script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home Loan EMI Calculator – Flat vs Reducing (Compound) Interest, Charts &amp; Schedule</title>
+<meta name="description" content="Free bank-style home loan calculator. Get your monthly EMI with compound (reducing balance) or fixed flat-rate interest, add extra monthly payments to finish early, compare both, see the true APR, interactive repayment charts and a monthly or yearly amortization schedule.">
+<meta name="keywords" content="home loan calculator, home loan EMI calculator, bank home loan calculator, housing loan calculator, mortgage calculator, flat rate vs reducing balance calculator, compound interest home loan calculator, fixed interest loan calculator, daily reducing balance calculator, home loan prepayment calculator, extra mortgage payment calculator, home loan part payment calculator, monthly rest vs yearly rest, how much interest do I save by paying extra on my mortgage, mortgage calculator with amortization chart, EMI calculator with graph, APR calculator, amortization schedule, home loan calculator UAE, home loan EMI calculator India, how much home loan can I afford, what will my monthly mortgage payment be, is flat rate or reducing rate better, AI home loan calculator, free online mortgage tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>#dpAmt{color:var(--fg)}</style>
+</head>
+<body>
+<main class="wrap">
+<h1>Home Loan Calculator</h1>
+<p class="lead">Bank-style EMI calculator with compound (reducing balance) or fixed flat-rate interest, interactive charts and a full repayment schedule.</p>
+
+<div class="panes">
+<section class="card">
+  <h2 class="ct">Loan details</h2>
+  <label class="f">Property price<input id="price" type="number" value="500000" min="0" step="1000"></label>
+  <div class="f">
+    <label>Down payment: <span class="v"></span>% <span id="dpAmt"></span><input type="range" id="dp" min="0" max="90" value="20"></label>
+    <div data-term="#dp"><button class="btn alt" data-v="10">10%</button><button class="btn alt" data-v="15">15%</button><button class="btn alt" data-v="20">20%</button><button class="btn alt" data-v="25">25%</button><button class="btn alt" data-v="30">30%</button></div>
+  </div>
+  <label class="f">Interest rate (% per year)<input id="r" type="number" value="6.5" step="0.01" min="0" max="50"></label>
+  <div class="f">
+    <span class="lbl">Interest type</span>
+    <input type="hidden" id="type" value="compound">
+    <div class="seg" data-term="#type" role="group" aria-label="Interest type"><button class="btn alt" data-v="compound">Compound (reducing balance)</button><button class="btn alt" data-v="flat">Fixed (flat rate)</button></div>
+    <p class="hint" id="typeHint"></p>
+  </div>
+  <div class="f" id="freqBox">
+    <div class="grid">
+      <label>Compounding frequency<select id="freq"><option value="12" selected>Monthly (most banks)</option><option value="365">Daily reducing</option><option value="4">Quarterly</option><option value="2">Half-yearly</option><option value="1">Yearly</option></select></label>
+      <label>Interest revised on balance<select id="rest"><option value="1" selected>Monthly rest (most banks)</option><option value="3">Quarterly rest</option><option value="12">Yearly rest (annual reducing)</option></select></label>
+    </div>
+    <p class="hint" id="restHint"></p>
+  </div>
+  <div class="f">
+    <label>Loan tenure: <span class="v"></span> years<input type="range" id="t" min="1" max="40" value="25"></label>
+    <div data-term="#t"><button class="btn alt" data-v="10">10 yrs</button><button class="btn alt" data-v="15">15 yrs</button><button class="btn alt" data-v="20">20 yrs</button><button class="btn alt" data-v="25">25 yrs</button><button class="btn alt" data-v="30">30 yrs</button></div>
+  </div>
+  <div class="f">
+    <label>Additional payment per month (goes to principal)<input id="extra" type="number" value="0" min="0" step="100"></label>
+    <p class="hint" id="extraHint"></p>
+  </div>
+  <div class="grid">
+    <label>First EMI month<input id="start" type="month"></label>
+    <label>Processing fee (% of loan)<input id="fee" type="number" value="0" step="0.1" min="0"></label>
+    <label>Property tax per year<input id="tax" type="number" value="0" min="0"></label>
+    <label>Home insurance per year<input id="ins" type="number" value="0" min="0"></label>
+  </div>
+</section>
+
+<section class="card">
+  <div class="hero"><small>Your monthly EMI</small><b id="emi"></b><small id="emiSub"></small><div class="save" id="save"></div></div>
+  <div class="donut-wrap">
+    <div class="donut"><canvas id="pie" aria-label="Breakdown of total cost"></canvas><div class="mid"><span>Total cost</span><b id="total"></b></div></div>
+    <ul class="legend" id="legend"></ul>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="loan"></b><span>Loan amount</span></div>
+    <div class="stat"><b id="int"></b><span>Total interest</span></div>
+    <div class="stat"><b id="pay"></b><span>Total repaid (principal + interest)</span></div>
+    <div class="stat"><b id="apr"></b><span>APR (true reducing rate incl. fees)</span></div>
+    <div class="stat"><b id="monthly"></b><span>Monthly outgoing incl. extra, tax &amp; insurance</span></div>
+    <div class="stat"><b id="cost"></b><span>Total cost of the home</span></div>
+  </div>
+</section>
+</div>
+
+<section class="card">
+  <h2 class="ct">Repayment over time</h2>
+  <div class="chart"><canvas id="bars" aria-label="Principal, interest and balance per year"></canvas></div>
+</section>
+
+<section class="card">
+  <h2 class="ct">Compound vs fixed (flat) interest</h2>
+  <div id="cmp"></div>
+  <p class="hint" id="cmpNote"></p>
+</section>
+
+<section class="card">
+  <h2 class="ct">Amortization schedule</h2>
+  <input type="hidden" id="sched" value="year">
+  <div class="seg" data-term="#sched" role="group" aria-label="Schedule view" style="max-width:260px"><button class="btn alt" data-v="year">Yearly</button><button class="btn alt" data-v="month">Monthly</button></div>
+  <div class="tblwrap"><table class="tbl" id="tbl"></table></div>
+</section>
+
+<section class="about">
+  <h2>How the home loan EMI is calculated</h2>
+  <p>The loan amount is the property price minus your down payment. With <b>compound (reducing balance)</b> interest the EMI is <code>P·r·(1 + r)<sup>n</sup> / ((1 + r)<sup>n</sup> − 1)</code>, where P is the loan, n the number of months and r the monthly rate (for non-monthly compounding, r = (1 + R/k)<sup>k/12</sup> − 1). With <b>fixed (flat rate)</b> interest the total interest is <code>P × R × years</code>, and the EMI is (P + total interest) / n. The APR solves for the reducing-balance rate that gives the same EMI on the money you actually receive (loan minus fees), so you can compare offers fairly.</p>
+  <p>Any <b>additional monthly payment</b> goes straight to principal while the EMI stays the same, so the loan ends earlier. The <b>rest period</b> decides when the bank revises interest on the new balance: with a monthly rest each month's interest is worked out on last month's balance, with a yearly rest it stays based on the balance at the start of the year, so prepayments only start saving interest the following year.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>What is an EMI?</summary><p>EMI stands for equated monthly installment: the fixed amount you pay every month, covering both interest and principal, until the loan is repaid.</p></details>
+  <details><summary>What is the difference between flat rate and reducing balance interest?</summary><p>A flat (fixed) rate charges interest on the full original loan for the entire term, even though you repay part of it every month. A reducing balance (compound) rate charges interest only on what you still owe, so each month's interest gets smaller. At the same headline rate, a flat rate costs much more.</p></details>
+  <details><summary>Is a flat rate or a reducing rate better?</summary><p>For the borrower, a reducing balance rate is cheaper at the same number. A flat rate is roughly equivalent to a reducing rate 1.8 times higher on short loans, and about 1.3 to 1.6 times higher on long home loans. Compare offers using the APR shown above, not the headline rate.</p></details>
+  <details><summary>What does compounding frequency change?</summary><p>Most home loans compound monthly. Daily reducing loans charge interest on the daily balance, which works out slightly higher than monthly at the same nominal rate; quarterly or yearly compounding works out slightly lower.</p></details>
+  <details><summary>How much do extra monthly payments save?</summary><p>On a reducing balance loan every extra amount lowers the principal, so all future interest is charged on a smaller balance and the loan finishes years earlier. For example, 200,000 at 6% for 30 years paid off with an extra 200 a month finishes in about 21 years and saves almost 80,000 in interest. Ask your bank whether it charges a partial prepayment fee.</p></details>
+  <details><summary>What is monthly rest vs yearly rest?</summary><p>The rest period is how often the bank recalculates interest on your outstanding balance. With a monthly rest (standard today) a prepayment lowers interest from the next month. With a yearly rest (annual reducing) interest stays based on the balance at the start of the year, so you pay slightly more interest overall and prepayments help only from the next year.</p></details>
+  <details><summary>Is a shorter or longer home loan better?</summary><p>A shorter tenure means higher monthly payments but far less total interest. A longer tenure lowers the EMI but you pay much more interest overall. Use the tenure buttons or slider and watch the chart change.</p></details>
+  <details><summary>How much down payment do I need?</summary><p>It depends on the country and lender. Many banks ask for 10–25% of the price; in the UAE expatriate first-time buyers typically need at least 20%, and in the US 20% avoids private mortgage insurance.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+var now = new Date();
+$('#start').val(now.getFullYear() + '-' + pad(now.getMonth() + 1));
+
+function monthLabel(k) {
+  var s = $('#start').val().split('-'), d = s[1] ? new Date(+s[0], s[1] - 1 + k, 1) : new Date(now.getFullYear(), now.getMonth() + k, 1);
+  return d.toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
+}
+// Monthly reducing-balance rate whose EMI on P equals pmt (bisection); used for APR and the flat-rate equivalent.
+function rateFor(P, pmt, N) {
+  if (P <= 0 || pmt * N <= P) return 0;
+  for (var lo = 0, hi = 1, k = 0; k < 60; k++) { var mid = (lo + hi) / 2; if (emiFor(P, mid, N) > pmt) hi = mid; else lo = mid; }
+  return lo;
+}
+// rows: [principal, interest, balance] per month. R = annual rate (decimal), k = compounding periods per year,
+// x = extra paid to principal each month (EMI stays the same, tenure shortens),
+// q = rest period in months: interest is charged on the balance as it stood at the last revision, so with a
+// yearly rest an extra payment only lowers interest from the next year. EMI = annuity over N/q rests of q·i.
+// Flat: interest is fixed on the original loan and only charged while the loan is still running.
+function plan(type, L, R, k, N, x, q) {
+  var rows = [], bal = L, revised = L, interest = 0, M, i, it, pr;
+  if (type === 'flat') { i = L * R / 12; M = L / N + i; }
+  else { i = Math.pow(1 + R / k, k / 12) - 1; M = emiFor(L, q * i, N / q) / q; }
+  for (var m = 0; m < N && bal > 0.005; m++) {
+    if (m % q === 0) revised = bal;
+    it = type === 'flat' ? i : revised * i;
+    pr = Math.min(M - it + x, bal); bal -= pr; interest += it;
+    rows.push([pr, it, bal]);
+  }
+  return { M: M, rows: rows, interest: interest };
+}
+function calc() {
+  var price = num('#price'), down = price * Math.min(num('#dp'), 100) / 100, L = price - down, R = num('#r') / 100, k = +$('#freq').val(), N = num('#t') * 12;
+  var flat = $('#type').val() === 'flat', x = num('#extra'), q = +$('#rest').val();
+  var cp = plan('compound', L, R, k, N, x, q), fl = plan('flat', L, R, k, N, x, 1), p = flat ? fl : cp, base = flat ? plan('flat', L, R, k, N, 0, 1) : plan('compound', L, R, k, N, 0, q), n = p.rows.length;
+  var fee = L * num('#fee') / 100, ti = (num('#tax') + num('#ins')) / 12, other = fee + ti * n, total = down + L + p.interest + other;
+
+  $('#freqBox').toggle(!flat);
+  $('#typeHint').text(flat ? 'Interest is charged on the full original loan for the whole tenure, even as you repay it.' : 'Interest is charged only on the balance you still owe, so it falls with every payment.');
+  $('#restHint').text('The bank revises interest on your outstanding balance ' + { 1: 'every month', 3: 'every quarter', 12: 'once a year' }[q] +
+    ', so a principal repayment starts cutting interest from the ' + { 1: 'next month', 3: 'next quarter', 12: 'next year' }[q] + '.');
+  $('#extraHint').text(flat ? 'On a flat-rate loan the monthly interest stays fixed on the original amount; extra payments save the interest of the months you no longer owe.'
+    : 'Your EMI stays the same; the extra reduces the principal so the loan ends sooner.');
+  $('#dpAmt').text('= ' + fmt(down, 0));
+  $('#emi').text(fmt(p.M)); $('#emiSub').text(n + ' monthly payments · last one in ' + monthLabel(n - 1));
+  $('#save').html(x > 0 && L > 0 ? 'Paying ' + fmt(x) + ' extra a month saves <b>' + fmt(base.interest - p.interest) + '</b> in interest and clears the loan <b>' + (dur(N - n) || 'less than a month') + '</b> earlier.' : '');
+  $('#loan').text(fmt(L)); $('#int').text(fmt(p.interest)); $('#pay').text(fmt(L + p.interest));
+  $('#apr').text(fmt(rateFor(L - fee, p.M, N) * 1200) + '%'); $('#monthly').text(fmt(p.M + x + ti)); $('#cost').text(fmt(total));
+
+  donut('pie', '#legend', [['Loan principal', L, COLORS[0]], ['Interest', p.interest, COLORS[1]], ['Down payment', down, COLORS[2]], ['Fees, tax & insurance', other, COLORS[3]]]);
+  $('#total').text(fmt(total, 0));
+
+  compareBars('#cmp', [['Compound (reducing balance)', 'EMI ' + fmt(cp.M) + ' · total interest ' + fmt(cp.interest), cp.interest, COLORS[0]],
+    ['Fixed (flat rate)', 'EMI ' + fmt(fl.M) + ' · total interest ' + fmt(fl.interest), fl.interest, COLORS[1]]], flat ? 1 : 0);
+  $('#cmpNote').text(R && L > 0 ? 'At ' + fmt(R * 100) + '%, a flat rate costs ' + fmt(fl.interest - cp.interest) + ' more in interest. A ' + fmt(R * 100) + '% flat rate is equivalent to about ' +
+    fmt(rateFor(L, fl.M, N) * 1200) + '% on a reducing balance.' : 'With no interest both methods cost the same.');
+
+  var yrs = [], rows = '', monthly = $('#sched').val() === 'month';
+  p.rows.forEach(function (r, m) {
+    var y = yrs[Math.floor(m / 12)] = yrs[Math.floor(m / 12)] || [0, 0, 0];
+    y[0] += r[0]; y[1] += r[1]; y[2] = r[2];
+    if (monthly) rows += '<tr><td>' + (m + 1) + ' · ' + monthLabel(m) + '</td><td>' + fmt(r[0]) + '</td><td>' + fmt(r[1]) + '</td><td>' + fmt(r[0] + r[1]) + '</td><td>' + fmt(r[2]) + '</td></tr>';
+  });
+  if (!monthly) rows = yrs.map(function (y, n) { return '<tr><td>Year ' + (n + 1) + ' · ' + monthLabel(n * 12) + ' – ' + monthLabel(n * 12 + 11) + '</td><td>' + fmt(y[0]) + '</td><td>' + fmt(y[1]) + '</td><td>' + fmt(y[0] + y[1]) + '</td><td>' + fmt(y[2]) + '</td></tr>'; }).join('');
+  $('#tbl').html('<tr><th>' + (monthly ? 'Payment' : 'Year') + '</th><th>Principal' + (x > 0 ? ' (incl. extra)' : '') + '</th><th>Interest</th><th>Total paid</th><th>Balance</th></tr>' + rows);
+
+  amortChart('bars', p.rows, x > 0 ? base.rows : null);
+}
+</script>
+</body>
+</html>

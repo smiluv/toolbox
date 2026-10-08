@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tip Calculator – Calculate Tip &amp; Split the Bill Per Person</title>
+<meta name="description" content="Free tip calculator. Work out the tip amount, total bill and how much each person pays. Quick 10%, 15%, 18% and 20% tip buttons with optional rounding.">
+<meta name="keywords" content="tip calculator, gratuity calculator, restaurant tip calculator, split tip, tip per person, 15 percent tip, 20 percent tip, how much should I tip, how to calculate a tip, AI tip calculator, free online tip tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Tip Calculator</h1>
+<p class="lead">Calculate the tip and split the total between any number of people.</p>
+
+<section class="card">
+  <div class="grid">
+    <label>Bill amount<input id="bill" type="number" value="85" min="0" step="0.01"></label>
+    <label>Tip (%)<input id="tip" type="number" value="15" min="0" step="0.5"></label>
+    <label>Number of people<input id="ppl" type="number" value="2" min="1"></label>
+  </div>
+  <div data-term="#tip">
+    <button class="btn alt" data-v="10">10%</button><button class="btn alt" data-v="15">15%</button>
+    <button class="btn alt" data-v="18">18%</button><button class="btn alt" data-v="20">20%</button><button class="btn alt" data-v="25">25%</button>
+  </div>
+  <div class="btns"><label class="inline"><input type="checkbox" id="round"> Round each person up to a whole amount</label></div>
+  <div class="stats">
+    <div class="stat"><b id="tipv"></b><span>Tip amount</span></div>
+    <div class="stat"><b id="total"></b><span>Total bill</span></div>
+    <div class="stat"><b id="each"></b><span>Each person pays</span></div>
+    <div class="stat"><b id="eachTip"></b><span>Tip per person</span></div>
+  </div>
+</section>
+
+<section class="about">
+  <h2>How to calculate a tip</h2>
+  <p>Multiply the bill by the tip percentage: a 15% tip on 85 is 85 × 0.15 = 12.75. Add it to the bill and divide by the number of people to get each person's share.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>How much should I tip at a restaurant?</summary><p>In the US 15–20% is standard for table service. Many other countries include a service charge or expect a smaller tip, so check local custom.</p></details>
+  <details><summary>Should I tip on the amount before or after tax?</summary><p>Tipping on the pre-tax amount is common and polite. Enter the pre-tax subtotal if you prefer that.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+function calc() {
+  var bill = num('#bill'), ppl = Math.max(1, Math.floor(num('#ppl'))), tip = bill * num('#tip') / 100, each = (bill + tip) / ppl;
+  if ($('#round').prop('checked')) { each = Math.ceil(each); tip = each * ppl - bill; }
+  $('#tipv').text(fmt(tip)); $('#total').text(fmt(bill + tip)); $('#each').text(fmt(each)); $('#eachTip').text(fmt(tip / ppl));
+}
+</script>
+</body>
+</html>

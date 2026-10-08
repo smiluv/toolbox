@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pomodoro Timer – Free Online Focus Timer (25/5 Technique)</title>
+<meta name="description" content="Free online Pomodoro timer. Focus in 25-minute sessions with short and long breaks, custom durations, sound alerts and auto-start. Works in any browser tab.">
+<meta name="keywords" content="pomodoro timer, focus timer, study timer, pomodoro technique, 25 minute timer, tomato timer, productivity timer, work break timer, online pomodoro clock, time management tool, how does the pomodoro technique work, best timer for studying, AI productivity tool, free online timer">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Pomodoro Timer</h1>
+<p class="lead">Work in focused sprints with regular breaks to stay productive.</p>
+
+<section class="card" style="text-align:center">
+  <p class="muted" style="font-size:1.2rem;margin:0" id="mode">Focus</p>
+  <div class="clock" id="clock">25:00</div>
+  <div class="btns" style="justify-content:center">
+    <button class="btn" id="go" style="min-width:120px">Start</button>
+    <button class="btn alt" id="reset">Reset</button>
+    <button class="btn alt" id="skip">Skip</button>
+  </div>
+  <p class="muted">Completed focus sessions: <b id="done">0</b></p>
+</section>
+<section class="card">
+  <div class="grid">
+    <label>Focus (minutes)<input id="w" type="number" value="25" min="1" max="180"></label>
+    <label>Short break (minutes)<input id="s" type="number" value="5" min="1" max="60"></label>
+    <label>Long break (minutes)<input id="l" type="number" value="15" min="1" max="60"></label>
+    <label>Long break after<input id="n" type="number" value="4" min="1" max="10"></label>
+  </div>
+  <div class="btns"><label class="inline"><input type="checkbox" id="auto" checked> Auto-start next session</label></div>
+</section>
+
+<section class="about">
+  <h2>How the Pomodoro Technique works</h2>
+  <p>Choose a task, focus for 25 minutes, then take a 5-minute break. After four focus sessions take a longer 15–30 minute break. The timer plays a sound when each session ends and keeps accurate time even when the tab is in the background.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Why 25 minutes?</summary><p>It is long enough to make real progress and short enough to stay fully focused. Many people adjust it to 45 or 50 minutes for deep work.</p></details>
+  <details><summary>What should I do during a break?</summary><p>Step away from the screen: stretch, walk, drink water or rest your eyes. Avoid email and social media.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+var LABELS = { work: 'Focus', short: 'Short break', long: 'Long break' }, mode = 'work', left = 1500, end = 0, timer = null, done = 0;
+function dur(m) { return num(m === 'work' ? '#w' : m === 'short' ? '#s' : '#l') * 60; }
+function show() {
+  var t = Math.max(0, Math.ceil(left)), txt = pad(Math.floor(t / 60)) + ':' + pad(t % 60);
+  $('#clock').text(txt); $('#mode').text(LABELS[mode]); $('#done').text(done);
+  if (timer) document.title = txt + ' · ' + LABELS[mode];
+}
+function tick() { left = (end - Date.now()) / 1000; if (left <= 0) next(true); else show(); }
+function start() { if (timer) return; ac(); end = Date.now() + left * 1000; timer = setInterval(tick, 250); $('#go').text('Pause'); }
+function pause() { clearInterval(timer); timer = null; $('#go').text('Start'); }
+function next(finished) {
+  var wasRunning = !!timer;
+  pause();
+  if (finished) beep();
+  if (mode === 'work') { if (finished) done++; mode = finished && done % Math.max(1, num('#n')) === 0 ? 'long' : 'short'; } else mode = 'work';
+  left = dur(mode); show();
+  if (finished ? $('#auto').prop('checked') : wasRunning) start();
+}
+$('#go').on('click', function () { timer ? pause() : start(); });
+$('#reset').on('click', function () { pause(); left = dur(mode); show(); });
+$('#skip').on('click', function () { next(false); });
+$('#w,#s,#l').on('change', function () { if (!timer) { left = dur(mode); show(); } });
+left = dur('work'); show();
+</script>
+</body>
+</html>

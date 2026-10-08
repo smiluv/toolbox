@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ROI Calculator – Return on Investment &amp; Annualized ROI Calculator</title>
+<meta name="description" content="Free ROI calculator. Calculate return on investment, net profit and annualized ROI (CAGR) for stocks, real estate, marketing campaigns or any business investment.">
+<meta name="keywords" content="ROI calculator, return on investment calculator, annualized ROI, CAGR calculator, investment return calculator, profit percentage, marketing ROI calculator, how to calculate ROI, what is my return on investment, AI ROI calculator, free online ROI tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>ROI Calculator (Return on Investment)</h1>
+<p class="lead">Calculate your total and annualized return on any investment.</p>
+
+<div class="panes">
+<section class="card">
+  <h2 class="ct">Your investment</h2>
+  <label class="f">Amount invested<input id="inv" type="number" value="10000" min="0"></label>
+  <label class="f">Amount returned (final value)<input id="ret" type="number" value="15000" min="0"></label>
+  <label class="f">Investment length (years)<input id="yrs" type="number" value="3" min="0" step="0.1"></label>
+  <label>Compare with a benchmark return (% per year)<input id="bm" type="number" value="7" step="0.1"></label>
+  <p class="hint">7% is roughly the long-run average of broad stock indexes after inflation.</p>
+</section>
+
+<section class="card">
+  <div class="hero"><small>Total ROI</small><b id="roi"></b><small id="roiSub"></small></div>
+  <div class="stats">
+    <div class="stat"><b id="gain"></b><span>Net profit / loss</span></div>
+    <div class="stat"><b id="ann"></b><span>Annualized ROI (CAGR)</span></div>
+    <div class="stat"><b id="bmv"></b><span>Benchmark would have grown to</span></div>
+  </div>
+  <p class="hint" id="verdict"></p>
+</section>
+</div>
+
+<section class="card">
+  <h2 class="ct">Growth compared with the benchmark</h2>
+  <div class="chart"><canvas id="growth" aria-label="Investment value over time compared with the benchmark"></canvas></div>
+</section>
+
+<section class="about">
+  <h2>ROI formula</h2>
+  <p><code>ROI = (Final value − Investment) / Investment × 100</code>. The annualized ROI, also called CAGR, is <code>(Final / Investment)<sup>1/years</sup> − 1</code>, which lets you compare investments held for different lengths of time.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>What is a good ROI?</summary><p>It depends on risk. Broad stock market indexes have historically returned around 7–10% per year on average, so many investors use that as a benchmark.</p></details>
+  <details><summary>Why is annualized ROI lower than total ROI?</summary><p>Total ROI covers the whole holding period. Annualized ROI spreads that growth across each year with compounding, so a 50% gain over 3 years is about 14.5% per year.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+function calc() {
+  var inv = num('#inv'), ret = num('#ret'), y = num('#yrs'), bm = num('#bm') / 100, ok = inv > 0 && y > 0 && ret >= 0;
+  var cagr = ok ? Math.pow(ret / inv, 1 / y) - 1 : NaN, bmEnd = inv * Math.pow(1 + bm, y);
+  $('#roi').text(inv ? fmt((ret - inv) / inv * 100) + '%' : '—');
+  $('#roiSub').text(ret >= inv ? 'profit of ' + fmt(ret - inv) : 'loss of ' + fmt(inv - ret));
+  $('#gain').text(fmt(ret - inv));
+  $('#ann').text(ok ? fmt(cagr * 100) + '%' : '—');
+  $('#bmv').text(fmt(bmEnd));
+  $('#verdict').html(!ok ? '' : ret >= bmEnd ? '<span class="ok">You beat the benchmark by ' + fmt(ret - bmEnd) + '.</span>' : '<span class="err">The benchmark would have earned ' + fmt(bmEnd - ret) + ' more.</span>');
+  if (!ok) return;
+  var labels = [], A = [], B = [], C = [], steps = Math.min(Math.max(Math.ceil(y), 1) * 4, 200);
+  for (var k = 0; k <= steps; k++) { var t = y * k / steps; labels.push(fmt(t, 1)); A.push(inv * Math.pow(1 + cagr, t)); B.push(inv * Math.pow(1 + bm, t)); C.push(inv); }
+  drawChart('growth', {
+    type: 'line',
+    data: { labels: labels, datasets: [
+      { label: 'Your investment', data: A, borderColor: COLORS[0], backgroundColor: 'rgba(37,99,235,.12)', fill: 'origin', tension: 0.3, pointRadius: 0, pointHoverRadius: 5 },
+      { label: 'Benchmark (' + fmt(bm * 100, 1) + '% a year)', data: B, borderColor: COLORS[1], borderDash: [6, 4], tension: 0.3, pointRadius: 0, pointHoverRadius: 5 },
+      { label: 'Amount invested', data: C, borderColor: cssVar('--muted'), borderWidth: 1, pointRadius: 0, pointHoverRadius: 0 }
+    ] },
+    options: { interaction: { mode: 'index', intersect: false }, scales: { x: { title: { display: true, text: 'Years' }, grid: { display: false } }, y: { ticks: { callback: compact } } },
+      plugins: { tooltip: { callbacks: { title: function (t) { return 'Year ' + t[0].label; } } } } }
+  });
+}
+</script>
+</body>
+</html>

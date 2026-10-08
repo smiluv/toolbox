@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compound Interest Calculator – Free Savings &amp; Investment Growth Calculator</title>
+<meta name="description" content="Free compound interest calculator with monthly contributions. See how your savings and investments grow year by year with daily, monthly, quarterly or yearly compounding.">
+<meta name="keywords" content="compound interest calculator, investment growth calculator, savings calculator, future value calculator, compound interest formula, monthly contribution calculator, daily compounding calculator, how much will my savings grow, how to calculate compound interest, what will my investment be worth in 10 years, AI finance calculator, free online compound interest tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Compound Interest Calculator</h1>
+<p class="lead">See how much your savings or investments will grow with compound interest and regular monthly contributions.</p>
+
+<div class="panes">
+<section class="card">
+  <h2 class="ct">Your savings plan</h2>
+  <label class="f">Initial deposit<input id="p" type="number" value="10000" min="0"></label>
+  <label class="f">Monthly contribution<input id="pmt" type="number" value="200" min="0"></label>
+  <label class="f">Annual interest rate (%)<input id="r" type="number" value="7" step="0.01"></label>
+  <div class="f">
+    <label>Time: <span class="v"></span> years<input type="range" id="t" min="1" max="50" value="10"></label>
+    <div data-term="#t"><button class="btn alt" data-v="5">5 yrs</button><button class="btn alt" data-v="10">10 yrs</button><button class="btn alt" data-v="15">15 yrs</button><button class="btn alt" data-v="20">20 yrs</button><button class="btn alt" data-v="30">30 yrs</button></div>
+  </div>
+  <label>Compounding
+    <select id="n"><option value="365">Daily</option><option value="12" selected>Monthly</option><option value="4">Quarterly</option><option value="1">Yearly</option></select>
+  </label>
+</section>
+
+<section class="card">
+  <div class="hero"><small>Future value</small><b id="fv"></b><small id="fvSub"></small></div>
+  <div class="donut-wrap">
+    <div class="donut"><canvas id="pie" aria-label="What the final balance is made of"></canvas><div class="mid"><span>Final balance</span><b id="mid"></b></div></div>
+    <ul class="legend" id="legend"></ul>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="dep"></b><span>Total contributions</span></div>
+    <div class="stat"><b id="int"></b><span>Total interest earned</span></div>
+    <div class="stat"><b id="apy"></b><span>Effective annual yield (APY)</span></div>
+    <div class="stat"><b id="dbl"></b><span>Time to double a lump sum</span></div>
+  </div>
+</section>
+</div>
+
+<section class="card">
+  <h2 class="ct">Growth over time</h2>
+  <div class="chart"><canvas id="growth" aria-label="Deposits and interest by year"></canvas></div>
+</section>
+
+<section class="card">
+  <h2 class="ct">Year-by-year breakdown</h2>
+  <div class="tblwrap"><table class="tbl" id="tbl"></table></div>
+</section>
+
+<section class="about">
+  <h2>How compound interest is calculated</h2>
+  <p>The classic formula is <code>A = P(1 + r/n)<sup>nt</sup></code>, where P is the starting amount, r the annual rate, n the compounding periods per year and t the number of years. This calculator also adds your monthly contribution at the end of every month and shows a year-by-year table of contributions, interest and balance.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>What is compound interest?</summary><p>Compound interest is interest earned on your original money and on the interest already added to it. Over long periods it makes savings grow exponentially instead of in a straight line.</p></details>
+  <details><summary>Does daily compounding earn more than monthly?</summary><p>Yes, slightly. The more often interest compounds, the higher the effective annual yield, but the difference between daily and monthly compounding is small.</p></details>
+  <details><summary>What is the rule of 72?</summary><p>Divide 72 by the annual interest rate to estimate how many years it takes to double your money. At 7% that is roughly 10 years.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+function calc() {
+  var p = num('#p'), bal = p, dep = bal, pmt = num('#pmt'), n = num('#n'), years = Math.min(num('#t'), 100), rows = '', D = [dep], I = [0], labels = [0];
+  var im = Math.pow(1 + num('#r') / 100 / n, n / 12) - 1, apy = Math.pow(1 + im, 12) - 1; // effective monthly rate for any compounding frequency
+  for (var y = 1; y <= years; y++) {
+    for (var m = 0; m < 12; m++) { bal = bal * (1 + im) + pmt; dep += pmt; }
+    rows += '<tr><td>' + y + '</td><td>' + fmt(dep) + '</td><td>' + fmt(bal - dep) + '</td><td>' + fmt(bal) + '</td></tr>';
+    labels.push(y); D.push(dep); I.push(bal - dep);
+  }
+  $('#fv').text(fmt(bal)); $('#dep').text(fmt(dep)); $('#int').text(fmt(bal - dep)); $('#mid').text(fmt(bal, 0));
+  $('#fvSub').text('after ' + years + ' year' + (years > 1 ? 's' : '') + ' · interest is ' + fmt(bal ? (bal - dep) / bal * 100 : 0, 1) + '% of the balance');
+  $('#apy').text(fmt(apy * 100) + '%'); $('#dbl').text(apy > 0 ? fmt(Math.log(2) / Math.log(1 + apy), 1) + ' years' : '—');
+  $('#tbl').html('<tr><th>Year</th><th>Contributions</th><th>Interest</th><th>Balance</th></tr>' + rows);
+
+  donut('pie', '#legend', [['Initial deposit', p, COLORS[0]], ['Monthly contributions', dep - p, COLORS[2]], ['Interest earned', bal - dep, COLORS[1]]]);
+  drawChart('growth', {
+    type: 'line',
+    data: { labels: labels, datasets: [
+      { label: 'Total deposited', data: D, borderColor: COLORS[0], backgroundColor: 'rgba(37,99,235,.35)', fill: 'origin', tension: 0.3, pointRadius: 0, pointHoverRadius: 5 },
+      { label: 'Interest earned', data: I, borderColor: COLORS[1], backgroundColor: 'rgba(245,158,11,.35)', fill: '-1', tension: 0.3, pointRadius: 0, pointHoverRadius: 5 }
+    ] },
+    options: {
+      interaction: { mode: 'index', intersect: false },
+      scales: { x: { title: { display: true, text: 'Year' }, grid: { display: false } }, y: { stacked: true, ticks: { callback: compact } } },
+      plugins: { tooltip: { callbacks: { title: function (t) { return 'Year ' + t[0].label; }, footer: function (t) { return 'Balance: ' + fmt(sum(t.map(function (x) { return x.parsed.y; }))); } } } }
+    }
+  });
+}
+</script>
+</body>
+</html>

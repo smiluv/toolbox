@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Barcode Generator – Code 128, EAN-13, UPC, Code 39 (PNG Download)</title>
+<meta name="description" content="Free online barcode generator. Create Code 128, EAN-13, EAN-8, UPC-A, Code 39, ITF-14, Codabar and MSI barcodes with custom size and colors, and download them as PNG.">
+<meta name="keywords" content="barcode generator, free barcode maker, code 128 generator, ean 13 generator, upc barcode generator, code 39 barcode, itf-14 barcode, barcode png, product barcode, inventory barcode, shipping label barcode, how to create a barcode, AI barcode tool, free online barcode generator">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>#bc{max-width:100%}</style>
+</head>
+<body>
+<main class="wrap">
+<h1>Barcode Generator</h1>
+<p class="lead">Choose a barcode type, enter the value and download a PNG.</p>
+
+<section class="card">
+  <div class="grid">
+    <label>Barcode type<select id="fmt">
+      <option value="CODE128" data-ex="FreeToolBox-123">Code 128 (any text)</option>
+      <option value="EAN13" data-ex="5901234123457">EAN-13</option>
+      <option value="EAN8" data-ex="96385074">EAN-8</option>
+      <option value="UPC" data-ex="036000291452">UPC-A</option>
+      <option value="CODE39" data-ex="CODE39 TEST">Code 39</option>
+      <option value="ITF14" data-ex="15400141288763">ITF-14</option>
+      <option value="codabar" data-ex="A12345B">Codabar</option>
+      <option value="MSI" data-ex="1234567">MSI</option>
+    </select></label>
+    <label>Value<input id="val" value="FreeToolBox-123"></label>
+    <label>Bar width: <span class="v"></span><input type="range" id="w" min="1" max="5" value="2"></label>
+    <label>Height: <span class="v"></span>px<input type="range" id="h" min="30" max="200" value="100"></label>
+    <label>Bar color<input type="color" id="fg" value="#000000"></label>
+    <label>Background<input type="color" id="bg" value="#ffffff"></label>
+  </div>
+  <div class="btns"><label class="inline"><input type="checkbox" id="txt" checked> Show text under barcode</label></div>
+  <div class="preview" style="flex-direction:column;gap:12px"><canvas id="bc"></canvas><p id="err" class="err"></p><button class="btn" id="dl">Download PNG</button></div>
+</section>
+
+<section class="about">
+  <h2>Which barcode type should I use?</h2>
+  <p>Code 128 encodes any text and is ideal for shipping labels and inventory. EAN-13 and UPC-A are retail product codes (12–13 digits with a check digit). ITF-14 is used on cartons, and Code 39 is common in industry and ID badges.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Can I use these barcodes on products I sell in stores?</summary><p>Retail EAN/UPC numbers must be registered with GS1. This tool draws the barcode, but the number itself has to come from your GS1 membership.</p></details>
+  <details><summary>Why is my value invalid?</summary><p>Each format has rules: EAN-13 needs 12 or 13 digits, UPC-A needs 11 or 12 digits, and the last digit must be a correct check digit if you include it.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+<script>
+$('#fmt').on('change', function () { $('#val').val($(this).find(':selected').data('ex')); });
+function calc() {
+  var ok = true;
+  try {
+    JsBarcode('#bc', $('#val').val(), { format: $('#fmt').val(), width: +$('#w').val(), height: +$('#h').val(), displayValue: $('#txt').prop('checked'),
+      lineColor: $('#fg').val(), background: $('#bg').val(), valid: function (v) { ok = v; } });
+  } catch (e) { ok = false; }
+  $('#err').text(ok ? '' : 'This value is not valid for the selected barcode type.');
+}
+$('#dl').on('click', function () { downloadCanvas($('#bc')[0], 'barcode.png'); });
+</script>
+</body>
+</html>

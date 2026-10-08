@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Word Counter – Character Count, Reading Time &amp; Keyword Density</title>
+<meta name="description" content="Free online word counter. Count words, characters, sentences and paragraphs, estimate reading and speaking time, and see top keywords as you type.">
+<meta name="keywords" content="word counter, character counter, letter count, reading time calculator, speaking time calculator, sentence counter, paragraph counter, keyword density checker, essay word count, how many words is my essay, how long does it take to read 1000 words, AI word count tool, free online text counter">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Word &amp; Character Counter</h1>
+<p class="lead">Paste or type your text to count words, characters and reading time instantly.</p>
+
+<section class="card">
+  <textarea id="txt" style="min-height:260px;font-family:inherit;font-size:1rem" placeholder="Type or paste your text here…"></textarea>
+  <div class="stats">
+    <div class="stat"><b id="w">0</b><span>Words</span></div>
+    <div class="stat"><b id="c">0</b><span>Characters</span></div>
+    <div class="stat"><b id="cn">0</b><span>Characters without spaces</span></div>
+    <div class="stat"><b id="s">0</b><span>Sentences</span></div>
+    <div class="stat"><b id="p">0</b><span>Paragraphs</span></div>
+    <div class="stat"><b id="rt">0 sec</b><span>Reading time</span></div>
+    <div class="stat"><b id="st">0 sec</b><span>Speaking time</span></div>
+  </div>
+  <h3>Top keywords</h3>
+  <div id="kw" class="muted">—</div>
+</section>
+
+<section class="about">
+  <h2>How counting works</h2>
+  <p>Words are groups of characters separated by spaces. Reading time assumes an average silent reading speed of 238 words per minute and speaking time 130 words per minute. Top keywords ignore common short words.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>How many words are on a page?</summary><p>About 500 words single-spaced or 250 words double-spaced with a 12-point font.</p></details>
+  <details><summary>How long does it take to read 1,000 words?</summary><p>Roughly 4 minutes at an average reading speed, and about 7–8 minutes to say out loud.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+var STOP = new Set('the and for are but not you all any can had her was one our out has have this that with from they will would there their what about which when your into than then them these some just also been more were said each other very only over such'.split(' '));
+function dur(min) { var s = Math.round(min * 60); return s < 60 ? s + ' sec' : Math.floor(s / 60) + ' min ' + (s % 60) + ' sec'; }
+function calc() {
+  var t = $('#txt').val(), words = t.match(/\S+/g) || [], counts = {};
+  $('#w').text(words.length.toLocaleString()); $('#c').text(t.length.toLocaleString()); $('#cn').text(t.replace(/\s/g, '').length.toLocaleString());
+  $('#s').text((t.match(/[^.!?]+[.!?]+/g) || (t.trim() ? [1] : [])).length);
+  $('#p').text(t.split(/\n\s*\n/).filter(function (x) { return x.trim(); }).length);
+  $('#rt').text(dur(words.length / 238)); $('#st').text(dur(words.length / 130));
+  (t.toLowerCase().match(/[\p{L}\p{N}']{3,}/gu) || []).forEach(function (w) { if (!STOP.has(w)) counts[w] = (counts[w] || 0) + 1; });
+  var top = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; }).slice(0, 10);
+  $('#kw').html(top.length ? top.map(function (w) { return esc(w) + ' <b>' + counts[w] + '</b>'; }).join(' · ') : '—');
+}
+</script>
+</body>
+</html>

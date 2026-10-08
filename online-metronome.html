@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Online Metronome – Free Accurate Metronome with Tap Tempo</title>
+<meta name="description" content="Free online metronome for musicians. Set any tempo from 30 to 260 BPM, choose the time signature, accent the first beat and use tap tempo. Precise Web Audio timing.">
+<meta name="keywords" content="online metronome, metronome, free metronome, bpm metronome, tap tempo, click track, practice metronome, drum metronome, guitar metronome, piano metronome, time signature metronome, beats per minute, how to practice with a metronome, AI music tool, free online metronome">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>.beats{display:flex;justify-content:center;gap:14px;margin:20px 0}.beats i{width:26px;height:26px;border-radius:50%;background:var(--line);transition:background .05s}.beats i.on{background:var(--acc)}.beats i.on.first{background:#f59e0b}#bpmv{font:700 4rem/1 ui-monospace,Consolas,monospace;color:var(--acc);text-align:center}</style>
+</head>
+<body>
+<main class="wrap">
+<h1>Online Metronome</h1>
+<p class="lead">Set your tempo, press Start and practice in perfect time.</p>
+
+<section class="card">
+  <div id="bpmv">120</div>
+  <p class="muted" style="text-align:center;margin:4px 0" id="tname">BPM</p>
+  <div class="btns" style="justify-content:center">
+    <button class="btn alt" id="minus">−</button>
+    <input type="range" id="bpm" min="30" max="260" value="120" style="max-width:360px" aria-label="Tempo in BPM">
+    <button class="btn alt" id="plus">+</button>
+  </div>
+  <div class="beats" id="beats"></div>
+  <div class="btns" style="justify-content:center">
+    <button class="btn" id="go" style="min-width:120px">Start</button>
+    <button class="btn alt" id="tap">Tap tempo</button>
+  </div>
+  <div class="grid" style="max-width:520px;margin:0 auto">
+    <label>Beats per bar<select id="bpb"><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option><option>7</option></select></label>
+    <label class="inline" style="align-self:end"><input type="checkbox" id="acc" checked> Accent first beat</label>
+  </div>
+</section>
+
+<section class="about">
+  <h2>Why this metronome is accurate</h2>
+  <p>Clicks are scheduled ahead of time on the Web Audio clock instead of with ordinary JavaScript timers, so the beat stays rock-steady even if your computer is busy. Use tap tempo to match the speed of a song by tapping along.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>What BPM should I practice at?</summary><p>Start slow enough to play a passage perfectly, then raise the tempo by 4–5 BPM at a time. Common tempos: ballads 60–80, pop 100–130, fast rock 140+.</p></details>
+  <details><summary>What do the tempo names mean?</summary><p>Largo is very slow (40–60), Adagio slow (66–76), Andante walking pace (76–108), Moderato moderate (108–120), Allegro fast (120–156) and Presto very fast (168–200).</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+var a, timer = null, next = 0, beat = 0, taps = [];
+var NAMES = [[40, 'Grave'], [60, 'Largo'], [66, 'Larghetto'], [76, 'Adagio'], [108, 'Andante'], [120, 'Moderato'], [156, 'Allegro'], [176, 'Vivace'], [200, 'Presto'], [999, 'Prestissimo']];
+function bpm() { return +$('#bpm').val(); }
+function show() {
+  $('#bpmv').text(bpm());
+  $('#tname').text('BPM · ' + NAMES.filter(function (n) { return bpm() < n[0]; })[0][1]);
+  var n = +$('#bpb').val();
+  if ($('#beats i').length !== n) $('#beats').html(new Array(n + 1).join('<i></i>'));
+}
+function flash(b) { $('#beats i').removeClass('on first').eq(b).addClass('on' + (b === 0 ? ' first' : '')); }
+function schedule() {
+  var n = +$('#bpb').val();
+  while (next < a.currentTime + 0.1) {
+    var b = beat % n, o = a.createOscillator(), g = a.createGain();
+    o.frequency.value = b === 0 && $('#acc').prop('checked') ? 1600 : 1000;
+    g.gain.setValueAtTime(0.8, next); g.gain.exponentialRampToValueAtTime(0.001, next + 0.05);
+    o.connect(g); g.connect(a.destination); o.start(next); o.stop(next + 0.06);
+    setTimeout(flash.bind(null, b), Math.max(0, (next - a.currentTime) * 1000));
+    next += 60 / bpm(); beat++;
+  }
+}
+$('#go').on('click', function () {
+  if (timer) { clearInterval(timer); timer = null; $(this).text('Start'); $('#beats i').removeClass('on first'); return; }
+  a = ac(); next = a.currentTime + 0.05; beat = 0; timer = setInterval(schedule, 25); $(this).text('Stop');
+});
+$('#minus,#plus').on('click', function () { $('#bpm').val(bpm() + (this.id === 'plus' ? 1 : -1)); show(); });
+$('#tap').on('click', function () {
+  var t = performance.now();
+  if (taps.length && t - taps[taps.length - 1] > 2000) taps = [];
+  taps.push(t); taps = taps.slice(-5);
+  if (taps.length > 1) { $('#bpm').val(Math.round(60000 * (taps.length - 1) / (t - taps[0]))); show(); }
+});
+$('#bpm,#bpb').on('input change', show);
+show();
+</script>
+</body>
+</html>

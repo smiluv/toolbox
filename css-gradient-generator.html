@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSS Gradient Generator – Linear, Radial &amp; Conic Gradient Builder</title>
+<meta name="description" content="Free CSS gradient generator. Build linear, radial and conic gradients with up to three colors, adjust angle and color stops, preview live and copy the CSS background code.">
+<meta name="keywords" content="css gradient generator, gradient builder, linear gradient css, radial gradient css, conic gradient, background gradient generator, color gradient maker, css3 gradient, gradient background code, how to make a gradient background in css, AI css generator, free online css tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>#pv{height:260px;border-radius:var(--r)}.stop{display:grid;grid-template-columns:auto 70px 1fr;gap:10px;align-items:center}</style>
+</head>
+<body>
+<main class="wrap">
+<h1>CSS Gradient Generator</h1>
+<p class="lead">Pick colors, choose a gradient type and copy the CSS.</p>
+
+<section class="card">
+  <div id="pv"></div>
+  <div class="grid" style="margin-top:16px">
+    <label>Type<select id="type"><option value="linear">Linear</option><option value="radial">Radial</option><option value="conic">Conic</option></select></label>
+    <label>Angle: <span class="v"></span>°<input type="range" id="ang" min="0" max="360" value="135"></label>
+  </div>
+  <h3>Colors and stop positions</h3>
+  <div class="stop"><input type="checkbox" checked disabled><input type="color" id="c1" value="#6366f1"><label>Stop: <span class="v"></span>%<input type="range" id="s1" min="0" max="100" value="0"></label></div>
+  <div class="stop"><input type="checkbox" id="u3"><input type="color" id="c3" value="#ec4899"><label>Stop: <span class="v"></span>%<input type="range" id="s3" min="0" max="100" value="50"></label></div>
+  <div class="stop"><input type="checkbox" checked disabled><input type="color" id="c2" value="#f59e0b"><label>Stop: <span class="v"></span>%<input type="range" id="s2" min="0" max="100" value="100"></label></div>
+  <pre class="code" id="css"></pre>
+  <div class="btns"><button class="btn" data-copy="#css">Copy CSS</button><button class="btn alt" id="rnd">Random colors</button></div>
+</section>
+
+<section class="about">
+  <h2>CSS gradient types</h2>
+  <p><code>linear-gradient()</code> blends colors along a straight line at any angle, <code>radial-gradient()</code> spreads them outward from the center, and <code>conic-gradient()</code> sweeps them around a center point like a color wheel. The middle color is optional.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Do CSS gradients work in all browsers?</summary><p>Linear and radial gradients work in every modern browser. Conic gradients work in all current browsers. A solid fallback color is included for very old ones.</p></details>
+  <details><summary>Are gradients better than background images?</summary><p>Yes, for simple color blends. They scale to any size, need no download and are easy to change.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+function calc() {
+  var stops = [[1], [2]].concat($('#u3').prop('checked') ? [[3]] : []).map(function (k) { return [$('#c' + k).val(), +$('#s' + k).val()]; })
+    .sort(function (a, b) { return a[1] - b[1]; }).map(function (s) { return s[0] + ' ' + s[1] + '%'; }).join(', ');
+  var t = $('#type').val(), a = $('#ang').val();
+  var g = t === 'linear' ? 'linear-gradient(' + a + 'deg, ' + stops + ')' : t === 'radial' ? 'radial-gradient(circle, ' + stops + ')' : 'conic-gradient(from ' + a + 'deg, ' + stops + ')';
+  $('#pv').css('background', g);
+  $('#css').text('background: ' + $('#c1').val() + ';\nbackground: ' + g + ';');
+}
+$('#rnd').on('click', function () {
+  $('#c1,#c2,#c3').each(function () { this.value = '#' + randInt(0, 0xffffff).toString(16).padStart(6, '0'); });
+  calc();
+});
+</script>
+</body>
+</html>

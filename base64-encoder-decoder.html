@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Base64 Encode &amp; Decode – Free Online Base64 Converter (UTF-8)</title>
+<meta name="description" content="Free Base64 encoder and decoder. Convert text to Base64 and back with full UTF-8 and emoji support, plus URL-safe Base64. Runs entirely in your browser.">
+<meta name="keywords" content="base64 encode, base64 decode, base64 encoder, base64 decoder, base64 converter, url safe base64, base64 to text, text to base64, utf-8 base64, decode base64 string, how to decode base64, what is base64 encoding, AI developer tool, free online base64 tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Base64 Encoder / Decoder</h1>
+<p class="lead">Encode text to Base64 or decode Base64 back to text, with full Unicode support.</p>
+
+<section class="card">
+  <label>Input<textarea id="in">Hello, world! 👋 مرحبا</textarea></label>
+  <div class="btns">
+    <button class="btn" id="enc">Encode to Base64</button>
+    <button class="btn" id="dec">Decode from Base64</button>
+    <label class="inline"><input type="checkbox" id="url"> URL-safe (- and _ , no padding)</label>
+  </div>
+  <label>Output<textarea id="out" readonly></textarea></label>
+  <div class="btns"><span id="st"></span><button class="btn alt" data-copy="#out">Copy output</button></div>
+</section>
+
+<section class="about">
+  <h2>What is Base64?</h2>
+  <p>Base64 represents binary data using 64 printable characters (A–Z, a–z, 0–9, + and /). It is used to embed images in CSS, send attachments in email and pass data in JSON or URLs. Text is converted to UTF-8 bytes first, so any language and emoji work correctly.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Is Base64 encryption?</summary><p>No. Base64 is an encoding, not encryption. Anyone can decode it, so never use it to protect passwords or secrets.</p></details>
+  <details><summary>What is URL-safe Base64?</summary><p>It replaces + with - and / with _ and drops the = padding, so the result can be used in URLs and file names without escaping.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+function enc(s) {
+  var b = new TextEncoder().encode(s), bin = '';
+  for (var i = 0; i < b.length; i++) bin += String.fromCharCode(b[i]);
+  var r = btoa(bin);
+  return $('#url').prop('checked') ? r.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '') : r;
+}
+function dec(s) {
+  s = s.replace(/\s/g, '').replace(/-/g, '+').replace(/_/g, '/');
+  while (s.length % 4) s += '=';
+  return new TextDecoder('utf-8', { fatal: true }).decode(Uint8Array.from(atob(s), function (c) { return c.charCodeAt(0); }));
+}
+function run(f) {
+  try { $('#out').val(f($('#in').val())); $('#st').text(''); }
+  catch (e) { $('#out').val(''); $('#st').html('<span class="err">Invalid Base64 input, or it does not contain UTF-8 text.</span>'); }
+}
+$('#enc').on('click', function () { run(enc); });
+$('#dec').on('click', function () { run(dec); });
+</script>
+</body>
+</html>

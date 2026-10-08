@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Running Pace Calculator – Pace, Time &amp; Distance for 5K to Marathon</title>
+<meta name="description" content="Free running pace calculator. Calculate pace per km or mile, finish time or distance, convert speed, and see predicted 5K, 10K, half marathon and marathon times.">
+<meta name="keywords" content="running pace calculator, pace calculator, marathon pace calculator, 5k pace calculator, 10k pace, half marathon pace, min per km, min per mile, running speed calculator, race time predictor, finish time calculator, what pace do I need for a sub 4 hour marathon, AI running calculator, free online runner tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Running Pace Calculator</h1>
+<p class="lead">Fill in two of distance, time and pace, and choose which one to calculate.</p>
+
+<section class="card">
+  <div class="grid">
+    <label>Calculate<select id="mode"><option value="pace">Pace</option><option value="time">Finish time</option><option value="dist">Distance</option></select></label>
+    <label>Race preset<select id="preset"><option value="">Custom</option><option value="5">5K</option><option value="10">10K</option><option value="21.0975">Half marathon</option><option value="42.195">Marathon</option></select></label>
+    <label>Unit<select id="unit"><option value="km">Kilometers</option><option value="mi">Miles</option></select></label>
+    <label>Distance<input id="dist" type="number" value="10" min="0" step="0.01"></label>
+    <label>Time (h:mm:ss)<input id="time" value="0:55:00"></label>
+    <label>Pace (mm:ss per unit)<input id="pace" value="5:30"></label>
+  </div>
+  <p id="err" class="err"></p>
+  <div class="stats">
+    <div class="stat"><b id="pkm"></b><span>Pace per km</span></div>
+    <div class="stat"><b id="pmi"></b><span>Pace per mile</span></div>
+    <div class="stat"><b id="kmh"></b><span>Speed (km/h)</span></div>
+    <div class="stat"><b id="mph"></b><span>Speed (mph)</span></div>
+  </div>
+  <table class="tbl" id="tbl"></table>
+</section>
+
+<section class="about">
+  <h2>How pace is calculated</h2>
+  <p>Pace = time ÷ distance, time = pace × distance, and distance = time ÷ pace. The table shows how long common race distances take at this pace. Real race times also depend on terrain, weather and fatigue over longer distances.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>What pace do I need for a sub-4-hour marathon?</summary><p>About 5:41 per km or 9:09 per mile, held for all 42.195 km.</p></details>
+  <details><summary>What is a good 5K time for beginners?</summary><p>Many beginners finish a 5K in 30–40 minutes, which is a pace of about 6–8 minutes per km.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+var MI = 1.609344, RACES = [['5K', 5], ['10K', 10], ['Half marathon', 21.0975], ['Marathon', 42.195]];
+function parseT(s) { var p = String(s).trim().split(':').map(Number); return p.some(isNaN) ? NaN : p.reduce(function (a, v) { return a * 60 + v; }, 0); }
+function fmtT(sec) { sec = Math.round(sec); var h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60); return (h ? h + ':' + pad(m) : m) + ':' + pad(sec % 60); }
+$('#preset').on('change', function () { if (this.value) $('#dist').val(+(this.value / ($('#unit').val() === 'mi' ? MI : 1)).toFixed(4)); });
+function calc() {
+  var mode = $('#mode').val(), km = $('#unit').val() === 'mi' ? MI : 1, d = num('#dist'), t = parseT($('#time').val()), p = parseT($('#pace').val());
+  $('#dist,#time,#pace').prop('disabled', false); $('#' + mode).prop('disabled', true);
+  if (mode === 'pace') p = t / d; else if (mode === 'time') t = p * d; else d = t / p;
+  if (!(isFinite(p) && isFinite(t) && isFinite(d) && p > 0 && d > 0)) { $('#err').text('Enter valid values for the two other fields.'); return; }
+  $('#err').text('');
+  $('#' + mode).val(mode === 'dist' ? +d.toFixed(3) : fmtT(mode === 'time' ? t : p));
+  var spk = p / km;
+  $('#pkm').text(fmtT(spk)); $('#pmi').text(fmtT(spk * MI)); $('#kmh').text(fmt(3600 / spk)); $('#mph').text(fmt(3600 / spk / MI));
+  $('#tbl').html('<tr><th>Race</th><th>Finish time at this pace</th></tr>' + RACES.map(function (r) { return '<tr><td>' + r[0] + '</td><td><b>' + fmtT(spk * r[1]) + '</b></td></tr>'; }).join(''));
+}
+</script>
+</body>
+</html>

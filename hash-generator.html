@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hash Generator – MD5, SHA-1, SHA-256, SHA-512 Online</title>
+<meta name="description" content="Free online hash generator. Calculate MD5, SHA-1, SHA-256, SHA-384 and SHA-512 hashes of any text instantly in your browser. Your text is never uploaded.">
+<meta name="keywords" content="hash generator, md5 generator, sha256 generator, sha1 hash, sha512 hash, sha384, checksum calculator, md5 hash online, sha256 online, text to hash, hash calculator, how to generate an md5 hash, what is sha256, AI developer tool, free online security tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>.h{display:grid;grid-template-columns:90px 1fr auto;gap:10px;align-items:center;margin-top:10px}.h input{font-family:ui-monospace,Consolas,monospace;font-size:.85rem}</style>
+</head>
+<body>
+<main class="wrap">
+<h1>MD5 / SHA256 Hash Generator</h1>
+<p class="lead">Type or paste text to calculate its hashes live.</p>
+
+<section class="card">
+  <label>Text to hash<textarea id="in" style="min-height:140px">Hello, world!</textarea></label>
+  <div class="btns"><label class="inline"><input type="checkbox" id="up"> Uppercase hex</label></div>
+  <div class="h"><b>MD5</b><input id="md5" readonly><button class="btn alt" data-copy="#md5">Copy</button></div>
+  <div class="h"><b>SHA-1</b><input id="sha1" readonly><button class="btn alt" data-copy="#sha1">Copy</button></div>
+  <div class="h"><b>SHA-256</b><input id="sha256" readonly><button class="btn alt" data-copy="#sha256">Copy</button></div>
+  <div class="h"><b>SHA-384</b><input id="sha384" readonly><button class="btn alt" data-copy="#sha384">Copy</button></div>
+  <div class="h"><b>SHA-512</b><input id="sha512" readonly><button class="btn alt" data-copy="#sha512">Copy</button></div>
+</section>
+
+<section class="about">
+  <h2>About hash functions</h2>
+  <p>A hash function turns any input into a fixed-length fingerprint. The same text always gives the same hash, and a tiny change gives a completely different one. Text is hashed as UTF-8 using the open-source CryptoJS library.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Is MD5 still secure?</summary><p>No. MD5 and SHA-1 are broken for security purposes and should only be used for checksums. Use SHA-256 or better for integrity checks.</p></details>
+  <details><summary>Can I store passwords as SHA-256 hashes?</summary><p>No. Passwords need a slow, salted algorithm such as bcrypt, scrypt or Argon2. Fast hashes like SHA-256 are too easy to brute-force.</p></details>
+  <details><summary>Can a hash be reversed?</summary><p>No. Hashes are one-way functions. Short or common inputs can still be guessed using lookup tables, which is why salting matters.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+<script>
+var ALGOS = { md5: 'MD5', sha1: 'SHA1', sha256: 'SHA256', sha384: 'SHA384', sha512: 'SHA512' };
+function calc() {
+  var t = $('#in').val(), up = $('#up').prop('checked');
+  Object.keys(ALGOS).forEach(function (id) { var h = CryptoJS[ALGOS[id]](t).toString(); $('#' + id).val(up ? h.toUpperCase() : h); });
+}
+</script>
+</body>
+</html>

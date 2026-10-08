@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Days Between Dates Calculator – Count Days, Weeks &amp; Business Days</title>
+<meta name="description" content="Free days between dates calculator. Count the days, weeks, months, years and business days between two dates, or add and subtract days from any date.">
+<meta name="keywords" content="days between dates, date calculator, day counter, how many days between two dates, business days calculator, working days calculator, date difference calculator, add days to date, subtract days from date, age in days, how many days until, how many weeks between dates, AI date calculator, free online date tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Days Between Dates Calculator</h1>
+<p class="lead">Count the exact time between two dates, or add days to a date.</p>
+
+<section class="card">
+  <div class="grid">
+    <label>Start date<input id="a" type="date"></label>
+    <label>End date<input id="b" type="date"></label>
+  </div>
+  <div class="btns"><label class="inline"><input type="checkbox" id="inc"> Include the end date (+1 day)</label></div>
+  <div class="stats">
+    <div class="stat"><b id="days"></b><span>Total days</span></div>
+    <div class="stat"><b id="wk"></b><span>Weeks and days</span></div>
+    <div class="stat"><b id="ymd"></b><span>Years, months, days</span></div>
+    <div class="stat"><b id="bd"></b><span>Business days (Mon–Fri)</span></div>
+  </div>
+</section>
+<section class="card">
+  <h2 style="margin-top:0;font-size:1.2rem">Add or subtract days</h2>
+  <div class="grid">
+    <label>Date<input id="c" type="date"></label>
+    <label>Operation<select id="op"><option value="1">Add</option><option value="-1">Subtract</option></select></label>
+    <label>Days<input id="n" type="number" value="90"></label>
+  </div>
+  <div class="result" id="res"></div>
+</section>
+
+<section class="about">
+  <h2>How the days are counted</h2>
+  <p>Dates are compared in UTC, so daylight saving changes never add or remove an hour. By default the start date is counted and the end date is not, the same way most contracts and deadlines work. Business days exclude Saturdays and Sundays but not public holidays.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Should I include the end date?</summary><p>Include it when both the first and last day count, for example the length of a hotel stay in days or a vacation from Monday to Friday inclusive.</p></details>
+  <details><summary>Are public holidays excluded from business days?</summary><p>No. Holidays differ by country, so subtract any public holidays in your period manually.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+var DAY = 864e5, today = new Date(), iso = function (d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+$('#a,#c').val(iso(today)); $('#b').val(iso(new Date(today.getFullYear(), 11, 31)));
+function parse(v) { var p = v.split('-').map(Number); return Date.UTC(p[0], p[1] - 1, p[2]); }
+function calc() {
+  if ($('#a').val() && $('#b').val()) {
+    var s = parse($('#a').val()), e = parse($('#b').val());
+    if (e < s) { var t = s; s = e; e = t; }
+    var inc = $('#inc').prop('checked'), days = Math.round((e - s) / DAY) + (inc ? 1 : 0);
+    var bd = Math.floor(days / 7) * 5;
+    for (var i = 0, d = s + Math.floor(days / 7) * 7 * DAY; i < days % 7; i++, d += DAY) { var w = new Date(d).getUTCDay(); if (w && w < 6) bd++; }
+    var A = new Date(s), B = new Date(e + (inc ? DAY : 0)), y = B.getUTCFullYear() - A.getUTCFullYear(), m = B.getUTCMonth() - A.getUTCMonth(), dd = B.getUTCDate() - A.getUTCDate();
+    if (dd < 0) { m--; dd += new Date(Date.UTC(B.getUTCFullYear(), B.getUTCMonth(), 0)).getUTCDate(); }
+    if (m < 0) { y--; m += 12; }
+    $('#days').text(days.toLocaleString()); $('#wk').text(Math.floor(days / 7) + ' w ' + days % 7 + ' d'); $('#ymd').text(y + ' y ' + m + ' m ' + dd + ' d'); $('#bd').text(bd.toLocaleString());
+  }
+  if ($('#c').val()) {
+    var r = new Date(parse($('#c').val()) + Math.round(num('#n')) * num('#op') * DAY);
+    $('#res').html('<span class="big">' + r.toLocaleDateString(undefined, { timeZone: 'UTC', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + '</span>');
+  }
+}
+</script>
+</body>
+</html>

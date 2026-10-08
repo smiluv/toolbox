@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UUID Generator – Bulk Random UUID v4 / GUID Generator</title>
+<meta name="description" content="Free UUID / GUID generator. Create one or thousands of random version 4 UUIDs instantly with uppercase, no-hyphen and brace options. Cryptographically secure and generated locally.">
+<meta name="keywords" content="uuid generator, guid generator, uuid v4, random uuid, bulk uuid generator, generate guid online, unique id generator, uuid4, guid for c#, uuid for database primary key, what is a uuid, how to generate a guid, AI developer tool, free online uuid tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>UUID / GUID Generator</h1>
+<p class="lead">Generate random version 4 UUIDs (also known as GUIDs) in bulk.</p>
+
+<section class="card">
+  <div class="grid">
+    <label>How many<input id="n" type="number" value="5" min="1" max="10000"></label>
+  </div>
+  <div class="btns">
+    <label class="inline"><input type="checkbox" id="up"> UPPERCASE</label>
+    <label class="inline"><input type="checkbox" id="nh"> No hyphens</label>
+    <label class="inline"><input type="checkbox" id="br"> Wrap in {braces}</label>
+  </div>
+  <textarea id="out" readonly style="min-height:240px"></textarea>
+  <div class="btns"><button class="btn" id="gen">Generate again</button><button class="btn alt" data-copy="#out">Copy all</button></div>
+</section>
+
+<section class="about">
+  <h2>What is a UUID v4?</h2>
+  <p>A UUID is a 128-bit identifier written as 32 hexadecimal digits, like <code>3f2b8c1e-9d4a-4f6b-a1c2-7e8d9f0a1b2c</code>. Version 4 UUIDs contain 122 random bits generated here with <code>crypto.getRandomValues()</code>, so collisions are practically impossible.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Is a GUID the same as a UUID?</summary><p>Yes. GUID is Microsoft's name for the same 128-bit identifier format.</p></details>
+  <details><summary>Can two UUID v4 values ever be the same?</summary><p>In theory yes, but you would need to generate billions per second for many years to have a realistic chance of a single duplicate.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+function uuid() {
+  var b = crypto.getRandomValues(new Uint8Array(16));
+  b[6] = b[6] & 15 | 64; b[8] = b[8] & 63 | 128;
+  var h = Array.from(b, function (x) { return x.toString(16).padStart(2, '0'); }).join('');
+  return h.slice(0, 8) + '-' + h.slice(8, 12) + '-' + h.slice(12, 16) + '-' + h.slice(16, 20) + '-' + h.slice(20);
+}
+function calc() {
+  var n = Math.min(Math.max(1, Math.floor(num('#n'))), 10000), out = [];
+  for (var i = 0; i < n; i++) {
+    var u = uuid();
+    if ($('#nh').prop('checked')) u = u.replace(/-/g, '');
+    if ($('#up').prop('checked')) u = u.toUpperCase();
+    if ($('#br').prop('checked')) u = '{' + u + '}';
+    out.push(u);
+  }
+  $('#out').val(out.join('\n'));
+}
+$('#gen').on('click', calc);
+</script>
+</body>
+</html>

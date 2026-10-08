@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<title>Self-test</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Calculator self-test</h1>
+<p class="muted">Open via your web server (not file://). Loads each page, enters known inputs and checks the result.</p>
+<table class="tbl" id="res"><tr><th>Page</th><th>Expected</th><th>Got</th><th></th></tr></table>
+<div id="frames" style="position:absolute;left:-9999px;width:1000px"></div>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+// [page, inputs (set in order, each triggers change), output selector, expected regex]
+// or [page, function (pageWindow) returning a value, null, expected regex] to test a page function directly.
+var TESTS = [
+  ['temperature-converter.html', { val: 100, from: 'Celsius (°C)', to: 'Fahrenheit (°F)' }, '#out', /= ?212 /],
+  ['length-converter.html', { val: 6, from: 'Foot (ft)', to: 'Centimeter (cm)' }, '#out', /182\.88/],
+  ['compound-interest-calculator.html', { p: 1000, pmt: 0, r: 12, t: 1, n: 12 }, '#fv', /^1,126\.83$/],
+  ['mortgage-payoff-calculator.html', { L: 200000, r: 6, t: 30, x: 0 }, '#pay', /^1,199\.10$/],
+  ['home-loan-calculator.html', { price: 250000, dp: 20, r: 6, t: 30 }, '#emi', /^1,199\.10$/],
+  ['home-loan-calculator.html', { price: 250000, dp: 20, r: 6, t: 30, fee: 0 }, '#apr', /^6\.00%$/],
+  ['home-loan-calculator.html', { price: 120000, dp: 0, r: 5, t: 10, type: 'flat' }, '#emi', /^1,500\.00$/],
+  ['home-loan-calculator.html', { price: 100000, dp: 0, r: 12, t: 1, freq: 1 }, '#emi', /^8,856\.21$/],
+  ['home-loan-calculator.html', { price: 100000, dp: 0, r: 12, t: 1, rest: 12 }, '#emi', /^9,333\.33$/],
+  ['home-loan-calculator.html', { price: 200000, dp: 0, r: 6, t: 30, extra: 200 }, '#int', /^151,875\.87$/],
+  ['home-loan-calculator.html', { price: 200000, dp: 0, r: 6, t: 30, rest: 12, extra: 200 }, '#int', /^158,412\.66$/],
+  ['auto-loan-calculator.html', { price: 30000, down: 0, trade: 0, tax: 0, r: 0, n: 48 }, '#pay', /^625\.00$/],
+  ['irr-calculator.html', { cf: '-100\n110' }, '#irr', /^10\.00%$/],
+  ['income-tax-calculator.html', { preset: 'us_single', inc: 85000 }, '#tax', /^9,870\.00$/],
+  ['income-tax-calculator.html', { preset: 'in_new', inc: 1275000 }, '#tax', /^0\.00$/],
+  ['income-tax-calculator.html', { preset: 'in_new', inc: 1285000 }, '#tax', /^10,400\.00$/],
+  ['income-tax-calculator.html', { preset: 'in_new', inc: 1500000 }, '#tax', /^97,500\.00$/],
+  ['income-tax-calculator.html', { preset: 'in_old', inc: 1000000, d80c: 150000, d80d: 0 }, '#tax', /^75,400\.00$/],
+  ['income-tax-calculator.html', { preset: 'in_new', inc: 5085000 }, '#tax', /^1,133,600\.00$/],
+  ['income-tax-calculator.html', { preset: 'in_new', incM: 200000 }, '#tax', /^292,500\.00$/],
+  ['tds-calculator.html', { sec: '192', sgrossM: 200000, months: 12, paid: 0 }, '#tds', /^₹24,375\.00$/],
+  ['tds-calculator.html', { sec: '194J-b', amt: 100000 }, '#tds', /^₹10,000\.00$/],
+  ['tds-calculator.html', { sec: '194C', amt: 25000, agg: 120000 }, '#tds', /^₹250\.00$/],
+  ['tds-calculator.html', { sec: '194Q', amt: 6000000 }, '#tds', /^₹1,000\.00$/],
+  ['tds-calculator.html', { sec: '192', sgross: 1500000, months: 12, paid: 0 }, '#tds', /^₹8,125\.00$/],
+  ['tds-calculator.html?section=tds-on-rent', {}, 'h1', /^TDS on Rent Calculator$/],
+  ['tds-calculator.html?section=194ia', { amt: 6000000 }, '#tds', /^₹60,000\.00$/],
+  ['income-tax-calculator.html?regime=old-tax-regime', { inc: 1000000, d80c: 150000, d80d: 0 }, '#tax', /^75,400\.00$/],
+  ['income-tax-calculator.html?regime=%3Cscript%3Ealert(1)%3C/script%3E', {}, 'h1', /^Income Tax Calculator$/],
+  ['gst-calculator.html', { amt: 1000, rate: '18', mode: 'exc' }, '#total', /^₹1,180\.00$/],
+  ['gst-calculator.html', { amt: 1180, rate: '18', mode: 'inc' }, '#total', /^₹1,000\.00$/],
+  ['gst-calculator.html', { amt: 1000, rate: '18', supply: 'intra' }, '#cgst', /^₹90\.00$/],
+  ['gst-calculator.html?rate=gst-5-percent', { amt: 1000 }, '#total', /^₹1,050\.00$/],
+  ['gst-invoice-generator.html', function (w) { return w.amountWords(123456789.5); }, null, /^Rupees Twelve Crore Thirty Four Lakh Fifty Six Thousand Seven Hundred Eighty Nine and Fifty Paise Only$/],
+  ['gst-invoice-generator.html', function (w) { return w.amountWords(100000) + '|' + w.amountWords(1180); }, null, /^Rupees One Lakh Only\|Rupees One Thousand One Hundred Eighty Only$/],
+  ['gst-invoice-generator.html', function (w) { return [w.gstinOk('27AAPFU0939F1ZV'), w.gstinOk('29AAGCB7383J1Z4'), w.gstinOk('27AAPFU0939F1ZW'), w.gstinOk('27aapfu0939f1zv')].join(); }, null, /^true,true,false,false$/],
+  ['gst-invoice-generator.html', function (w) {
+    var items = [{ desc: 'a', qty: 2, rate: 1000, disc: 10, gst: '18' }, { desc: 'b', qty: 1, rate: 500, disc: 0, gst: '5' }];
+    var inter = w.bill({ items: items, sState: '27', bState: '29', round: true, doc: 'Tax Invoice' });
+    var intra = w.bill({ items: items, sState: '27', bState: '27', round: true, doc: 'Tax Invoice' });
+    var odd = w.bill({ items: [{ desc: 'x', qty: 3, rate: 333.33, disc: 0, gst: '18' }], sState: '27', bState: '27', round: true, doc: 'Tax Invoice' });
+    var bos = w.bill({ items: items, sState: '27', bState: '29', round: true, doc: 'Bill of Supply' });
+    return [inter.grand, inter.ig, intra.c, intra.grand, odd.taxable, odd.c, odd.roundOff, odd.grand, bos.grand].join('|');
+  }, null, /^2649\|349\|174\.5\|2649\|999\.99\|90\|0\.01\|1180\|2300$/],
+  ['finance-calculators.html', 'text-code-tools.html', 'css-security-tools.html', 'converters-generators.html', 'health-time-tools.html', 'media-tools.html'].map(function (p) {
+    return [p, function (w) {
+      var c = w.TOOLS.filter(function (c) { return c[3] + '.html' === p; })[0];
+      var links = w.$('.tools a').map(function () { return w.$(this).attr('href').replace('.html', ''); }).get().sort().join();
+      return (links === c[2].map(function (t) { return t[0]; }).sort().join()) + '|' + w.$('.crumbs').text();
+    }, null, /^true\|Home › .+ tools$/];
+  }),
+  ['percentage-calculator.html', { a1: 15, b1: 200 }, '#r1', /^30$/],
+  ['bmi-calculator.html', { sys: 'met', kg: 70, cm: 175 }, '#bmi', /^22\.9$/],
+  ['days-between-dates-calculator.html', { a: '2024-01-01', b: '2024-12-31' }, '#bd', /^261$/],
+  ['color-converter.html', { c: '#2563eb' }, '#hsl', /^hsl\(221, 83%, 53%\)$/],
+  ['running-pace-calculator.html', { mode: 'pace', unit: 'km', dist: 10, time: '0:50:00' }, '#pkm', /^5:00$/]
+];
+TESTS = [].concat.apply([], TESTS.map(function (t) { return Array.isArray(t[0]) ? t : [t]; }));
+var pass = 0;
+function run(i) {
+  if (i >= TESTS.length) return $('h1').append(' – ' + pass + '/' + TESTS.length + ' passed');
+  var t = TESTS[i];
+  $('<iframe>').attr('src', t[0]).appendTo('#frames').on('load', function () { var w = this.contentWindow; setTimeout(function () { check(w); }, 150); });
+  function check(w) {
+    var $$ = w.jQuery, got;
+    if (typeof t[1] === 'function') got = String(t[1](w));
+    else {
+      Object.keys(t[1]).forEach(function (k) { $$('#' + k).val(t[1][k]).trigger('change'); });
+      var $o = $$(t[2]); got = ($o.is(':input') ? $o.val() : $o.text()).trim();
+    }
+    var ok = t[3].test(got);
+    if (ok) pass++;
+    $('#res').append($('<tr>').append($('<td>').text(t[0]), $('<td>').text(t[3]), $('<td>').text(got), $('<td>').html(ok ? '<span class="ok">PASS</span>' : '<span class="err">FAIL</span>')));
+    run(i + 1);
+  }
+}
+run(0);
+</script>
+</body>
+</html>

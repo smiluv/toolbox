@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lorem Ipsum Generator – Dummy Text Paragraphs, Sentences &amp; Words</title>
+<meta name="description" content="Free Lorem Ipsum generator. Create placeholder dummy text by paragraphs, sentences or words, with optional HTML paragraph tags, and copy it in one click.">
+<meta name="keywords" content="lorem ipsum generator, dummy text generator, placeholder text, filler text, lorem ipsum paragraphs, random text generator, sample text for design, lipsum, lorem ipsum html, what does lorem ipsum mean, how to generate placeholder text, AI text generator, free online content tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Lorem Ipsum Generator</h1>
+<p class="lead">Generate placeholder text for designs, mockups and templates.</p>
+
+<section class="card">
+  <div class="grid">
+    <label>How many<input id="n" type="number" value="3" min="1" max="500"></label>
+    <label>Of<select id="type"><option value="p">Paragraphs</option><option value="s">Sentences</option><option value="w">Words</option></select></label>
+  </div>
+  <div class="btns">
+    <label class="inline"><input type="checkbox" id="start" checked> Start with "Lorem ipsum dolor sit amet"</label>
+    <label class="inline"><input type="checkbox" id="html"> Wrap in &lt;p&gt; tags</label>
+  </div>
+  <textarea id="out" readonly style="min-height:280px;font-family:inherit"></textarea>
+  <div class="btns"><button class="btn" id="gen">Generate again</button><button class="btn alt" data-copy="#out">Copy text</button></div>
+</section>
+
+<section class="about">
+  <h2>What is Lorem Ipsum?</h2>
+  <p>Lorem Ipsum is scrambled Latin derived from Cicero's "De finibus bonorum et malorum" (45 BC). Designers have used it since the 1500s as filler text because it looks like natural language without distracting readers with meaning.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Why use Lorem Ipsum instead of real text?</summary><p>It lets clients and designers judge layout, typography and spacing without getting distracted by the content itself.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+var W = 'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure in reprehenderit voluptate velit esse cillum fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt culpa qui officia deserunt mollit anim id est laborum'.split(' ');
+function word() { return W[randInt(0, W.length - 1)]; }
+function sentence() { var a = []; for (var i = randInt(6, 14); i > 0; i--) a.push(word()); var s = a.join(' '); return s[0].toUpperCase() + s.slice(1) + '.'; }
+function para() { var a = []; for (var i = randInt(4, 7); i > 0; i--) a.push(sentence()); return a.join(' '); }
+function calc() {
+  var n = Math.min(Math.max(1, Math.floor(num('#n'))), 500), t = $('#type').val(), start = $('#start').prop('checked'), html = $('#html').prop('checked'), out;
+  if (t === 'w') {
+    var a = []; for (var i = 0; i < n; i++) a.push(word());
+    if (start) a = ['Lorem', 'ipsum', 'dolor', 'sit', 'amet'].concat(a).slice(0, n);
+    out = [a.join(' ')];
+  } else {
+    out = []; for (var j = 0; j < n; j++) out.push(t === 'p' ? para() : sentence());
+    if (start) out[0] = 'Lorem ipsum dolor sit amet, ' + out[0][0].toLowerCase() + out[0].slice(1);
+    if (t === 's') out = [out.join(' ')];
+  }
+  $('#out').val(out.map(function (p) { return html ? '<p>' + p + '</p>' : p; }).join('\n\n'));
+}
+$('#gen').on('click', calc);
+</script>
+</body>
+</html>

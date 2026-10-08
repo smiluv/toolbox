@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Income Tax Calculator – India New vs Old Regime, US, UK &amp; Custom Brackets</title>
+<meta name="description" content="Free income tax calculator. Compare India's new and old tax regime with standard deduction, 80C, 80D, HRA, home loan interest, 87A rebate, surcharge and cess, or estimate US, UK and custom bracket tax.">
+<meta name="keywords" content="income tax calculator, new vs old tax regime calculator, india income tax calculator, new tax regime calculator, old tax regime calculator, income tax calculator FY 2025-26, income tax calculator FY 2026-27, 87A rebate calculator, 80C deduction calculator, salary tax calculator india, which tax regime is better for me, how much tax on 15 lakh salary, tax bracket calculator, federal income tax calculator, UK income tax calculator, effective tax rate calculator, take home pay calculator, AI tax estimator, free online tax tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Income Tax Calculator</h1>
+<p class="lead">Compare India's new and old tax regimes, or estimate tax with US, UK or your own brackets.</p>
+
+<section class="card">
+  <div class="cols2">
+    <div class="grid" style="align-content:start">
+      <label>Tax system
+        <select id="preset" data-deeplink="regime">
+          <optgroup label="India (FY 2025-26 / 2026-27)">
+            <option value="in_new" selected data-slug="new-tax-regime" data-h1="New Tax Regime Calculator (India)" data-title="New Tax Regime Calculator FY 2025-26 – Income Tax Slabs, 87A Rebate, ₹12 Lakh Tax-Free" data-desc="Free new tax regime calculator for India. Slabs 0% to ₹4 lakh up to 30%, ₹75,000 standard deduction, 87A rebate making ₹12.75 lakh salary tax-free, surcharge and cess, compared with the old regime. FY 2025-26 / 2026-27.">India – New tax regime</option>
+            <option value="in_old" data-slug="old-tax-regime" data-h1="Old Tax Regime Calculator (India)" data-title="Old Tax Regime Calculator FY 2025-26 – 80C, 80D, HRA, Home Loan Deductions" data-desc="Free old tax regime calculator for India with 80C, 80D, HRA, home loan interest, NPS and senior citizen slabs, ₹50,000 standard deduction and 87A rebate. See if the old regime beats the new one. FY 2025-26 / 2026-27.">India – Old tax regime</option>
+          </optgroup>
+          <optgroup label="Other countries">
+            <option value="us_single" data-slug="us-federal-single" data-h1="US Federal Income Tax Calculator (Single)" data-title="US Federal Income Tax Calculator 2026 – Single Filer Tax Brackets" data-desc="Free US federal income tax calculator for single filers: 2026 tax brackets, standard deduction, effective and marginal tax rate and take-home pay.">US federal 2026 – Single</option>
+            <option value="us_married" data-slug="us-federal-married" data-h1="US Federal Income Tax Calculator (Married Filing Jointly)" data-title="US Federal Income Tax Calculator 2026 – Married Filing Jointly Brackets" data-desc="Free US federal income tax calculator for married couples filing jointly: 2026 tax brackets, standard deduction, effective and marginal tax rate and take-home pay.">US federal 2026 – Married filing jointly</option>
+            <option value="uk" data-slug="uk" data-h1="UK Income Tax Calculator 2025/26" data-title="UK Income Tax Calculator 2025/26 – Personal Allowance, Basic, Higher & Additional Rate" data-desc="Free UK income tax calculator for 2025/26 (England, Wales, Northern Ireland): personal allowance, 20%, 40% and 45% bands, effective rate and take-home pay.">UK 2025/26 (England, Wales, NI)</option>
+            <option value="zero" data-slug="no-income-tax">No income tax (e.g. UAE)</option>
+            <option value="custom" data-slug="custom-brackets" data-h1="Custom Tax Bracket Calculator">Custom brackets</option>
+          </optgroup>
+        </select>
+      </label>
+      <label>Monthly gross salary<input id="incM" type="number" min="0" data-monthly="#inc"></label>
+      <label>Annual gross income<input id="inc" type="number" value="1500000" min="0"></label>
+      <label class="generic">Deductions / allowance<input id="ded" type="number" value="0" min="0"></label>
+      <label class="india">Age (changes old-regime slabs)<select id="age"><option value="below60">Below 60</option><option value="senior">60 to 79 (senior citizen)</option><option value="superSenior">80 or above (super senior)</option></select></label>
+      <label class="india inline" style="grid-column:1/-1"><input type="checkbox" id="salaried" checked> Salaried or pensioner (standard deduction: ₹75,000 new, ₹50,000 old)</label>
+    </div>
+    <label class="generic">Brackets: "from-amount rate%" per line<textarea id="br"></textarea></label>
+    <div class="india">
+      <span class="lbl">Deductions (old regime only, except employer NPS)</span>
+      <div class="grid" style="margin-top:6px">
+        <label>80C: PF, PPF, ELSS, LIC (max 1.5 L)<input id="d80c" type="number" value="150000" min="0"></label>
+        <label>80D: health insurance<input id="d80d" type="number" value="25000" min="0"></label>
+        <label>HRA exemption<input id="hra" type="number" value="0" min="0"></label>
+        <label>Home loan interest 24(b) (max 2 L)<input id="hl" type="number" value="0" min="0"></label>
+        <label>NPS 80CCD(1B) (max 50,000)<input id="nps" type="number" value="0" min="0"></label>
+        <label>Other (80E, 80G, 80TTA…)<input id="dother" type="number" value="0" min="0"></label>
+        <label>Employer NPS 80CCD(2) (both regimes)<input id="empnps" type="number" value="0" min="0"></label>
+      </div>
+    </div>
+  </div>
+  <p class="hint" id="taxableNote"></p>
+  <div class="stats">
+    <div class="stat"><b id="tax"></b><span>Estimated income tax</span></div>
+    <div class="stat"><b id="net"></b><span>Income after tax</span></div>
+    <div class="stat"><b id="eff"></b><span>Effective tax rate</span></div>
+    <div class="stat"><b id="marg"></b><span>Marginal tax rate</span></div>
+    <div class="stat"><b id="mon"></b><span>Monthly take-home</span></div>
+  </div>
+</section>
+
+<section class="card india">
+  <h2 class="ct">New regime vs old regime</h2>
+  <div id="cmp"></div>
+  <p class="hint" id="cmpNote"></p>
+</section>
+
+<div class="panes">
+<section class="card">
+  <h2 class="ct">Where your income goes</h2>
+  <div class="donut-wrap" style="margin-top:0">
+    <div class="donut"><canvas id="pie" aria-label="Take-home pay versus tax"></canvas><div class="mid"><span>Gross income</span><b id="mid"></b></div></div>
+    <ul class="legend" id="legend"></ul>
+  </div>
+  <table class="tbl" id="tbl"></table>
+</section>
+<section class="card">
+  <h2 class="ct">Tax in each bracket</h2>
+  <div class="chart"><canvas id="brk" aria-label="Income kept and tax paid in each bracket"></canvas></div>
+</section>
+</div>
+
+<section class="about">
+  <h2>How India's income tax is calculated</h2>
+  <p><b><a href="?regime=new-tax-regime">New regime</a></b> (default): slabs of 0% up to ₹4 lakh, 5% to ₹8 lakh, 10% to ₹12 lakh, 15% to ₹16 lakh, 20% to ₹20 lakh, 25% to ₹24 lakh and 30% above. Salaried people get a ₹75,000 standard deduction, and the section 87A rebate of up to ₹60,000 makes taxable income up to ₹12 lakh tax-free (₹12.75 lakh salary), with marginal relief just above that. Most deductions such as 80C, 80D and HRA are not allowed.</p>
+  <p><b><a href="?regime=old-tax-regime">Old regime</a></b>: 0% up to ₹2.5 lakh (₹3 lakh for seniors, ₹5 lakh for 80+), 5% to ₹5 lakh, 20% to ₹10 lakh and 30% above, with a ₹50,000 standard deduction, a ₹12,500 rebate up to ₹5 lakh taxable income, and deductions like 80C, 80D, HRA, home loan interest and NPS.</p>
+  <p>Both regimes add a surcharge on high incomes (10% above ₹50 lakh, 15% above ₹1 crore, 25% above ₹2 crore, and 37% above ₹5 crore in the old regime only) with marginal relief, plus 4% health and education cess. This is an estimate: check your figures on the Income Tax Department website or with a chartered accountant. Other presets use simple progressive brackets without credits or social security.</p>
+  <p>Other calculators on this page: <a href="?regime=us-federal-single">US federal tax (single)</a>, <a href="?regime=us-federal-married">US federal tax (married filing jointly)</a>, <a href="?regime=uk">UK income tax</a>, <a href="?regime=custom-brackets">custom tax brackets</a>, and the <a href="tds-calculator.html?section=tds-on-salary">TDS on salary calculator</a>.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Which tax regime is better for me, new or old?</summary><p>The new regime has lower rates but almost no deductions; the old regime has higher rates but lets you claim 80C, 80D, HRA, home loan interest and more. The calculator compares both and shows the deductions you would need for the old regime to break even.</p></details>
+  <details><summary>Is income up to ₹12 lakh tax-free in the new regime?</summary><p>Yes. Taxable income up to ₹12 lakh gets a full 87A rebate, so salaried people pay no tax up to ₹12.75 lakh gross after the ₹75,000 standard deduction. Just above the limit, marginal relief caps the tax at the income above ₹12 lakh.</p></details>
+  <details><summary>Can I switch between the new and old regime?</summary><p>Salaried people without business income can choose either regime every year when filing their return. People with business income can switch back from the new regime only once.</p></details>
+  <details><summary>What is the difference between effective and marginal tax rate?</summary><p>The marginal rate is the rate on your last rupee or dollar of income. The effective rate is total tax divided by total income, which is always lower in a progressive system.</p></details>
+  <details><summary>Can I use this for another country?</summary><p>Yes. Choose "Custom brackets" and enter each threshold and rate on its own line, for example "0 0", "10000 10", "40000 20".</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="assets/site.js"></script>
+<script src="assets/india-tax.js"></script>
+<script>
+var PRESETS = {
+  us_single: [16100, '0 10\n12400 12\n50400 22\n105700 24\n201775 32\n256225 35\n640600 37'],
+  us_married: [32200, '0 10\n24800 12\n100800 22\n211400 24\n403550 32\n512450 35\n768700 37'],
+  uk: [0, '0 0\n12570 20\n50270 40\n125140 45'],
+  zero: [0, '0 0']
+};
+function applyPreset() { var p = PRESETS[$('#preset').val()]; if (p) { $('#ded').val(p[0]); $('#br').val(p[1]); } }
+$('#preset').on('change', applyPreset);
+$('#br').on('input', function () { $('#preset').val('custom'); });
+applyPreset();
+
+function oldDeductions() { return Math.min(num('#d80c'), 150000) + num('#d80d') + num('#hra') + Math.min(num('#hl'), 200000) + Math.min(num('#nps'), 50000) + num('#dother'); }
+
+function calc() {
+  var gross = num('#inc'), p = $('#preset').val(), india = /^in_/.test(p), r, extra = '';
+  $('.generic').toggle(!india); $('.india').toggle(india);
+  if (india) {
+    var o = { age: $('#age').val(), salaried: $('#salaried').prop('checked') }, emp = num('#empnps');
+    var oldFor = function (d) { return indiaTax(gross, 'old', $.extend({ deductions: d + emp }, o)); };
+    var nw = indiaTax(gross, 'new', $.extend({ deductions: emp }, o)), od = oldFor(oldDeductions());
+    r = p === 'in_new' ? nw : od;
+    $('#taxableNote').text('Taxable income: ₹' + fmt(r.taxable, 0) + ' = gross ' + fmt(gross, 0) + (r.std ? ' − standard deduction ' + fmt(r.std, 0) : '') +
+      (gross - r.std - r.taxable > 0 ? ' − deductions ' + fmt(gross - r.std - r.taxable, 0) : '') + '.');
+    compareBars('#cmp', [['New regime', 'tax ₹' + fmt(nw.total) + ' · take-home ₹' + fmt(gross - nw.total), nw.total, COLORS[0]],
+      ['Old regime', 'tax ₹' + fmt(od.total) + ' · take-home ₹' + fmt(gross - od.total), od.total, COLORS[1]]], p === 'in_new' ? 0 : 1);
+    // Break-even: old-regime deductions at which both regimes cost the same (old tax falls as deductions rise).
+    var lo = 0, hi = gross, be = '';
+    if (oldFor(0).total <= nw.total) be = ' The old regime is cheaper even without deductions.';
+    else if (oldFor(gross).total > nw.total) be = ' No amount of deductions makes the old regime cheaper.';
+    else { for (var k = 0; k < 50; k++) { var mid = (lo + hi) / 2; if (oldFor(mid).total > nw.total) lo = mid; else hi = mid; } be = ' The old regime wins only if your deductions exceed about ₹' + fmt(hi, 0) + ' (you entered ₹' + fmt(oldDeductions(), 0) + ').'; }
+    $('#cmpNote').text((nw.total < od.total ? 'The new regime saves you ₹' + fmt(od.total - nw.total) + '.' : nw.total > od.total ? 'The old regime saves you ₹' + fmt(nw.total - od.total) + '.' : 'Both regimes cost the same.') + be);
+    extra = '<tr><td colspan="3">Tax on slabs</td><td>' + fmt(r.slabTax) + '</td></tr>' +
+      (r.rebate ? '<tr><td colspan="3">Less: rebate u/s 87A' + (r.taxable > INDIA.rebate.new[0] ? ' (marginal relief)' : '') + '</td><td>−' + fmt(r.rebate) + '</td></tr>' : '') +
+      (r.surcharge ? '<tr><td colspan="3">Surcharge</td><td>' + fmt(r.surcharge) + '</td></tr>' : '') +
+      '<tr><td colspan="3">Health &amp; education cess (4%)</td><td>' + fmt(r.cess) + '</td></tr><tr><th colspan="3">Total tax</th><th>' + fmt(r.total) + '</th></tr>';
+  } else {
+    var b = $('#br').val().split('\n').map(function (l) { return l.trim().split(/\s+/).map(function (s) { return parseFloat(s.replace(/[,%]/g, '')); }); })
+      .filter(function (x) { return x.length === 2 && !isNaN(x[0]) && !isNaN(x[1]); }).sort(function (a, c) { return a[0] - c[0]; });
+    var taxable = Math.max(gross - num('#ded'), 0), s = slabTax(taxable, b);
+    r = { taxable: taxable, total: s.tax, parts: s.parts, marginal: s.parts.length ? s.parts[s.parts.length - 1][2] : 0 };
+    $('#taxableNote').text('');
+  }
+  var tax = r.total;
+  $('#tax').text(fmt(tax)); $('#net').text(fmt(gross - tax)); $('#mon').text(fmt((gross - tax) / 12));
+  $('#eff').text(gross ? fmt(tax / gross * 100) + '%' : '—'); $('#marg').text(r.marginal + '%');
+  $('#tbl').html('<tr><th>Bracket</th><th>Rate</th><th>Income taxed</th><th>Tax</th></tr>' + r.parts.map(function (x) {
+    return '<tr><td>' + fmt(x[0], 0) + ' – ' + (isFinite(x[1]) ? fmt(x[1], 0) : 'and up') + '</td><td>' + x[2] + '%</td><td>' + fmt(x[3]) + '</td><td>' + fmt(x[4]) + '</td></tr>';
+  }).join('') + extra);
+
+  $('#mid').text(fmt(gross, 0));
+  donut('pie', '#legend', [['Take-home pay', gross - tax, COLORS[2]], ['Income tax' + (india ? ' incl. cess' : ''), tax, COLORS[4]]]);
+  var used = r.parts.map(function (x) { return [x[2] + '% band', x[3], x[4]]; });
+  if (gross - r.taxable > 0) used.unshift([india ? 'Deductions (tax-free)' : 'Tax-free allowance', gross - r.taxable, 0]);
+  drawChart('brk', {
+    type: 'bar',
+    data: { labels: used.map(function (u) { return u[0]; }), datasets: [
+      { label: 'You keep', data: used.map(function (u) { return u[1] - u[2]; }), backgroundColor: COLORS[2], stack: 's', borderRadius: 3 },
+      { label: india ? 'Slab tax (before rebate & cess)' : 'Tax', data: used.map(function (u) { return u[2]; }), backgroundColor: COLORS[4], stack: 's', borderRadius: 3 }
+    ] },
+    options: { indexAxis: 'y', interaction: { mode: 'index', intersect: false }, scales: { x: { stacked: true, ticks: { callback: compact } }, y: { stacked: true, grid: { display: false } } } }
+  });
+}
+</script>
+</body>
+</html>

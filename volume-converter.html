@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Volume Converter – Liters, Gallons, Cups, Ml, Fl Oz &amp; More</title>
+<meta name="description" content="Free volume converter for cooking and science. Convert liters, milliliters, US and imperial gallons, cups, pints, quarts, fluid ounces, teaspoons, tablespoons and cubic units.">
+<meta name="keywords" content="volume converter, liquid converter, liters to gallons, gallons to liters, ml to oz, oz to ml, cups to ml, ml to cups, tablespoon to ml, teaspoon converter, cooking conversion, cubic feet converter, how many ml in a cup, how many liters in a gallon, AI unit converter, free online converter">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Volume Converter</h1>
+<p class="lead">Convert liquid and dry volume units for cooking, travel and science.</p>
+
+<section class="card">
+  <div class="grid">
+    <label>Value<input id="val" type="number" value="1" step="any"></label>
+    <label>From<select id="from"></select></label>
+    <label>To<select id="to"></select></label>
+  </div>
+  <div class="btns"><button class="btn alt" id="swap">&#8645; Swap units</button></div>
+  <div class="result" id="out"></div>
+  <table class="tbl" id="all"></table>
+</section>
+
+<section class="about">
+  <h2>Common volume conversions</h2>
+  <p>1 US gallon = 3.785 L · 1 imperial gallon = 4.546 L · 1 US cup = 236.6 ml · 1 US fluid ounce = 29.57 ml · 1 tablespoon = 3 teaspoons = 14.79 ml. US and imperial units have different sizes, so pick the right one.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>How many milliliters are in a cup?</summary><p>A US customary cup is about 236.6 ml. Many recipes round this to 240 ml, and a metric cup is 250 ml.</p></details>
+  <details><summary>Is a UK gallon bigger than a US gallon?</summary><p>Yes. An imperial (UK) gallon is about 4.546 liters, roughly 20% more than a US gallon of 3.785 liters.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+unitConverter({
+  'Milliliter (ml)': 0.001, 'Liter (l)': 1, 'Cubic meter (m³)': 1000,
+  'Teaspoon (US)': 0.00492892159375, 'Tablespoon (US)': 0.01478676478125, 'Fluid ounce (US)': 0.0295735295625, 'Cup (US)': 0.2365882365,
+  'Pint (US)': 0.473176473, 'Quart (US)': 0.946352946, 'Gallon (US)': 3.785411784,
+  'Pint (imperial)': 0.56826125, 'Gallon (imperial)': 4.54609, 'Cubic inch (in³)': 0.016387064, 'Cubic foot (ft³)': 28.316846592
+}, 'Liter (l)', 'Gallon (US)');
+</script>
+</body>
+</html>

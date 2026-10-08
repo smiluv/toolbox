@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weight Converter – Kg to Lbs, Pounds, Ounces, Grams, Stone</title>
+<meta name="description" content="Free weight and mass converter. Convert kilograms, grams, pounds, ounces, stone, tons and carats instantly with exact conversion factors.">
+<meta name="keywords" content="weight converter, mass converter, kg to lbs, lbs to kg, pounds to kilograms, grams to ounces, ounces to grams, stone to kg, kg to stone, tons converter, carat converter, how many pounds in a kilogram, how many grams in an ounce, AI unit converter, free online converter">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Weight Converter</h1>
+<p class="lead">Convert weight and mass between metric and imperial units.</p>
+
+<section class="card">
+  <div class="grid">
+    <label>Value<input id="val" type="number" value="1" step="any"></label>
+    <label>From<select id="from"></select></label>
+    <label>To<select id="to"></select></label>
+  </div>
+  <div class="btns"><button class="btn alt" id="swap">&#8645; Swap units</button></div>
+  <div class="result" id="out"></div>
+  <table class="tbl" id="all"></table>
+</section>
+
+<section class="about">
+  <h2>Common weight conversions</h2>
+  <p>1 pound = 0.45359237 kg exactly · 1 ounce = 28.349523 g · 1 stone = 14 lb = 6.35029 kg · 1 US ton = 2,000 lb · 1 metric ton = 1,000 kg · 1 carat = 0.2 g.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>How many pounds are in a kilogram?</summary><p>One kilogram is about 2.20462 pounds.</p></details>
+  <details><summary>What is the difference between a US ton and a metric ton?</summary><p>A US (short) ton is 2,000 lb or 907.2 kg, while a metric ton (tonne) is 1,000 kg or about 2,204.6 lb.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+unitConverter({
+  'Milligram (mg)': 1e-6, 'Gram (g)': 0.001, 'Kilogram (kg)': 1, 'Metric ton (t)': 1000,
+  'Ounce (oz)': 0.028349523125, 'Pound (lb)': 0.45359237, 'Stone (st)': 6.35029318, 'US ton': 907.18474, 'Imperial ton': 1016.0469088, 'Carat (ct)': 0.0002
+}, 'Kilogram (kg)', 'Pound (lb)');
+</script>
+</body>
+</html>

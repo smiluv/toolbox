@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Countdown Timer to Date – Days, Hours &amp; Minutes Until Any Event</title>
+<meta name="description" content="Free countdown timer to any date and time. See the days, hours, minutes and seconds until your event, and share the live countdown with a link. No sign-up.">
+<meta name="keywords" content="countdown timer, countdown to date, days until, event countdown, new year countdown, birthday countdown, wedding countdown, how many days until, countdown clock online, shareable countdown link, how many days until christmas, AI countdown tool, free online countdown timer">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>.cd{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;text-align:center;margin:16px 0}.cd div{background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:14px 4px}.cd b{display:block;font:700 clamp(1.8rem,7vw,3.5rem)/1.1 ui-monospace,Consolas,monospace;color:var(--acc)}#name{text-align:center;margin:0}</style>
+</head>
+<body>
+<main class="wrap">
+<h1>Countdown Timer to a Date</h1>
+<p class="lead">Count down to any event and share the countdown with a link.</p>
+
+<section class="card">
+  <h2 id="name"></h2>
+  <div class="cd"><div><b id="d">0</b>days</div><div><b id="h">00</b>hours</div><div><b id="m">00</b>minutes</div><div><b id="s">00</b>seconds</div></div>
+  <p id="msg" class="big" style="text-align:center"></p>
+  <div class="grid">
+    <label>Event name<input id="title" value="New Year"></label>
+    <label>Date &amp; time<input id="dt" type="datetime-local"></label>
+  </div>
+  <div class="grid" style="grid-template-columns:1fr auto;margin-top:14px;align-items:end">
+    <label>Share link<input id="share" readonly></label>
+    <button class="btn" data-copy="#share">Copy link</button>
+  </div>
+</section>
+
+<section class="about">
+  <h2>How to share your countdown</h2>
+  <p>Set the event name and date, then copy the share link. Anyone who opens it sees the same countdown in their own browser. Nothing is stored on a server; the event details live in the link itself.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Which time zone does the countdown use?</summary><p>The date and time you enter are in your local time zone. Visitors in other zones see a countdown to the same moment shown in their local time.</p></details>
+  <details><summary>Will it alert me when the time is up?</summary><p>Yes, if the page is open it plays a short sound and shows a "Time's up" message.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+var q = new URLSearchParams(location.search), fired = true;
+$('#dt').val(q.get('t') || (new Date().getFullYear() + 1) + '-01-01T00:00');
+if (q.get('title')) $('#title').val(q.get('title'));
+function calc() {
+  $('#name').text($('#title').val());
+  $('#share').val(location.origin + location.pathname + '?' + $.param({ t: $('#dt').val(), title: $('#title').val() }));
+  fired = new Date($('#dt').val()) <= Date.now();
+  tick();
+}
+function tick() {
+  var ms = new Date($('#dt').val()) - Date.now();
+  if (isNaN(ms)) return;
+  if (ms <= 0) { ms = 0; $('#msg').text("⏰ Time's up!"); if (!fired) { fired = true; beep(); } } else $('#msg').text('');
+  var s = Math.floor(ms / 1000);
+  $('#d').text(Math.floor(s / 86400).toLocaleString()); $('#h').text(pad(Math.floor(s / 3600) % 24)); $('#m').text(pad(Math.floor(s / 60) % 60)); $('#s').text(pad(s % 60));
+}
+setInterval(tick, 250);
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Temperature Converter – Celsius to Fahrenheit, Kelvin &amp; Rankine</title>
+<meta name="description" content="Free temperature converter. Convert Celsius to Fahrenheit, Fahrenheit to Celsius, Kelvin and Rankine instantly with the exact formulas.">
+<meta name="keywords" content="temperature converter, celsius to fahrenheit, fahrenheit to celsius, c to f, f to c, kelvin converter, celsius to kelvin, rankine converter, oven temperature conversion, body temperature converter, what is 100 f in c, how to convert celsius to fahrenheit, AI unit converter, free online converter">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Temperature Converter</h1>
+<p class="lead">Convert between Celsius, Fahrenheit, Kelvin and Rankine.</p>
+
+<section class="card">
+  <div class="grid">
+    <label>Value<input id="val" type="number" value="25" step="any"></label>
+    <label>From<select id="from"></select></label>
+    <label>To<select id="to"></select></label>
+  </div>
+  <div class="btns"><button class="btn alt" id="swap">&#8645; Swap units</button></div>
+  <div class="result" id="out"></div>
+  <table class="tbl" id="all"></table>
+</section>
+
+<section class="about">
+  <h2>Temperature formulas</h2>
+  <p>°F = °C × 9/5 + 32 · °C = (°F − 32) × 5/9 · K = °C + 273.15 · °R = °F + 459.67. Water freezes at 0 °C (32 °F) and boils at 100 °C (212 °F) at sea level.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>What is normal body temperature in Fahrenheit?</summary><p>About 98.6 °F, which is 37 °C.</p></details>
+  <details><summary>At what temperature are Celsius and Fahrenheit equal?</summary><p>At −40 degrees: −40 °C is exactly −40 °F.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+unitConverter({
+  'Celsius (°C)': [function (v) { return v; }, function (b) { return b; }],
+  'Fahrenheit (°F)': [function (v) { return (v - 32) * 5 / 9; }, function (b) { return b * 9 / 5 + 32; }],
+  'Kelvin (K)': [function (v) { return v - 273.15; }, function (b) { return b + 273.15; }],
+  'Rankine (°R)': [function (v) { return (v - 491.67) * 5 / 9; }, function (b) { return (b + 273.15) * 9 / 5; }]
+}, 'Celsius (°C)', 'Fahrenheit (°F)');
+</script>
+</body>
+</html>

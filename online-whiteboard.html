@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Online Whiteboard – Free Drawing Pad, Sketch &amp; Save as PNG</title>
+<meta name="description" content="Free online whiteboard and drawing pad. Sketch, write and brainstorm with pen and eraser, undo mistakes and save your drawing as a PNG. Works with mouse, touch and stylus.">
+<meta name="keywords" content="online whiteboard, drawing pad, sketch pad online, digital whiteboard, draw online, free drawing app, doodle board, online blackboard, teaching whiteboard, signature pad, touch drawing, how to draw online for free, AI whiteboard tool, free online drawing tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>#board{width:100%;height:560px;display:block;border:1px solid var(--line);border-radius:var(--r);background:#fff;touch-action:none;cursor:crosshair}.tools-bar{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin-bottom:12px}.tools-bar label{min-width:120px}</style>
+</head>
+<body>
+<main class="wrap">
+<h1>Online Whiteboard</h1>
+<p class="lead">Draw with your mouse, finger or stylus, then save your sketch as an image.</p>
+
+<section class="card">
+  <div class="tools-bar">
+    <label>Color<input type="color" id="color" value="#1d4ed8"></label>
+    <label>Size: <span class="v"></span>px<input type="range" id="size" min="1" max="60" value="4"></label>
+    <button class="btn alt on" id="pen">Pen</button>
+    <button class="btn alt" id="eraser">Eraser</button>
+    <button class="btn alt" id="undo">Undo</button>
+    <button class="btn alt" id="clear">Clear</button>
+    <button class="btn" id="save">Save PNG</button>
+  </div>
+  <canvas id="board"></canvas>
+</section>
+
+<section class="about">
+  <h2>How to use the whiteboard</h2>
+  <p>Pick a color and brush size and start drawing. Use the eraser to rub out parts, Undo (or Ctrl+Z) to step back, and Save PNG to download your drawing. Pressure-free drawing works with a mouse, touchscreen or pen tablet.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Is my drawing saved online?</summary><p>No. The drawing exists only in this browser tab. Click Save PNG before closing the page to keep it.</p></details>
+  <details><summary>Can I use it on a phone or tablet?</summary><p>Yes. Touch and stylus input are supported, and page scrolling is disabled while drawing on the board.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+// ponytail: canvas size is fixed when the page loads; resizing the window later stretches the drawing instead of re-laying it out.
+var c = $('#board')[0], x = c.getContext('2d'), last = null, erase = false, undoStack = [];
+c.width = c.clientWidth; c.height = c.clientHeight;
+x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height);
+function pos(e) { var r = c.getBoundingClientRect(); return [(e.clientX - r.left) * c.width / r.width, (e.clientY - r.top) * c.height / r.height]; }
+function line(a, b) {
+  x.lineCap = x.lineJoin = 'round'; x.lineWidth = +$('#size').val() * (erase ? 3 : 1); x.strokeStyle = erase ? '#fff' : $('#color').val();
+  x.beginPath(); x.moveTo(a[0], a[1]); x.lineTo(b[0], b[1]); x.stroke();
+}
+c.addEventListener('pointerdown', function (e) {
+  c.setPointerCapture(e.pointerId);
+  undoStack.push(x.getImageData(0, 0, c.width, c.height)); if (undoStack.length > 30) undoStack.shift();
+  last = pos(e); line(last, [last[0] + 0.01, last[1]]);
+});
+c.addEventListener('pointermove', function (e) { if (!last) return; var p = pos(e); line(last, p); last = p; });
+c.addEventListener('pointerup', function () { last = null; });
+c.addEventListener('pointercancel', function () { last = null; });
+function undo() { if (undoStack.length) x.putImageData(undoStack.pop(), 0, 0); }
+$('#pen,#eraser').on('click', function () { erase = this.id === 'eraser'; $('#pen,#eraser').removeClass('on'); $(this).addClass('on'); });
+$('#undo').on('click', undo);
+$('#clear').on('click', function () { undoStack.push(x.getImageData(0, 0, c.width, c.height)); x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); });
+$('#save').on('click', function () { downloadCanvas(c, 'whiteboard.png'); });
+$(document).on('keydown', function (e) { if ((e.ctrlKey || e.metaKey) && e.key === 'z') { e.preventDefault(); undo(); } });
+</script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TDS Calculator India – TDS on Salary, Rent, Professional Fees &amp; Rate Chart FY 2025-26</title>
+<meta name="description" content="Free TDS calculator for India. Calculate monthly TDS on salary under the new or old regime, and TDS on rent, professional fees, contractors, commission, interest, property purchase and more, with thresholds, no-PAN rates and a full TDS rate chart.">
+<meta name="keywords" content="TDS calculator, TDS on salary calculator, TDS rate chart FY 2025-26, TDS rate chart FY 2026-27, TDS on rent calculator, 194J TDS calculator, 194C TDS calculator, 194I TDS on rent, 194IA TDS on property purchase, TDS on FD interest 194A, TDS without PAN 206AA, monthly TDS on salary new regime, how much TDS will be deducted from my salary, what is the TDS rate on professional fees, AI TDS calculator, free online TDS tool India">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>#rates tr[data-k]{cursor:pointer}#rates tr.on td{color:var(--acc);font-weight:600}#rates :is(td,th):nth-child(2){text-align:left}#rates a{color:inherit;text-decoration:none}#rates a:hover{text-decoration:underline}</style>
+</head>
+<body>
+<main class="wrap">
+<h1>TDS Calculator (India)</h1>
+<p class="lead">Work out TDS on salary, or on payments such as rent, professional fees, contractor bills, commission, interest and property purchase.</p>
+
+<div class="panes">
+<section class="card">
+  <h2 class="ct">Payment details</h2>
+  <label class="f">Nature of payment<select id="sec" data-deeplink="section"></select></label>
+  <div id="salBox">
+    <div class="grid">
+      <label>Monthly gross salary<input id="sgrossM" type="number" min="0" data-monthly="#sgross"></label>
+      <label>Annual gross salary<input id="sgross" type="number" value="1500000" min="0"></label>
+    </div>
+    <div class="f">
+      <span class="lbl">Tax regime chosen with your employer</span>
+      <input type="hidden" id="reg" value="new">
+      <div class="seg" data-term="#reg" role="group" aria-label="Tax regime"><button class="btn alt" data-v="new">New regime</button><button class="btn alt" data-v="old">Old regime</button></div>
+    </div>
+    <div class="grid">
+      <label class="oldOnly">Deductions declared (80C, 80D, HRA…)<input id="sded" type="number" value="150000" min="0"></label>
+      <label class="oldOnly">Age<select id="age"><option value="below60">Below 60</option><option value="senior">60 to 79</option><option value="superSenior">80 or above</option></select></label>
+      <label>Months left in this financial year<input id="months" type="number" min="1" max="12"></label>
+      <label>TDS already deducted this year<input id="paid" type="number" value="0" min="0"></label>
+    </div>
+  </div>
+  <div id="payBox">
+    <label class="f">Amount paid or credited<input id="amt" type="number" value="100000" min="0"></label>
+    <label class="f" id="aggBox">Total paid to this payee this financial year (including this payment)<input id="agg" type="number" value="0" min="0"></label>
+    <label class="f" id="ptypeBox">Payee type<select id="ptype"><option value="ind">Individual / HUF</option><option value="oth">Company, firm or others</option></select></label>
+    <label class="inline f"><input type="checkbox" id="pan" checked> Payee has given a valid PAN</label>
+    <label class="inline f" id="srBox"><input type="checkbox" id="senior"> Payee is a senior citizen (60+)</label>
+  </div>
+  <p class="hint" id="secNote"></p>
+</section>
+
+<section class="card">
+  <div class="hero"><small id="heroLbl"></small><b id="tds"></b><small id="tdsSub"></small></div>
+  <div class="donut-wrap">
+    <div class="donut"><canvas id="pie" aria-label="Net amount versus TDS"></canvas><div class="mid"><span id="midLbl"></span><b id="mid"></b></div></div>
+    <ul class="legend" id="legend"></ul>
+  </div>
+  <div class="stats" id="stats"></div>
+</section>
+</div>
+
+<section class="card">
+  <h2 class="ct">TDS rate chart (FY 2025-26 / 2026-27)</h2>
+  <p class="hint">Click a row to calculate TDS for that payment.</p>
+  <div class="tblwrap"><table class="tbl" id="rates"></table></div>
+</section>
+
+<section class="about">
+  <h2>How TDS is calculated</h2>
+  <p><b>TDS on salary (section 192)</b> is your estimated income tax for the year, under the regime you chose with your employer, spread over the remaining months of the financial year (April to March) after subtracting TDS already deducted. It uses the same slabs, standard deduction, 87A rebate, surcharge and 4% cess as our income tax calculator.</p>
+  <p><b>Other payments</b>: TDS = amount × rate, once the payment crosses the threshold for that section. For cash withdrawals (194N) and purchase of goods (194Q) TDS applies only to the amount above the limit. Without a valid PAN, section 206AA applies the higher of twice the rate or 20% (5% for 194O and 194Q). Rates and thresholds follow the Finance Act 2025, and section numbers follow the Income-tax Act, 1961, which most people still use; check current rules on the Income Tax Department website before filing.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>How much TDS will be deducted from my salary?</summary><p>Your employer estimates your full-year tax under your chosen regime and deducts it in equal monthly instalments. Under the new regime, salary up to ₹12.75 lakh usually has no TDS because of the ₹75,000 standard deduction and the 87A rebate.</p></details>
+  <details><summary>What is the TDS rate on professional fees?</summary><p>Section 194J: 10% on professional fees and royalty, 2% on fees for technical services, once payments to the person cross ₹50,000 in the financial year.</p></details>
+  <details><summary>When is TDS deducted on rent?</summary><p>Under section 194I, tenants who must deduct TDS do so at 10% on land and building or 2% on plant and machinery when rent exceeds ₹50,000 a month. Individuals not under audit use section 194IB at 2% when monthly rent exceeds ₹50,000.</p></details>
+  <details><summary>What happens if the payee does not give a PAN?</summary><p>TDS is deducted at a higher rate: twice the normal rate or 20%, whichever is higher (5% for e-commerce and purchase-of-goods TDS).</p></details>
+  <details><summary>Can I get TDS back?</summary><p>Yes. TDS is an advance payment of tax. If it is more than your actual tax for the year, claim the difference as a refund when you file your income tax return.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="assets/site.js"></script>
+<script src="assets/india-tax.js"></script>
+<script>
+// k: key, c: section, n: payment, r: [rate individual/HUF, rate others], t: threshold, tOth: threshold for non-individuals,
+// per: threshold basis, agg: yearly aggregate threshold, mode: 'x' = TDS on the amount above the threshold, 'ge' = threshold inclusive,
+// nopan: rate without PAN when not the 206AA default.
+var SEC = [
+  { k: '192', c: '192', n: 'Salary (monthly TDS)' },
+  { k: '192A', c: '192A', n: 'EPF premature withdrawal', r: [10, 10], t: 50000, per: 'per payment' },
+  { k: '193', c: '193', n: 'Interest on securities', r: [10, 10], t: 10000, per: 'a year' },
+  { k: '194', c: '194', n: 'Dividends', r: [10, 10], t: 10000, per: 'a year' },
+  { k: '194A', c: '194A', n: 'Interest on bank / post office deposits', r: [10, 10], t: 50000, per: 'a year (₹1,00,000 for senior citizens)' },
+  { k: '194A-o', c: '194A', n: 'Interest from others', r: [10, 10], t: 10000, per: 'a year' },
+  { k: '194B', c: '194B', n: 'Lottery, game show and puzzle winnings', r: [30, 30], t: 10000, per: 'per transaction' },
+  { k: '194BB', c: '194BB', n: 'Horse race winnings', r: [30, 30], t: 10000, per: 'per transaction' },
+  { k: '194C', c: '194C', n: 'Payments to contractors', r: [1, 2], t: 30000, agg: 100000, per: 'per payment, or ₹1,00,000 in a year' },
+  { k: '194D', c: '194D', n: 'Insurance commission', r: [2, 10], t: 20000, per: 'a year' },
+  { k: '194DA', c: '194DA', n: 'Life insurance payout (income part)', r: [2, 2], t: 100000, per: 'a year' },
+  { k: '194G', c: '194G', n: 'Commission on lottery tickets', r: [2, 2], t: 20000, per: 'a year' },
+  { k: '194H', c: '194H', n: 'Commission or brokerage', r: [2, 2], t: 20000, per: 'a year' },
+  { k: '194I-a', c: '194I', n: 'Rent: plant and machinery', r: [2, 2], t: 50000, per: 'a month' },
+  { k: '194I-b', c: '194I', n: 'Rent: land, building or furniture', r: [10, 10], t: 50000, per: 'a month' },
+  { k: '194IA', c: '194IA', n: 'Purchase of immovable property', r: [1, 1], t: 5000000, mode: 'ge', per: 'or more in property value' },
+  { k: '194IB', c: '194IB', n: 'Rent paid by individuals / HUF not under audit', r: [2, 2], t: 50000, per: 'a month' },
+  { k: '194J-a', c: '194J', n: 'Fees for technical services, call centre, film royalty', r: [2, 2], t: 50000, per: 'a year' },
+  { k: '194J-b', c: '194J', n: 'Professional fees, royalty, non-compete fees', r: [10, 10], t: 50000, per: 'a year' },
+  { k: '194K', c: '194K', n: 'Income from mutual fund units', r: [10, 10], t: 10000, per: 'a year' },
+  { k: '194LA', c: '194LA', n: 'Compensation on compulsory land acquisition', r: [10, 10], t: 500000, per: 'a year' },
+  { k: '194N', c: '194N', n: 'Cash withdrawals above ₹1 crore', r: [2, 2], t: 10000000, mode: 'x', per: 'a year (TDS on the excess)' },
+  { k: '194O', c: '194O', n: 'Payments by e-commerce operators', r: [0.1, 0.1], t: 500000, tOth: 0, nopan: 5, per: 'a year for individual / HUF sellers' },
+  { k: '194Q', c: '194Q', n: 'Purchase of goods', r: [0.1, 0.1], t: 5000000, mode: 'x', nopan: 5, per: 'a year (TDS on the excess)' },
+  { k: '194R', c: '194R', n: 'Business perquisites or benefits', r: [10, 10], t: 20000, per: 'a year' },
+  { k: '194S', c: '194S', n: 'Transfer of crypto / virtual digital assets', r: [1, 1], t: 10000, per: 'a year (₹50,000 for specified persons)' },
+  { k: '194T', c: '194T', n: 'Salary, commission or interest paid to partners', r: [10, 10], t: 20000, per: 'a year' }
+];
+// Search-friendly URL (tds-calculator.html?section=<slug>) and heading for each section.
+var SEO = {
+  '192': ['tds-on-salary', 'TDS on Salary'], '192A': ['tds-on-epf-withdrawal', 'TDS on EPF Withdrawal'],
+  '193': ['tds-on-interest-on-securities', 'TDS on Interest on Securities'], '194': ['tds-on-dividend', 'TDS on Dividend'],
+  '194A': ['tds-on-fd-interest', 'TDS on FD Interest'], '194A-o': ['tds-on-interest-other-than-bank', 'TDS on Interest (Other than Bank)'],
+  '194B': ['tds-on-lottery-winnings', 'TDS on Lottery & Game Show Winnings'], '194BB': ['tds-on-horse-race-winnings', 'TDS on Horse Race Winnings'],
+  '194C': ['tds-on-contractor-payment', 'TDS on Contractor Payment'], '194D': ['tds-on-insurance-commission', 'TDS on Insurance Commission'],
+  '194DA': ['tds-on-life-insurance-payout', 'TDS on Life Insurance Payout'], '194G': ['tds-on-lottery-ticket-commission', 'TDS on Lottery Ticket Commission'],
+  '194H': ['tds-on-commission-brokerage', 'TDS on Commission & Brokerage'], '194I-a': ['tds-on-machinery-rent', 'TDS on Plant & Machinery Rent'],
+  '194I-b': ['tds-on-rent', 'TDS on Rent'], '194IA': ['tds-on-property-purchase', 'TDS on Property Purchase'],
+  '194IB': ['tds-on-rent-paid-by-individuals', 'TDS on Rent Paid by Individuals'], '194J-a': ['tds-on-technical-services', 'TDS on Technical Services'],
+  '194J-b': ['tds-on-professional-fees', 'TDS on Professional Fees'], '194K': ['tds-on-mutual-fund-income', 'TDS on Mutual Fund Income'],
+  '194LA': ['tds-on-land-acquisition-compensation', 'TDS on Land Acquisition Compensation'], '194N': ['tds-on-cash-withdrawal', 'TDS on Cash Withdrawal'],
+  '194O': ['tds-on-ecommerce-payments', 'TDS on E-commerce Payments'], '194Q': ['tds-on-purchase-of-goods', 'TDS on Purchase of Goods'],
+  '194R': ['tds-on-business-perquisites', 'TDS on Business Perquisites'], '194S': ['tds-on-crypto', 'TDS on Crypto (VDA)'],
+  '194T': ['tds-on-partner-salary', 'TDS on Partner Salary & Interest']
+};
+var BY = {};
+SEC.forEach(function (s) { BY[s.k] = s; });
+function rateText(s) { return s.r[0] + '%' + (s.r[1] !== s.r[0] ? ' / ' + s.r[1] + '%' : ''); }
+$('#sec').append(SEC.map(function (s) {
+  var h = SEO[s.k][1];
+  return $('<option>').val(s.k).text(s.c + ' – ' + s.n).attr({
+    'data-slug': SEO[s.k][0], 'data-h1': h + ' Calculator',
+    'data-title': s.r ? h + ' Calculator – Section ' + s.c + ' TDS Rate ' + rateText(s) + ' | FY 2025-26' : 'TDS on Salary Calculator – Monthly TDS u/s 192, New & Old Regime | FY 2025-26',
+    'data-desc': s.r ? 'Free ' + h + ' calculator (section ' + s.c + ': ' + s.n + '). TDS rate ' + rateText(s) + ', threshold ₹' + fmt(s.t, 0) + ' ' + s.per + ', higher rate without PAN, and the net amount to pay. FY 2025-26 / 2026-27.'
+      : 'Free TDS on salary calculator (section 192). Work out monthly TDS from your monthly or annual salary under the new or old tax regime, with standard deduction, 87A rebate and cess. FY 2025-26 / 2026-27.'
+  });
+})).val('194J-b');
+$('#rates').html('<tr><th>Section</th><th>Payment</th><th>Rate</th><th>Threshold</th></tr>' + SEC.slice(1).map(function (s) {
+  return '<tr data-k="' + s.k + '"><td>' + s.c + '</td><td><a href="?section=' + SEO[s.k][0] + '">' + s.n + '</a></td><td>' + rateText(s) + '</td><td>₹' + fmt(s.t, 0) + ' ' + s.per + '</td></tr>';
+}).join('') + '<tr data-k="192"><td>192</td><td><a href="?section=tds-on-salary">Salary</a></td><td>Slab rates</td><td>Above the tax-free limit</td></tr>');
+$('#rates').on('click', 'tr[data-k]', function (e) { if (e.ctrlKey || e.metaKey || e.shiftKey) return; e.preventDefault(); $('#sec').val($(this).data('k')).trigger('change'); $('html, body').animate({ scrollTop: $('#sec').offset().top - 90 }, 300); });
+$('#sec').on('change', function () { var s = BY[this.value]; if (s.t && num('#amt') <= s.t) $('#amt').val(s.t * 2); });
+var m = new Date().getMonth();
+$('#months').val(m >= 3 ? 15 - m : 3 - m); // months left until 31 March, including this one
+
+function stat(v, label) { return '<div class="stat"><b>' + v + '</b><span>' + label + '</span></div>'; }
+
+function calc() {
+  var s = BY[$('#sec').val()], salary = s.k === '192';
+  $('#salBox').toggle(salary); $('#payBox').toggle(!salary);
+  $('#rates tr').removeClass('on').filter('[data-k="' + s.k + '"]').addClass('on');
+  if (salary) {
+    var reg = $('#reg').val(), gross = num('#sgross'), months = Math.min(Math.max(Math.round(num('#months')), 1), 12);
+    var t = indiaTax(gross, reg, { age: $('#age').val(), salaried: true, deductions: reg === 'old' ? num('#sded') : 0 });
+    var left = Math.max(t.total - num('#paid'), 0), monthly = left / months;
+    $('.oldOnly').toggle(reg === 'old');
+    $('#heroLbl').text('Monthly TDS on salary'); $('#tds').text('₹' + fmt(monthly));
+    $('#tdsSub').text('for the remaining ' + months + ' month' + (months > 1 ? 's' : '') + ' of the financial year · ' + (reg === 'new' ? 'new' : 'old') + ' regime');
+    $('#secNote').text('Section 192: your employer deducts your estimated yearly tax in equal monthly parts. Taxable income ₹' + fmt(t.taxable, 0) + (t.rebate ? ', 87A rebate ₹' + fmt(t.rebate, 0) : '') + '.');
+    $('#stats').html(stat('₹' + fmt(t.total), 'Tax for the year (incl. cess)') + stat('₹' + fmt(left), 'TDS still to deduct') + stat('₹' + fmt(gross / 12 - monthly), 'Monthly salary after TDS') + stat(fmt(gross ? t.total / gross * 100 : 0) + '%', 'Effective tax rate'));
+    $('#midLbl').text('Annual salary'); $('#mid').text('₹' + fmt(gross, 0));
+    donut('pie', '#legend', [['Take-home pay', gross - t.total, COLORS[2]], ['Income tax (TDS)', t.total, COLORS[4]]]);
+    return;
+  }
+  var amt = num('#amt'), ind = $('#ptype').val() === 'ind', pan = $('#pan').prop('checked'), base = s.r[ind ? 0 : 1];
+  var thr = s.k === '194A' && $('#senior').prop('checked') ? 100000 : !ind && s.tOth != null ? s.tOth : s.t;
+  var rate = pan ? base : s.nopan || Math.max(base * 2, 20);
+  var applies = s.mode === 'ge' ? amt >= thr : amt > thr || (s.agg && num('#agg') > s.agg);
+  var taxed = s.mode === 'x' ? Math.max(amt - thr, 0) : amt, tds = applies ? taxed * rate / 100 : 0;
+  $('#aggBox').toggle(!!s.agg); $('#srBox').toggle(s.k === '194A'); $('#ptypeBox').toggle(s.r[0] !== s.r[1] || s.tOth != null);
+  $('#heroLbl').text('TDS to deduct'); $('#tds').text('₹' + fmt(tds));
+  $('#tdsSub').text(applies ? fmt(rate, rate < 1 ? 1 : 0) + '% on ₹' + fmt(taxed) + (pan ? '' : ' · higher rate: no PAN (206AA)') : 'No TDS: the payment is within the ₹' + fmt(thr, 0) + ' threshold');
+  $('#secNote').text('Section ' + s.c + ': ' + s.n + '. Threshold ₹' + fmt(thr, 0) + ' ' + s.per + '.');
+  $('#stats').html(stat(fmt(rate, rate < 1 ? 1 : 0) + '%', 'TDS rate applied') + stat('₹' + fmt(thr, 0), 'Threshold') + stat('₹' + fmt(amt - tds), 'Net amount to pay the payee'));
+  $('#midLbl').text('Gross payment'); $('#mid').text('₹' + fmt(amt, 0));
+  donut('pie', '#legend', [['Net paid to payee', amt - tds, COLORS[0]], ['TDS deposited with government', tds, COLORS[1]]]);
+}
+</script>
+</body>
+</html>

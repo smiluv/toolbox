@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Regex Tester – Test JavaScript Regular Expressions Online</title>
+<meta name="description" content="Free online regex tester. Test JavaScript regular expressions with live match highlighting, capture groups, named groups, flags and find-and-replace preview.">
+<meta name="keywords" content="regex tester, regular expression tester, regex online, javascript regex, regex debugger, regex match highlighter, capture groups, regex replace, test regex pattern, regex checker, how to write a regex for email, what does this regex mean, AI regex helper, free online developer tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>#hl{white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Consolas,monospace;font-size:.92rem;min-height:80px}#hl mark{background:#fde047;color:#000;border-radius:3px}</style>
+</head>
+<body>
+<main class="wrap">
+<h1>Regex Tester</h1>
+<p class="lead">Write a regular expression and see matches highlighted live.</p>
+
+<section class="card">
+  <div class="grid" style="grid-template-columns:1fr 120px">
+    <label>Regular expression<input id="re" value="(\w+)@(\w+)\.com" spellcheck="false"></label>
+    <label>Flags<input id="fl" value="gi" spellcheck="false"></label>
+  </div>
+  <label style="margin-top:12px">Test string<textarea id="txt">Contact anna@example.com or bob@test.com for details.
+Support: help@site.org</textarea></label>
+  <p id="info"></p>
+  <div class="result" id="hl"></div>
+  <table class="tbl" id="tbl"></table>
+  <div class="cols2" style="margin-top:16px">
+    <label>Replace with ($1, $2, $&lt;name&gt;)<input id="with" value="[$1 at $2]"></label>
+    <label>Replace result<textarea id="rep" readonly style="min-height:80px"></textarea></label>
+  </div>
+</section>
+
+<section class="about">
+  <h2>Regex quick reference</h2>
+  <p><code>.</code> any character · <code>\d</code> digit · <code>\w</code> word character · <code>\s</code> whitespace · <code>^</code> start · <code>$</code> end · <code>*</code> 0 or more · <code>+</code> 1 or more · <code>?</code> optional · <code>{2,5}</code> range · <code>(…)</code> capture group · <code>(?&lt;name&gt;…)</code> named group · <code>[abc]</code> character set. Flags: g global, i ignore case, m multiline, s dot matches newline, u unicode.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Which regex flavor does this use?</summary><p>It uses your browser's JavaScript (ECMAScript) regex engine, the same one used in Node.js and front-end code.</p></details>
+  <details><summary>What is a simple regex for an email address?</summary><p>A practical pattern is <code>^[^\s@]+@[^\s@]+\.[^\s@]+$</code>. Fully RFC-compliant email regexes are very long and rarely needed.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+function calc() {
+  var p = $('#re').val(), fl = $('#fl').val(), s = $('#txt').val(), re;
+  $('#tbl').empty(); $('#rep').val('');
+  if (!p) { $('#hl').text(s); $('#info').text('Enter a pattern.'); return; }
+  try { re = new RegExp(p, fl.indexOf('g') < 0 ? fl + 'g' : fl); }
+  catch (e) { $('#hl').text(s); $('#info').html('<span class="err">' + esc(e.message) + '</span>'); return; }
+  var ms = [], it = s.matchAll(re), m;
+  while (ms.length < 1000 && !(m = it.next()).done) ms.push(m.value);
+  var html = '', last = 0;
+  ms.forEach(function (m) { if (!m[0].length) return; html += esc(s.slice(last, m.index)) + '<mark>' + esc(m[0]) + '</mark>'; last = m.index + m[0].length; });
+  $('#hl').html(html + esc(s.slice(last)));
+  $('#info').html('<b>' + ms.length + '</b> match' + (ms.length === 1 ? '' : 'es') + (ms.length === 1000 ? ' (showing first 1000)' : ''));
+  if (ms.length) $('#tbl').html('<tr><th>#</th><th>Index</th><th>Match</th><th>Groups</th></tr>' + ms.slice(0, 200).map(function (m, i) {
+    var g = m.slice(1).map(function (v, k) { return '$' + (k + 1) + ': ' + esc(v === undefined ? '' : v); });
+    if (m.groups) Object.keys(m.groups).forEach(function (k) { g.push(esc(k) + ': ' + esc(m.groups[k] || '')); });
+    return '<tr><td>' + (i + 1) + '</td><td>' + m.index + '</td><td><code>' + esc(m[0]) + '</code></td><td>' + g.join('<br>') + '</td></tr>';
+  }).join(''));
+  $('#rep').val(s.replace(new RegExp(p, fl), $('#with').val()));
+}
+</script>
+</body>
+</html>

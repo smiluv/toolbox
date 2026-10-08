@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>URL Encode &amp; Decode – Free Online Percent Encoding Tool</title>
+<meta name="description" content="Free URL encoder and decoder. Percent-encode query strings and URL parameters or decode %20-style URLs back to readable text, with full UTF-8 support.">
+<meta name="keywords" content="url encode, url decode, url encoder, url decoder, percent encoding, encodeURIComponent online, query string encoder, decode url online, %20 decoder, uri encoder, how to encode a url, what does %20 mean in a url, AI developer tool, free online url tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>URL Encoder / Decoder</h1>
+<p class="lead">Percent-encode text for use in URLs, or decode an encoded URL back to plain text.</p>
+
+<section class="card">
+  <label>Input<textarea id="in">https://example.com/search?q=free online tools&amp;lang=ar&amp;city=دبي</textarea></label>
+  <div class="btns">
+    <button class="btn" id="encC">Encode component</button>
+    <button class="btn" id="encU">Encode full URL</button>
+    <button class="btn" id="dec">Decode</button>
+  </div>
+  <label>Output<textarea id="out" readonly></textarea></label>
+  <div class="btns"><span id="st"></span><button class="btn alt" data-copy="#out">Copy output</button></div>
+</section>
+
+<section class="about">
+  <h2>Component vs full URL encoding</h2>
+  <p>"Encode component" escapes every reserved character including / ? &amp; = and is the right choice for a single query parameter value. "Encode full URL" keeps the URL structure intact and only escapes spaces and unsafe characters.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>What does %20 mean in a URL?</summary><p>%20 is the percent-encoded form of a space character. Every unsafe character is written as % followed by its hexadecimal byte value.</p></details>
+  <details><summary>Why do I see + instead of spaces?</summary><p>HTML form submissions encode spaces as +. The decoder converts + back to spaces automatically.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+function run(f) {
+  try { $('#out').val(f($('#in').val())); $('#st').text(''); }
+  catch (e) { $('#out').val(''); $('#st').html('<span class="err">Malformed percent-encoding in the input.</span>'); }
+}
+$('#encC').on('click', function () { run(encodeURIComponent); });
+$('#encU').on('click', function () { run(encodeURI); });
+$('#dec').on('click', function () { run(function (s) { return decodeURIComponent(s.replace(/\+/g, ' ')); }); });
+</script>
+</body>
+</html>

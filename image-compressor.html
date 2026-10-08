@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Image Compressor – Compress JPG, PNG &amp; WebP Online Without Uploading</title>
+<meta name="description" content="Free online image compressor. Reduce JPG, PNG and WebP file size, resize and convert images directly in your browser. Private: your photos are never uploaded to a server.">
+<meta name="keywords" content="image compressor, compress image online, reduce image size, compress jpg, compress png, webp converter, resize image online, photo compressor, image optimizer, reduce file size kb, compress images without uploading, how to reduce image file size, AI image tool, free online image compressor">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>#out{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:16px}#out img{width:100%;height:150px;object-fit:contain;background:var(--card);border-radius:6px}#out p{margin:6px 0;font-size:.88rem;word-break:break-all}</style>
+</head>
+<body>
+<main class="wrap">
+<h1>Image Compressor</h1>
+<p class="lead">Compress and resize images privately in your browser. Nothing is uploaded.</p>
+
+<section class="card">
+  <label>Choose or drop images<input type="file" id="file" accept="image/*" multiple style="padding:20px;border:2px dashed var(--line);border-radius:var(--r)"></label>
+  <div class="grid" style="margin-top:14px">
+    <label>Quality: <span class="v"></span>%<input type="range" id="q" min="10" max="100" value="75"></label>
+    <label>Max width (px, 0 = original)<input id="mw" type="number" value="1920" min="0"></label>
+    <label>Output format<select id="fmt"><option value="image/jpeg">JPG</option><option value="image/webp">WebP</option><option value="image/png">PNG (lossless)</option></select></label>
+  </div>
+  <div id="out"></div>
+</section>
+
+<section class="about">
+  <h2>How image compression works here</h2>
+  <p>Each image is drawn onto an HTML5 canvas, optionally resized, and re-encoded at the quality you choose. JPG and WebP use lossy compression, which can shrink photos by 60–90% with little visible change. PNG ignores the quality slider, so use resizing to make it smaller.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Are my images uploaded anywhere?</summary><p>No. Compression happens entirely on your device, which makes it safe for private photos and documents.</p></details>
+  <details><summary>What quality setting should I use?</summary><p>70–80% is the sweet spot for website photos. Go lower for thumbnails and higher for photos you may print.</p></details>
+  <details><summary>Is camera metadata (EXIF) kept?</summary><p>No. Re-encoding through canvas removes EXIF data such as GPS location, which is good for privacy.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+var files = [], urls = [], run = 0;
+function kb(b) { return b > 1048576 ? fmt(b / 1048576) + ' MB' : fmt(b / 1024, 0) + ' KB'; }
+$('#file').on('change', function () { files = Array.from(this.files); });
+function calc() {
+  var id = ++run, type = $('#fmt').val(), ext = type.split('/')[1].replace('jpeg', 'jpg');
+  urls.forEach(URL.revokeObjectURL); urls = []; $('#out').empty();
+  files.forEach(function (f) {
+    var img = new Image(), src = URL.createObjectURL(f);
+    img.onload = function () {
+      URL.revokeObjectURL(src);
+      if (id !== run) return;
+      var s = Math.min(1, (num('#mw') || img.width) / img.width), c = document.createElement('canvas'), x = c.getContext('2d');
+      c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+      if (type === 'image/jpeg') { x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); }
+      x.drawImage(img, 0, 0, c.width, c.height);
+      c.toBlob(function (b) {
+        if (id !== run || !b) return;
+        var u = URL.createObjectURL(b), name = f.name.replace(/\.[^.]+$/, '') + '-compressed.' + ext, pct = Math.round((1 - b.size / f.size) * 100);
+        urls.push(u);
+        $('#out').append('<div class="stat"><img src="' + u + '" alt=""><p><b>' + esc(name) + '</b></p><p>' + c.width + '×' + c.height + ' · ' + kb(f.size) + ' → <b>' + kb(b.size) + '</b> ' +
+          (pct > 0 ? '<span class="ok">−' + pct + '%</span>' : '<span class="err">larger, keep the original</span>') + '</p><a class="btn" href="' + u + '" download="' + esc(name) + '">Download</a></div>');
+      }, type, num('#q') / 100);
+    };
+    img.src = src;
+  });
+}
+</script>
+</body>
+</html>

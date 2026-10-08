@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>One Rep Max Calculator – 1RM for Bench, Squat &amp; Deadlift</title>
+<meta name="description" content="Free one rep max (1RM) calculator. Estimate your max lift from any weight and reps using Epley, Brzycki and Lombardi formulas, with a percentage chart for training loads.">
+<meta name="keywords" content="one rep max calculator, 1rm calculator, max lift calculator, bench press max calculator, squat max calculator, deadlift 1rm, epley formula, brzycki formula, rep max chart, percentage of 1rm, strength training calculator, how to calculate one rep max, AI fitness calculator, free online gym tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>One Rep Max (1RM) Calculator</h1>
+<p class="lead">Enter a weight and how many clean reps you did to estimate your one rep max.</p>
+
+<section class="card">
+  <div class="grid">
+    <label>Weight lifted<input id="w" type="number" value="100" min="0" step="0.5"></label>
+    <label>Repetitions (1–30)<input id="r" type="number" value="5" min="1" max="30"></label>
+    <label>Unit<select id="u"><option>kg</option><option>lb</option></select></label>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="avg"></b><span>Estimated 1RM (average)</span></div>
+    <div class="stat"><b id="ep"></b><span>Epley</span></div>
+    <div class="stat"><b id="bz"></b><span>Brzycki</span></div>
+    <div class="stat"><b id="lb"></b><span>Lombardi</span></div>
+  </div>
+  <table class="tbl" id="tbl"></table>
+</section>
+
+<section class="about">
+  <h2>1RM formulas</h2>
+  <p>Epley: <code>w × (1 + reps/30)</code> · Brzycki: <code>w × 36 / (37 − reps)</code> · Lombardi: <code>w × reps<sup>0.1</sup></code>. Estimates are most accurate between 2 and 10 reps. The chart shows typical training weights and the reps you can usually perform at each percentage.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Is it safe to test a true one rep max?</summary><p>Testing a true max carries injury risk, especially for beginners. Estimating it from a 3–8 rep set is safer and accurate enough for programming.</p></details>
+  <details><summary>What percentage of 1RM should I train at?</summary><p>Roughly 85–100% for maximal strength, 65–85% for muscle growth and below 65% for endurance and technique work.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+var CHART = [[100, 1], [95, 2], [90, 4], [85, 6], [80, 8], [75, 10], [70, 12], [65, 16], [60, 20], [55, 24], [50, 30]];
+function calc() {
+  var w = num('#w'), r = Math.min(Math.max(1, Math.round(num('#r'))), 30), u = ' ' + $('#u').val();
+  var ep = r === 1 ? w : w * (1 + r / 30), bz = r === 1 ? w : w * 36 / (37 - r), lb = w * Math.pow(r, 0.1), avg = (ep + bz + lb) / 3;
+  $('#avg').text(fmt(avg, 1) + u); $('#ep').text(fmt(ep, 1) + u); $('#bz').text(fmt(bz, 1) + u); $('#lb').text(fmt(lb, 1) + u);
+  $('#tbl').html('<tr><th>% of 1RM</th><th>Weight</th><th>Typical reps</th></tr>' + CHART.map(function (c) { return '<tr><td>' + c[0] + '%</td><td><b>' + fmt(avg * c[0] / 100, 1) + u + '</b></td><td>' + c[1] + '</td></tr>'; }).join(''));
+}
+</script>
+</body>
+</html>

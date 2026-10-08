@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mortgage Payoff Calculator – Extra Payment &amp; Early Payoff Calculator</title>
+<meta name="description" content="Free mortgage payoff calculator. See your monthly payment and how much interest and time you save by making extra monthly payments on your home loan.">
+<meta name="keywords" content="mortgage payoff calculator, early mortgage payoff, extra payment calculator, mortgage calculator, home loan calculator, mortgage interest saved, pay off mortgage faster, how much interest will I save paying extra on my mortgage, when will my mortgage be paid off, AI mortgage calculator, free online loan payoff tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Mortgage Payoff Calculator</h1>
+<p class="lead">Find your monthly mortgage payment and see how extra payments shorten your loan and cut total interest.</p>
+
+<div class="panes">
+<section class="card">
+  <h2 class="ct">Your mortgage</h2>
+  <label class="f">Loan balance<input id="L" type="number" value="300000" min="0"></label>
+  <label class="f">Interest rate (%)<input id="r" type="number" value="6.5" step="0.01" min="0"></label>
+  <div class="f">
+    <label>Remaining term: <span class="v"></span> years<input type="range" id="t" min="1" max="40" value="30"></label>
+    <div data-term="#t"><button class="btn alt" data-v="10">10 yrs</button><button class="btn alt" data-v="15">15 yrs</button><button class="btn alt" data-v="20">20 yrs</button><button class="btn alt" data-v="25">25 yrs</button><button class="btn alt" data-v="30">30 yrs</button></div>
+  </div>
+  <label>Extra monthly payment<input id="x" type="number" value="200" min="0"></label>
+  <div data-term="#x"><button class="btn alt" data-v="0">None</button><button class="btn alt" data-v="100">100</button><button class="btn alt" data-v="200">200</button><button class="btn alt" data-v="500">500</button><button class="btn alt" data-v="1000">1,000</button></div>
+</section>
+
+<section class="card">
+  <div class="hero"><small>Monthly payment (principal + interest)</small><b id="pay"></b><small id="paySub"></small><div class="save" id="save"></div></div>
+  <div class="stats">
+    <div class="stat"><b id="when"></b><span>Payoff date with extra payments</span></div>
+    <div class="stat"><b id="saved"></b><span>Interest saved</span></div>
+    <div class="stat"><b id="time"></b><span>Time saved</span></div>
+  </div>
+  <h3>Total interest</h3>
+  <div id="cmp"></div>
+</section>
+</div>
+
+<section class="card">
+  <h2 class="ct">Balance over time</h2>
+  <div class="chart"><canvas id="bars" aria-label="Yearly principal, interest and balance with and without extra payments"></canvas></div>
+  <table class="tbl" id="tbl"></table>
+</section>
+
+<section class="about">
+  <h2>How the payoff is calculated</h2>
+  <p>The regular payment uses the standard amortization formula <code>M = L·i / (1 − (1 + i)<sup>−N</sup>)</code> with monthly rate i and N months. The calculator then simulates the loan month by month with and without your extra payment, applying every extra dollar directly to principal.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Is it worth paying extra on a mortgage?</summary><p>Extra payments reduce principal early, which lowers the interest charged in every later month. Even small extra amounts can save years of payments and a large amount of interest.</p></details>
+  <details><summary>Does this include taxes and insurance?</summary><p>No. The payment shown is principal and interest only. Property tax, insurance and PMI are added on top by most lenders.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+function calc() {
+  var L = num('#L'), i = num('#r') / 1200, N = Math.round(num('#t') * 12), extra = num('#x');
+  if (!L || !N) return;
+  var M = emiFor(L, i, N), a = amortize(L, i, M), b = amortize(L, i, M + extra), ai = sum(a, 1), bi = sum(b, 1);
+  var d = new Date(); d.setMonth(d.getMonth() + b.length);
+  $('#pay').text(fmt(M)); $('#paySub').text(extra > 0 ? 'You pay ' + fmt(M + extra) + ' a month including the extra' : 'Add an extra monthly payment to see your savings');
+  $('#save').html(extra > 0 ? 'Saves <b>' + fmt(ai - bi) + '</b> in interest and you are mortgage-free <b>' + (dur(a.length - b.length) || 'less than a month') + '</b> sooner.' : '');
+  $('#when').text(d.toLocaleDateString(undefined, { year: 'numeric', month: 'long' }));
+  $('#saved').text(fmt(ai - bi)); $('#time').text(dur(a.length - b.length) || '—');
+  compareBars('#cmp', [['Without extra payments', fmt(ai) + ' · ' + dur(a.length), ai, COLORS[1]], ['With ' + fmt(extra) + ' extra a month', fmt(bi) + ' · ' + dur(b.length), bi, COLORS[2]]], 1);
+  $('#tbl').html('<tr><th></th><th>Without extra</th><th>With extra</th></tr>' +
+    '<tr><td>Monthly payment</td><td>' + fmt(M) + '</td><td>' + fmt(M + extra) + '</td></tr>' +
+    '<tr><td>Payoff time</td><td>' + dur(a.length) + '</td><td>' + dur(b.length) + '</td></tr>' +
+    '<tr><td>Total interest</td><td>' + fmt(ai) + '</td><td>' + fmt(bi) + '</td></tr>' +
+    '<tr><td>Total paid</td><td>' + fmt(L + ai) + '</td><td>' + fmt(L + bi) + '</td></tr>');
+  amortChart('bars', b, extra > 0 ? a : null);
+}
+</script>
+</body>
+</html>

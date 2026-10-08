@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alphabetize List – Sort Text A-Z, Z-A, Numeric or by Length</title>
+<meta name="description" content="Free text alphabetizer. Sort lines, comma-separated lists or words alphabetically A to Z, Z to A, naturally by number, by length, reverse or shuffle them randomly.">
+<meta name="keywords" content="alphabetize list, alphabetical order tool, sort lines, sort text online, a to z sorter, sort list alphabetically, natural sort, sort by length, shuffle list, reverse list, how to put a list in alphabetical order, AI list sorter, free online text tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Text Alphabetizer &amp; List Sorter</h1>
+<p class="lead">Put any list in alphabetical order or sort it the way you need.</p>
+
+<section class="card">
+  <div class="grid">
+    <label>Sort order
+      <select id="order">
+        <option value="az">A → Z</option><option value="za">Z → A</option><option value="natural">Natural (item2 before item10)</option>
+        <option value="len">Shortest first</option><option value="lend">Longest first</option><option value="rev">Reverse current order</option><option value="shuffle">Shuffle randomly</option>
+      </select>
+    </label>
+    <label>Items separated by
+      <select id="sep"><option value="line">New lines</option><option value="comma">Commas</option><option value="space">Spaces</option></select>
+    </label>
+  </div>
+  <div class="btns">
+    <label class="inline"><input type="checkbox" id="ci" checked> Ignore case</label>
+    <label class="inline"><input type="checkbox" id="ne" checked> Trim and remove empty items</label>
+  </div>
+  <div class="cols2">
+    <label>Input<textarea id="in">banana
+Cherry
+apple
+item10
+item2
+date</textarea></label>
+    <label>Sorted<textarea id="out" readonly></textarea></label>
+  </div>
+  <div class="btns"><button class="btn" data-copy="#out">Copy result</button></div>
+</section>
+
+<section class="about">
+  <h2>Sorting options explained</h2>
+  <p>A → Z uses language-aware alphabetical order. Natural sort treats numbers as numbers, so "item2" comes before "item10". Shuffle uses a cryptographically secure random generator.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>How do I alphabetize a comma-separated list?</summary><p>Choose "Commas" as the separator. The result is returned as a comma-separated list in sorted order.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+var SEP = { line: [/\r?\n/, '\n'], comma: [/,/, ', '], space: [/\s+/, ' '] };
+function calc() {
+  var o = $('#order').val(), sep = SEP[$('#sep').val()], ci = $('#ci').prop('checked'), a = $('#in').val().split(sep[0]);
+  if ($('#ne').prop('checked')) a = a.map(function (s) { return s.trim(); }).filter(Boolean);
+  var cmp = function (x, y) { return x.localeCompare(y, undefined, { numeric: o === 'natural', sensitivity: ci ? 'base' : 'variant' }); };
+  if (o === 'az' || o === 'natural') a.sort(cmp);
+  else if (o === 'za') a.sort(function (x, y) { return cmp(y, x); });
+  else if (o === 'len') a.sort(function (x, y) { return x.length - y.length || cmp(x, y); });
+  else if (o === 'lend') a.sort(function (x, y) { return y.length - x.length || cmp(x, y); });
+  else if (o === 'rev') a.reverse();
+  else for (var i = a.length - 1; i > 0; i--) { var j = randInt(0, i), t = a[i]; a[i] = a[j]; a[j] = t; }
+  $('#out').val(a.join(sep[1]));
+}
+</script>
+</body>
+</html>

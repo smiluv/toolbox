@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Time Zone Converter – Compare World Times &amp; Plan Meetings</title>
+<meta name="description" content="Free time zone converter. Convert a date and time between any world time zones with automatic daylight saving time. Compare Dubai, London, New York, India, Tokyo and more.">
+<meta name="keywords" content="time zone converter, world clock, time difference calculator, meeting planner, timezone conversion, UTC converter, GMT converter, EST to IST, PST to GMT, Dubai time to London time, what time is it in New York, convert time between time zones, AI time zone tool, free online world time converter">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Time Zone Converter</h1>
+<p class="lead">Pick a date, time and time zone to see the matching time around the world.</p>
+
+<section class="card">
+  <div class="grid">
+    <label>Date &amp; time<input id="dt" type="datetime-local"></label>
+    <label>In time zone<select id="from"></select></label>
+    <label>Add a time zone<select id="add"></select></label>
+  </div>
+  <div class="btns"><button class="btn alt" id="now">Use current time</button></div>
+  <table class="tbl" id="tbl"></table>
+</section>
+
+<section class="about">
+  <h2>How it works</h2>
+  <p>The converter uses the official IANA time zone database built into your browser, so daylight saving time changes are applied automatically for the selected date. Your list of time zones is remembered on this device.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>What is the difference between UTC and GMT?</summary><p>For everyday use they are the same time. UTC is the precise atomic time standard; GMT is the time zone used by the UK in winter.</p></details>
+  <details><summary>Does this handle daylight saving time?</summary><p>Yes. Offsets are calculated for the exact date you choose, including DST start and end dates in every region.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+var ZONES = Intl.supportedValuesOf ? Intl.supportedValuesOf('timeZone') : ['America/New_York', 'Europe/London', 'Asia/Dubai', 'Asia/Kolkata', 'Asia/Tokyo', 'Australia/Sydney'];
+if (ZONES.indexOf('UTC') < 0) ZONES = ['UTC'].concat(ZONES);
+var local = Intl.DateTimeFormat().resolvedOptions().timeZone;
+if (ZONES.indexOf(local) < 0) ZONES.push(local);
+var list = JSON.parse(localStorage.getItem('tz-list') || 'null') || ['UTC', 'America/New_York', 'Europe/London', 'Asia/Dubai', 'Asia/Kolkata', 'Asia/Singapore', 'Asia/Tokyo', 'Australia/Sydney'];
+var opts = ZONES.map(function (z) { return '<option>' + z + '</option>'; }).join('');
+$('#from').html(opts).val(local);
+$('#add').html('<option value="">— choose —</option>' + opts);
+
+function offset(tz, t) {
+  var p = {};
+  new Intl.DateTimeFormat('en-US', { timeZone: tz, hourCycle: 'h23', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
+    .formatToParts(new Date(t)).forEach(function (x) { p[x.type] = x.value; });
+  return Date.UTC(p.year, p.month - 1, p.day, p.hour, p.minute, p.second) - Math.floor(t / 1000) * 1000;
+}
+function off(ms) { var m = Math.round(ms / 60000), a = Math.abs(m); return 'UTC' + (m < 0 ? '−' : '+') + pad(Math.floor(a / 60)) + ':' + pad(a % 60); }
+function setNow() { var d = new Date(); $('#dt').val(d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes())); $('#from').val(local); }
+setNow();
+
+function calc() {
+  var v = $('#dt').val(); if (!v) return;
+  var d = v.split('T')[0].split('-').map(Number), tm = v.split('T')[1].split(':').map(Number), from = $('#from').val();
+  var wall = Date.UTC(d[0], d[1] - 1, d[2], tm[0], tm[1]), t = wall - offset(from, wall);
+  t = wall - offset(from, t);
+  $('#tbl').html('<tr><th>Time zone</th><th>Local time</th><th>Offset</th><th></th></tr>' + list.map(function (z, i) {
+    return '<tr><td>' + esc(z.replace(/_/g, ' ')) + '</td><td><b>' + new Date(t).toLocaleString(undefined, { timeZone: z, weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) +
+      '</b></td><td>' + off(offset(z, t)) + '</td><td><button class="btn alt rm" data-i="' + i + '" aria-label="Remove">&times;</button></td></tr>';
+  }).join(''));
+}
+function save() { localStorage.setItem('tz-list', JSON.stringify(list)); calc(); }
+$('#add').on('change', function () { if (this.value && list.indexOf(this.value) < 0) { list.push(this.value); save(); } this.value = ''; });
+$('#tbl').on('click', '.rm', function () { list.splice($(this).data('i'), 1); save(); });
+$('#now').on('click', function () { setNow(); calc(); });
+</script>
+</body>
+</html>

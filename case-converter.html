@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case Converter – UPPER, lower, Title Case, camelCase, snake_case</title>
+<meta name="description" content="Free online case converter. Convert text to UPPERCASE, lowercase, Title Case, Sentence case, camelCase, PascalCase, snake_case, kebab-case and CONSTANT_CASE instantly.">
+<meta name="keywords" content="case converter, text case converter, uppercase converter, lowercase converter, title case converter, sentence case, camelCase converter, snake_case converter, kebab-case, PascalCase, change text case online, how to convert text to uppercase, AI text formatter, free online text tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Case Converter</h1>
+<p class="lead">Paste your text and click a button to change its case. Each line is converted separately.</p>
+
+<section class="card">
+  <textarea id="txt" placeholder="Type or paste text here…">the quick brown fox jumps over the lazy dog</textarea>
+  <div class="btns">
+    <button class="btn alt" data-f="upper">UPPER CASE</button>
+    <button class="btn alt" data-f="lower">lower case</button>
+    <button class="btn alt" data-f="title">Title Case</button>
+    <button class="btn alt" data-f="sentence">Sentence case</button>
+    <button class="btn alt" data-f="camel">camelCase</button>
+    <button class="btn alt" data-f="pascal">PascalCase</button>
+    <button class="btn alt" data-f="snake">snake_case</button>
+    <button class="btn alt" data-f="kebab">kebab-case</button>
+    <button class="btn alt" data-f="constant">CONSTANT_CASE</button>
+    <button class="btn alt" data-f="alternate">aLtErNaTiNg</button>
+    <button class="btn alt" data-f="invert">iNVERT cASE</button>
+    <button class="btn" data-copy="#txt">Copy text</button>
+  </div>
+</section>
+
+<section class="about">
+  <h2>When to use each case</h2>
+  <p>Title Case is used for headlines, Sentence case for normal text, camelCase and PascalCase for JavaScript and C# names, snake_case for Python and databases, kebab-case for URLs and CSS classes, and CONSTANT_CASE for constants.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>What is the difference between camelCase and PascalCase?</summary><p>camelCase starts with a lowercase letter (myVariableName); PascalCase starts with a capital (MyVariableName).</p></details>
+  <details><summary>Does it work with accented and non-English letters?</summary><p>Yes. The converter uses Unicode-aware rules, so letters like é, ü and ç are handled correctly.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+var words = function (s) { return s.replace(/([\p{Ll}\p{N}])(\p{Lu})/gu, '$1 $2').split(/[^\p{L}\p{N}]+/u).filter(Boolean); };
+var cap = function (w) { return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase(); };
+var join = function (sep, up) { return function (s) { return words(s).map(function (w) { return up ? w.toUpperCase() : w.toLowerCase(); }).join(sep); }; };
+var F = {
+  upper: function (s) { return s.toUpperCase(); },
+  lower: function (s) { return s.toLowerCase(); },
+  title: function (s) { return s.toLowerCase().replace(/(^|[\s\-("'\/])(\p{L})/gu, function (m, a, b) { return a + b.toUpperCase(); }); },
+  sentence: function (s) { return s.toLowerCase().replace(/(^\s*|[.!?]\s+)(\p{L})/gu, function (m, a, b) { return a + b.toUpperCase(); }); },
+  camel: function (s) { return words(s).map(function (w, i) { return i ? cap(w) : w.toLowerCase(); }).join(''); },
+  pascal: function (s) { return words(s).map(cap).join(''); },
+  snake: join('_'), kebab: join('-'), constant: join('_', true),
+  alternate: function (s) { return s.split('').map(function (c, i) { return i % 2 ? c.toUpperCase() : c.toLowerCase(); }).join(''); },
+  invert: function (s) { return s.split('').map(function (c) { return c === c.toUpperCase() ? c.toLowerCase() : c.toUpperCase(); }).join(''); }
+};
+$('[data-f]').on('click', function () { var f = F[$(this).data('f')]; $('#txt').val($('#txt').val().split('\n').map(f).join('\n')); });
+</script>
+</body>
+</html>

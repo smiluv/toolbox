@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bill Splitter – Split a Restaurant Bill Fairly Between Friends</title>
+<meta name="description" content="Free bill splitter for groups. Split shared items evenly and personal items fairly, with tax and tip added proportionally. Perfect for restaurants, trips and roommates.">
+<meta name="keywords" content="bill splitter, split the bill calculator, group bill calculator, restaurant bill split, split check, split expenses with friends, roommate expense splitter, how to split a bill fairly, who owes what, AI bill splitting tool, free online bill split app">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>.person{align-items:end;margin-bottom:10px}</style>
+</head>
+<body>
+<main class="wrap">
+<h1>Bill Splitter for Groups</h1>
+<p class="lead">Split shared items evenly, add what each person ordered, and tax and tip are shared proportionally.</p>
+
+<section class="card">
+  <div class="grid">
+    <label>Shared items (split evenly)<input id="shared" type="number" value="40" min="0" step="0.01"></label>
+    <label>Tax (%)<input id="tax" type="number" value="5" min="0" step="0.1"></label>
+    <label>Tip / service (%)<input id="tip" type="number" value="10" min="0" step="0.5"></label>
+  </div>
+  <h3>People and their own items</h3>
+  <div id="people"></div>
+  <div class="btns"><button class="btn alt" id="add">+ Add person</button></div>
+  <table class="tbl" id="tbl"></table>
+</section>
+
+<section class="card">
+  <h2 class="ct">Who pays what</h2>
+  <div class="donut-wrap" style="margin-top:0">
+    <div class="donut"><canvas id="pie" aria-label="Each person's share of the bill"></canvas><div class="mid"><span>Total bill</span><b id="mid"></b></div></div>
+    <ul class="legend" id="legend"></ul>
+  </div>
+</section>
+
+<section class="about">
+  <h2>How the split works</h2>
+  <p>Shared items are divided equally between everyone. Each person's own items are added to their share, then tax and tip are applied to that subtotal, so people who ordered more also pay more tax and tip. For a simple even split, enter the whole bill as shared items and leave personal items at zero.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>What is the fairest way to split a bill?</summary><p>Splitting by what each person ordered, with shared dishes divided evenly and tax and tip in proportion, is generally considered the fairest method.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+function addPerson(name, amt) {
+  $('#people').append('<div class="grid person"><label>Name<input class="nm" value="' + esc(name) + '"></label>' +
+    '<label>Own items<input class="amt" type="number" min="0" step="0.01" value="' + amt + '"></label><button class="btn alt rm">Remove</button></div>');
+}
+[['Alex', 25], ['Sam', 18], ['Jordan', 32]].forEach(function (p) { addPerson(p[0], p[1]); });
+$('#add').on('click', function () { addPerson('Person ' + ($('.person').length + 1), 0); calc(); });
+$('#people').on('click', '.rm', function () { $(this).closest('.person').remove(); calc(); });
+function calc() {
+  var rows = $('.person'), share = num('#shared') / (rows.length || 1), mult = 1 + (num('#tax') + num('#tip')) / 100, total = 0;
+  var html = '<tr><th>Person</th><th>Subtotal</th><th>Tax + tip</th><th>Pays</th></tr>', parts = [];
+  rows.each(function (k) {
+    var sub = (parseFloat($(this).find('.amt').val()) || 0) + share, pay = sub * mult;
+    total += pay;
+    parts.push([$(this).find('.nm').val() || 'Person ' + (k + 1), pay, COLORS[k % COLORS.length]]);
+    html += '<tr><td>' + esc($(this).find('.nm').val()) + '</td><td>' + fmt(sub) + '</td><td>' + fmt(pay - sub) + '</td><td><b>' + fmt(pay) + '</b></td></tr>';
+  });
+  $('#tbl').html(html + '<tr><th>Total</th><th></th><th></th><th>' + fmt(total) + '</th></tr>');
+  $('#mid').text(fmt(total)); donut('pie', '#legend', parts);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+# FreeToolBox
+
+> 59 free, private, browser-based tools: financial calculators, unit converters, developer and text utilities, CSS generators, security tools, health calculators, timers and media tools. Everything runs client-side; no sign-up and no data is uploaded. Replace YOUR-DOMAIN.com with the real domain.
+
+## Tool collections (category home pages)
+- [Finance & Tax Calculators](https://YOUR-DOMAIN.com/finance-calculators.html): India income tax, TDS, GST and GST invoices; loans and mortgages; investing; everyday money
+- [Text & Code Tools](https://YOUR-DOMAIN.com/text-code-tools.html): text counters and cleaners; JSON, Markdown, Base64, URL and regex developer tools
+- [CSS Generators & Security Tools](https://YOUR-DOMAIN.com/css-security-tools.html): visual CSS generators; password, UUID and hash generators
+- [Converters & Generators](https://YOUR-DOMAIN.com/converters-generators.html): unit, time zone and colour converters; QR codes, barcodes, placeholders; random pickers
+- [Health & Time Tools](https://YOUR-DOMAIN.com/health-time-tools.html): BMI, calories, fitness and pregnancy calculators; timers and date calculators
+- [Media Tools](https://YOUR-DOMAIN.com/media-tools.html): image compressor, whiteboard, metronome, white noise
+
+## Financial & Math Calculators
+- [Compound Interest Calculator](https://YOUR-DOMAIN.com/compound-interest-calculator.html): savings growth with monthly contributions and any compounding frequency
+- [Home Loan Calculator](https://YOUR-DOMAIN.com/home-loan-calculator.html): bank-style home loan EMI with compound (reducing balance) or fixed flat-rate interest, APR, interactive charts and monthly/yearly amortization schedule
+- [Mortgage Payoff Calculator](https://YOUR-DOMAIN.com/mortgage-payoff-calculator.html): monthly payment, interest and time saved with extra payments
+- [Auto Loan Calculator](https://YOUR-DOMAIN.com/auto-loan-calculator.html): car payment including down payment, trade-in and sales tax
+- [IRR Calculator](https://YOUR-DOMAIN.com/irr-calculator.html): internal rate of return, NPV and payback period from cash flows
+- [ROI Calculator](https://YOUR-DOMAIN.com/roi-calculator.html): total and annualized return on investment (CAGR)
+- [Salary to Hourly Converter](https://YOUR-DOMAIN.com/salary-to-hourly-calculator.html): convert pay between hourly, weekly, monthly and yearly
+- [Income Tax Calculator](https://YOUR-DOMAIN.com/income-tax-calculator.html): India new vs old tax regime comparison (standard deduction, 80C/80D/HRA, 87A rebate, surcharge, cess), plus US federal, UK or custom brackets
+- [TDS Calculator (India)](https://YOUR-DOMAIN.com/tds-calculator.html): monthly TDS on salary under new or old regime, TDS on rent, professional fees, contractors, interest, property purchase, with thresholds, no-PAN rates and a TDS rate chart
+  - Direct links (the calculator opens on that item): [new tax regime](https://YOUR-DOMAIN.com/income-tax-calculator.html?regime=new-tax-regime), [old tax regime](https://YOUR-DOMAIN.com/income-tax-calculator.html?regime=old-tax-regime), [US federal tax](https://YOUR-DOMAIN.com/income-tax-calculator.html?regime=us-federal-single), [UK income tax](https://YOUR-DOMAIN.com/income-tax-calculator.html?regime=uk), [TDS on salary](https://YOUR-DOMAIN.com/tds-calculator.html?section=tds-on-salary), [TDS on rent](https://YOUR-DOMAIN.com/tds-calculator.html?section=tds-on-rent), [TDS on professional fees 194J](https://YOUR-DOMAIN.com/tds-calculator.html?section=tds-on-professional-fees), [TDS on contractor payment 194C](https://YOUR-DOMAIN.com/tds-calculator.html?section=tds-on-contractor-payment), [TDS on property purchase 194IA](https://YOUR-DOMAIN.com/tds-calculator.html?section=tds-on-property-purchase), [TDS on FD interest 194A](https://YOUR-DOMAIN.com/tds-calculator.html?section=tds-on-fd-interest), [TDS on commission 194H](https://YOUR-DOMAIN.com/tds-calculator.html?section=tds-on-commission-brokerage), [TDS on purchase of goods 194Q](https://YOUR-DOMAIN.com/tds-calculator.html?section=tds-on-purchase-of-goods), [TDS on crypto 194S](https://YOUR-DOMAIN.com/tds-calculator.html?section=tds-on-crypto). Any section also works by code, e.g. tds-calculator.html?section=194IA
+- [GST Calculator (India)](https://YOUR-DOMAIN.com/gst-calculator.html): add GST to a price or remove GST from an inclusive amount (reverse GST), CGST + SGST or IGST split, new GST 2.0 rates 5%, 18%, 40% plus 0.25%, 3% and old 12%/28% slabs. Direct links: [18% GST](https://YOUR-DOMAIN.com/gst-calculator.html?rate=gst-18-percent), [5% GST](https://YOUR-DOMAIN.com/gst-calculator.html?rate=gst-5-percent), [40% GST](https://YOUR-DOMAIN.com/gst-calculator.html?rate=gst-40-percent), [3% GST](https://YOUR-DOMAIN.com/gst-calculator.html?rate=gst-3-percent), [12% GST](https://YOUR-DOMAIN.com/gst-calculator.html?rate=gst-12-percent), [28% GST](https://YOUR-DOMAIN.com/gst-calculator.html?rate=gst-28-percent)
+- [GST Invoice / Bill Generator](https://YOUR-DOMAIN.com/gst-invoice-generator.html): free GST tax invoice maker for India with GSTIN check, HSN/SAC, CGST + SGST/UTGST or IGST chosen from the states, reverse charge, amount in words (lakh/crore), UPI payment QR code, print or save as PDF; details stay in the browser. Direct links: [tax invoice](https://YOUR-DOMAIN.com/gst-invoice-generator.html?type=tax-invoice), [bill of supply](https://YOUR-DOMAIN.com/gst-invoice-generator.html?type=bill-of-supply), [proforma invoice](https://YOUR-DOMAIN.com/gst-invoice-generator.html?type=proforma-invoice), [quotation](https://YOUR-DOMAIN.com/gst-invoice-generator.html?type=quotation)
+- [Currency Converter](https://YOUR-DOMAIN.com/currency-converter.html): 160+ currencies with daily exchange rates
+- [Tip Calculator](https://YOUR-DOMAIN.com/tip-calculator.html): tip amount and per-person split
+- [Bill Splitter](https://YOUR-DOMAIN.com/bill-splitter.html): split shared and personal items with proportional tax and tip
+- [Percentage Calculator](https://YOUR-DOMAIN.com/percentage-calculator.html): X% of Y, percent of, percent change, reverse percentage
+- [Discount Calculator](https://YOUR-DOMAIN.com/discount-calculator.html): sale price with stacked discounts and tax
+
+## Text & Code Tools
+- [Word Counter](https://YOUR-DOMAIN.com/word-counter.html): words, characters, sentences, reading time, keyword density
+- [Case Converter](https://YOUR-DOMAIN.com/case-converter.html): UPPER, lower, Title, Sentence, camelCase, PascalCase, snake_case, kebab-case
+- [Duplicate Line Remover](https://YOUR-DOMAIN.com/duplicate-line-remover.html): remove repeated lines keeping order
+- [Text Alphabetizer](https://YOUR-DOMAIN.com/text-alphabetizer.html): sort lines or lists A-Z, Z-A, natural, by length, shuffle
+- [JSON Formatter & Validator](https://YOUR-DOMAIN.com/json-formatter.html): beautify, minify, sort keys and validate JSON
+- [Markdown to HTML](https://YOUR-DOMAIN.com/markdown-to-html.html): live Markdown preview and HTML output
+- [Base64 Encoder / Decoder](https://YOUR-DOMAIN.com/base64-encoder-decoder.html): UTF-8 and URL-safe Base64
+- [URL Encoder / Decoder](https://YOUR-DOMAIN.com/url-encoder-decoder.html): percent-encoding for URLs and query strings
+- [Regex Tester](https://YOUR-DOMAIN.com/regex-tester.html): JavaScript regex with highlighting, groups and replace
+
+## CSS Generators & Security
+- [Box Shadow Generator](https://YOUR-DOMAIN.com/box-shadow-generator.html): visual CSS box-shadow editor
+- [CSS Gradient Generator](https://YOUR-DOMAIN.com/css-gradient-generator.html): linear, radial and conic gradients
+- [Border Radius Generator](https://YOUR-DOMAIN.com/border-radius-generator.html): rounded corners and shapes
+- [CSS Animation Generator](https://YOUR-DOMAIN.com/css-animation-generator.html): @keyframes builder with presets
+- [Password Generator](https://YOUR-DOMAIN.com/password-generator.html): cryptographically secure random passwords
+- [UUID Generator](https://YOUR-DOMAIN.com/uuid-generator.html): bulk random UUID v4 / GUID
+- [Hash Generator](https://YOUR-DOMAIN.com/hash-generator.html): MD5, SHA-1, SHA-256, SHA-384, SHA-512
+
+## Converters & Generators
+- [Length Converter](https://YOUR-DOMAIN.com/length-converter.html): metric and imperial lengths
+- [Weight Converter](https://YOUR-DOMAIN.com/weight-converter.html): kg, lb, oz, stone, tons
+- [Temperature Converter](https://YOUR-DOMAIN.com/temperature-converter.html): Celsius, Fahrenheit, Kelvin, Rankine
+- [Volume Converter](https://YOUR-DOMAIN.com/volume-converter.html): liters, gallons, cups, ml, fl oz
+- [Speed Converter](https://YOUR-DOMAIN.com/speed-converter.html): km/h, mph, knots, m/s, Mach
+- [Time Zone Converter](https://YOUR-DOMAIN.com/time-zone-converter.html): world times with daylight saving
+- [Color Converter](https://YOUR-DOMAIN.com/color-converter.html): HEX, RGB, HSL, CMYK
+- [QR Code Generator](https://YOUR-DOMAIN.com/qr-code-generator.html): custom-color QR codes, PNG download
+- [Barcode Generator](https://YOUR-DOMAIN.com/barcode-generator.html): Code 128, EAN-13, UPC-A, Code 39, ITF-14
+- [Placeholder Image Generator](https://YOUR-DOMAIN.com/placeholder-image-generator.html): dummy image URLs
+- [Lorem Ipsum Generator](https://YOUR-DOMAIN.com/lorem-ipsum-generator.html): placeholder text
+- [Random Name Picker Wheel](https://YOUR-DOMAIN.com/random-name-picker.html): spin-the-wheel winner picker
+- [Dice Roller](https://YOUR-DOMAIN.com/dice-roller.html): d4 to d100 with modifiers
+- [Random Number Generator](https://YOUR-DOMAIN.com/random-number-generator.html): unique random integers in any range
+
+## Health & Time
+- [BMI Calculator](https://YOUR-DOMAIN.com/bmi-calculator.html): body mass index and healthy weight range
+- [BMR & Calorie Calculator](https://YOUR-DOMAIN.com/bmr-calorie-calculator.html): BMR, TDEE and calorie targets
+- [One Rep Max Calculator](https://YOUR-DOMAIN.com/one-rep-max-calculator.html): 1RM estimates and percentage chart
+- [Running Pace Calculator](https://YOUR-DOMAIN.com/running-pace-calculator.html): pace, finish time, distance, race predictions
+- [Pomodoro Timer](https://YOUR-DOMAIN.com/pomodoro-timer.html): focus sessions with breaks
+- [Online Stopwatch](https://YOUR-DOMAIN.com/online-stopwatch.html): stopwatch with laps
+- [Countdown Timer](https://YOUR-DOMAIN.com/countdown-timer.html): shareable countdown to a date
+- [Days Between Dates](https://YOUR-DOMAIN.com/days-between-dates-calculator.html): days, weeks, months, business days; add/subtract days
+- [Pregnancy Due Date Calculator](https://YOUR-DOMAIN.com/pregnancy-due-date-calculator.html): due date from LMP, conception or IVF
+
+## Media Tools
+- [Image Compressor](https://YOUR-DOMAIN.com/image-compressor.html): compress and resize JPG, PNG, WebP locally
+- [Online Whiteboard](https://YOUR-DOMAIN.com/online-whiteboard.html): drawing pad with PNG export
+- [Online Metronome](https://YOUR-DOMAIN.com/online-metronome.html): accurate BPM metronome with tap tempo
+- [White Noise & Tone Generator](https://YOUR-DOMAIN.com/white-noise-generator.html): white, pink, brown noise and 20 Hz-20 kHz tones

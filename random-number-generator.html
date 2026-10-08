@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Random Number Generator – Pick Random Numbers in Any Range</title>
+<meta name="description" content="Free random number generator. Pick one or many random integers between any minimum and maximum, with optional unique (no repeats) and sorted results. Cryptographically secure.">
+<meta name="keywords" content="random number generator, rng, random number picker, pick a random number, random integer generator, lottery number generator, unique random numbers, random number between 1 and 100, no repeat random numbers, number randomizer, how to generate a random number, AI random generator, free online rng">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Random Number Generator</h1>
+<p class="lead">Generate random whole numbers within any range.</p>
+
+<section class="card">
+  <div class="grid">
+    <label>Minimum<input id="min" type="number" value="1"></label>
+    <label>Maximum<input id="max" type="number" value="100"></label>
+    <label>How many numbers<input id="n" type="number" value="1" min="1" max="10000"></label>
+  </div>
+  <div class="btns">
+    <label class="inline"><input type="checkbox" id="uniq" checked> No repeats</label>
+    <label class="inline"><input type="checkbox" id="sort"> Sort results</label>
+  </div>
+  <div class="btns"><button class="btn" id="gen" style="font-size:1.1rem;padding:12px 28px">Generate</button><button class="btn alt" data-copy="#out">Copy</button></div>
+  <div class="result"><div class="big" id="out">—</div></div>
+</section>
+
+<section class="about">
+  <h2>How it works</h2>
+  <p>Numbers are generated with <code>crypto.getRandomValues()</code> using rejection sampling, so every value in the range is equally likely. With "No repeats" each number can appear only once, which is perfect for lottery picks and raffles.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Is this random number generator truly random?</summary><p>It uses your operating system's cryptographically secure random source, which is suitable for draws, games and security purposes.</p></details>
+  <details><summary>How do I pick lottery numbers?</summary><p>Set the range of your lottery (for example 1 to 49), enter how many numbers are drawn, keep "No repeats" on and tick "Sort results".</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+$('#gen').on('click', function () {
+  var a = Math.ceil(num('#min')), b = Math.floor(num('#max')), n = Math.min(Math.max(1, Math.floor(num('#n'))), 10000), out = [];
+  if (a > b) { var t = a; a = b; b = t; }
+  if ($('#uniq').prop('checked')) {
+    if (n > b - a + 1) return $('#out').html('<span class="err">Range only has ' + (b - a + 1) + ' unique numbers.</span>');
+    var seen = new Set();
+    while (seen.size < n) seen.add(randInt(a, b));
+    out = Array.from(seen);
+  } else for (var i = 0; i < n; i++) out.push(randInt(a, b));
+  if ($('#sort').prop('checked')) out.sort(function (x, y) { return x - y; });
+  $('#out').text(out.join(', '));
+});
+</script>
+</body>
+</html>

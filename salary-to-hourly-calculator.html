@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Salary to Hourly Calculator – Convert Annual Salary to Hourly Wage</title>
+<meta name="description" content="Free salary to hourly wage converter. Convert annual salary to hourly, daily, weekly, bi-weekly and monthly pay, or turn an hourly rate into a yearly salary.">
+<meta name="keywords" content="salary to hourly calculator, hourly to salary converter, annual salary calculator, wage converter, paycheck calculator, monthly salary calculator, bi-weekly pay calculator, how much is 60000 a year per hour, what is my hourly rate, AI salary converter, free online pay calculator">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Salary to Hourly Wage Converter</h1>
+<p class="lead">Convert pay between hourly, daily, weekly, bi-weekly, monthly and yearly amounts.</p>
+
+<section class="card">
+  <div class="grid">
+    <label>Pay amount<input id="amt" type="number" value="60000" min="0"></label>
+    <label>Pay period
+      <select id="per">
+        <option value="hourly">Per hour</option><option value="daily">Per day</option><option value="weekly">Per week</option>
+        <option value="biweekly">Every 2 weeks</option><option value="semimonthly">Twice a month</option><option value="monthly">Per month</option><option value="yearly" selected>Per year</option>
+      </select>
+    </label>
+    <label>Hours per week<input id="h" type="number" value="40" min="1"></label>
+    <label>Days per week<input id="d" type="number" value="5" min="1" max="7"></label>
+    <label>Paid weeks per year<input id="w" type="number" value="52" min="1" max="52"></label>
+  </div>
+  <table class="tbl" id="tbl"></table>
+</section>
+
+<section class="about">
+  <h2>How the conversion works</h2>
+  <p>Your pay is first converted to a yearly amount using your hours per week, days per week and paid weeks per year, then divided back into every other pay period. Use fewer paid weeks if you take unpaid time off.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>How many working hours are in a year?</summary><p>A full-time schedule of 40 hours a week for 52 weeks is 2,080 hours, which is why hourly ≈ yearly salary ÷ 2,080.</p></details>
+  <details><summary>Is this before or after tax?</summary><p>The results are gross pay before tax. Use the income tax estimator to approximate your take-home pay.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+var NAMES = { hourly: 'Hourly', daily: 'Daily', weekly: 'Weekly', biweekly: 'Bi-weekly', semimonthly: 'Semi-monthly', monthly: 'Monthly', yearly: 'Yearly' };
+function calc() {
+  var h = num('#h'), d = num('#d'), w = num('#w');
+  var per = { hourly: h * w, daily: d * w, weekly: w, biweekly: w / 2, semimonthly: 24, monthly: 12, yearly: 1 };
+  var annual = num('#amt') * per[$('#per').val()];
+  $('#tbl').html('<tr><th>Period</th><th>Pay</th></tr>' + Object.keys(per).map(function (k) {
+    return '<tr><td>' + NAMES[k] + '</td><td><b>' + fmt(annual / per[k]) + '</b></td></tr>';
+  }).join(''));
+}
+</script>
+</body>
+</html>

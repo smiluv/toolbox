@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>White Noise Generator &amp; Tone Generator – Pink, Brown Noise, Hz Frequencies</title>
+<meta name="description" content="Free white noise, pink noise and brown noise generator for sleep, focus and tinnitus, plus an online tone generator for any frequency from 20 Hz to 20,000 Hz (sine, square, triangle, sawtooth).">
+<meta name="keywords" content="white noise generator, pink noise, brown noise, noise for sleep, focus sounds, tinnitus relief sound, tone generator, frequency generator, online hz generator, 432 hz, 440 hz, 528 hz, sine wave generator, speaker test tone, hearing test frequency, what is brown noise good for, AI sound tool, free online audio generator">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>White Noise &amp; Tone Generator</h1>
+<p class="lead">Play continuous noise for sleep and focus, or generate a pure tone at any frequency.</p>
+
+<section class="card">
+  <h2 style="margin-top:0;font-size:1.2rem">Noise generator</h2>
+  <div class="grid">
+    <label>Noise color<select id="ntype"><option value="white">White noise</option><option value="pink">Pink noise</option><option value="brown">Brown noise</option></select></label>
+    <label>Volume: <span class="v"></span>%<input type="range" id="nvol" min="0" max="100" value="40"></label>
+  </div>
+  <div class="btns"><button class="btn" id="nplay" style="min-width:140px">&#9654; Play noise</button></div>
+</section>
+
+<section class="card">
+  <h2 style="margin-top:0;font-size:1.2rem">Tone / frequency generator</h2>
+  <div class="grid">
+    <label>Frequency (Hz)<input id="fn" type="number" value="440" min="20" max="20000"></label>
+    <label>Waveform<select id="wave"><option value="sine">Sine</option><option value="square">Square</option><option value="triangle">Triangle</option><option value="sawtooth">Sawtooth</option></select></label>
+    <label>Volume: <span class="v"></span>%<input type="range" id="tvol" min="0" max="100" value="20"></label>
+  </div>
+  <label style="margin-top:12px">20 Hz – 20,000 Hz<input type="range" id="fr" min="0" max="1000" value="0"></label>
+  <div class="btns">
+    <button class="btn" id="tplay" style="min-width:140px">&#9654; Play tone</button>
+    <button class="btn alt" data-f="100">100 Hz</button><button class="btn alt" data-f="432">432 Hz</button><button class="btn alt" data-f="440">440 Hz (A4)</button>
+    <button class="btn alt" data-f="528">528 Hz</button><button class="btn alt" data-f="1000">1 kHz</button><button class="btn alt" data-f="10000">10 kHz</button>
+  </div>
+  <p class="muted">Start at low volume. High-frequency tones at high volume can be uncomfortable or harm hearing.</p>
+</section>
+
+<section class="about">
+  <h2>White vs pink vs brown noise</h2>
+  <p>White noise has equal energy at every frequency and sounds like TV static. Pink noise drops 3 dB per octave and sounds like steady rain, which many people find better for sleep. Brown noise is deeper still, like a waterfall or strong wind. All sounds are generated live with the Web Audio API, so there is nothing to download.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Is white noise good for sleep?</summary><p>Steady noise masks sudden sounds such as traffic or voices, which helps many people fall and stay asleep. Keep the volume low, around the level of a quiet shower.</p></details>
+  <details><summary>What is a tone generator used for?</summary><p>Testing speakers and headphones, tuning instruments (A4 = 440 Hz), checking which frequencies you can hear, and science experiments with sound.</p></details>
+  <details><summary>Will it keep playing in the background?</summary><p>Yes, as long as the tab stays open. On some phones the sound stops when the screen locks.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+var noise = null, tone = null;
+function noiseBuffer(type) {
+  var a = ac(), len = a.sampleRate * 5, buf = a.createBuffer(1, len, a.sampleRate), d = buf.getChannelData(0), b = [0, 0, 0, 0, 0, 0, 0], last = 0;
+  for (var i = 0; i < len; i++) {
+    var w = Math.random() * 2 - 1;
+    if (type === 'white') d[i] = w * 0.5;
+    else if (type === 'pink') { // Paul Kellet's pink noise filter
+      b[0] = 0.99886 * b[0] + w * 0.0555179; b[1] = 0.99332 * b[1] + w * 0.0750759; b[2] = 0.969 * b[2] + w * 0.153852;
+      b[3] = 0.8665 * b[3] + w * 0.3104856; b[4] = 0.55 * b[4] + w * 0.5329522; b[5] = -0.7616 * b[5] - w * 0.016898;
+      d[i] = (b[0] + b[1] + b[2] + b[3] + b[4] + b[5] + b[6] + w * 0.5362) * 0.11; b[6] = w * 0.115926;
+    } else { last = (last + 0.02 * w) / 1.02; d[i] = last * 3.5; }
+  }
+  var drift = d[len - 1] - d[0];
+  for (var k = 0; k < len; k++) d[k] -= drift * k / (len - 1); // make the loop seamless (no click at the seam)
+  return buf;
+}
+function chain(src, vol) { var g = ac().createGain(); g.gain.value = vol; src.connect(g); g.connect(ac().destination); return { src: src, gain: g }; }
+function stopNoise() { if (noise) { noise.src.stop(); noise = null; } $('#nplay').html('&#9654; Play noise'); }
+function playNoise() {
+  stopNoise();
+  var s = ac().createBufferSource(); s.buffer = noiseBuffer($('#ntype').val()); s.loop = true;
+  noise = chain(s, $('#nvol').val() / 100); s.start(); $('#nplay').html('&#9632; Stop noise');
+}
+$('#nplay').on('click', function () { noise ? stopNoise() : playNoise(); });
+$('#ntype').on('change', function () { if (noise) playNoise(); });
+$('#nvol').on('input', function () { if (noise) noise.gain.gain.value = this.value / 100; });
+
+function freq() { return Math.min(20000, Math.max(20, num('#fn') || 440)); }
+function syncSlider() { $('#fr').val(Math.round(1000 * Math.log(freq() / 20) / Math.log(1000))); }
+function setFreq() { if (tone) tone.src.frequency.setTargetAtTime(freq(), ac().currentTime, 0.02); }
+$('#fr').on('input', function () { $('#fn').val(Math.round(20 * Math.pow(1000, this.value / 1000))); setFreq(); });
+$('#fn').on('input', function () { syncSlider(); setFreq(); });
+$('[data-f]').on('click', function () { $('#fn').val($(this).data('f')); syncSlider(); setFreq(); });
+$('#wave').on('change', function () { if (tone) tone.src.type = this.value; });
+$('#tvol').on('input', function () { if (tone) tone.gain.gain.value = this.value / 100; });
+$('#tplay').on('click', function () {
+  if (tone) { tone.src.stop(); tone = null; return $(this).html('&#9654; Play tone'); }
+  var o = ac().createOscillator(); o.type = $('#wave').val(); o.frequency.value = freq();
+  tone = chain(o, $('#tvol').val() / 100); o.start(); $(this).html('&#9632; Stop tone');
+});
+syncSlider();
+</script>
+</body>
+</html>

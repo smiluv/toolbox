@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Placeholder Image Generator – Dummy Image URL for Mockups</title>
+<meta name="description" content="Free placeholder image URL generator. Choose size, colors, text and format to get a ready-to-use dummy image URL, HTML img tag and Markdown for wireframes and mockups.">
+<meta name="keywords" content="placeholder image generator, dummy image url, placeholder image url, fake image generator, mockup image, wireframe image, image placeholder html, placehold image, sample image size, test image generator, how to add a placeholder image in html, AI web design tool, free online developer tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>#pv img{max-width:100%}.h{display:grid;grid-template-columns:90px 1fr auto;gap:10px;align-items:center;margin-top:10px}.h input{font-family:ui-monospace,Consolas,monospace;font-size:.85rem}</style>
+</head>
+<body>
+<main class="wrap">
+<h1>Placeholder Image Generator</h1>
+<p class="lead">Build a placeholder image URL for websites, wireframes and app mockups.</p>
+
+<section class="card">
+  <div class="grid">
+    <label>Width (px)<input id="w" type="number" value="600" min="10" max="4000"></label>
+    <label>Height (px)<input id="h" type="number" value="400" min="10" max="4000"></label>
+    <label>Background<input type="color" id="bg" value="#cbd5e1"></label>
+    <label>Text color<input type="color" id="fg" value="#334155"></label>
+    <label>Text (optional)<input id="txt" placeholder="Defaults to size"></label>
+    <label>Format<select id="fmt"><option>png</option><option>jpg</option><option>webp</option><option>svg</option></select></label>
+  </div>
+  <div class="h"><b>URL</b><input id="url" readonly><button class="btn alt" data-copy="#url">Copy</button></div>
+  <div class="h"><b>HTML</b><input id="html" readonly><button class="btn alt" data-copy="#html">Copy</button></div>
+  <div class="h"><b>Markdown</b><input id="md" readonly><button class="btn alt" data-copy="#md">Copy</button></div>
+  <div class="preview" id="pv" style="margin-top:16px"><img id="img" alt="Placeholder preview"></div>
+</section>
+
+<section class="about">
+  <h2>How it works</h2>
+  <p>The URL points to the free <a href="https://placehold.co" rel="noopener">placehold.co</a> image service, which draws the image on request. Paste it into any img tag, CSS background or design tool while the real images are not ready yet.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Can I use these placeholder images in production?</summary><p>They are meant for development and mockups. Replace them with real, optimized images before launch.</p></details>
+  <details><summary>What size should a hero image be?</summary><p>Common sizes are 1920×1080 for full-width hero banners, 1200×630 for social share images and 800×600 for blog thumbnails.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+function calc() {
+  var w = Math.round(num('#w')) || 600, h = Math.round(num('#h')) || 400, t = $('#txt').val().trim();
+  var url = 'https://placehold.co/' + w + 'x' + h + '/' + $('#bg').val().slice(1) + '/' + $('#fg').val().slice(1) + '/' + $('#fmt').val() + (t ? '?text=' + encodeURIComponent(t) : '');
+  var alt = t || 'Placeholder ' + w + 'x' + h;
+  $('#url').val(url);
+  $('#html').val('<img src="' + url + '" width="' + w + '" height="' + h + '" alt="' + alt.replace(/"/g, '&quot;') + '">');
+  $('#md').val('![' + alt + '](' + url + ')');
+  $('#img').attr('src', url);
+}
+</script>
+</body>
+</html>

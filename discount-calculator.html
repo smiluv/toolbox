@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Discount Calculator – Sale Price &amp; Percent Off Calculator</title>
+<meta name="description" content="Free discount calculator. Find the sale price after a percent-off discount, stack an extra discount, add sales tax and see exactly how much you save.">
+<meta name="keywords" content="discount calculator, sale price calculator, percent off calculator, price after discount, double discount calculator, stacked discount, savings calculator, black friday calculator, how much is 25 percent off, what is the final price after discount, AI shopping calculator, free online discount tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Discount &amp; Sale Price Calculator</h1>
+<p class="lead">Work out the final price after one or two discounts, with optional sales tax.</p>
+
+<section class="card">
+  <div class="grid">
+    <label>Original price<input id="price" type="number" value="120" min="0" step="0.01"></label>
+    <label>Discount (%)<input id="d1" type="number" value="25" min="0" max="100"></label>
+    <label>Extra discount (%)<input id="d2" type="number" value="0" min="0" max="100"></label>
+    <label>Sales tax (%)<input id="tax" type="number" value="0" min="0" step="0.1"></label>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="final"></b><span>Final price</span></div>
+    <div class="stat"><b id="save"></b><span>You save</span></div>
+    <div class="stat"><b id="eff"></b><span>Total discount</span></div>
+  </div>
+  <div class="donut-wrap">
+    <div class="donut"><canvas id="pie" aria-label="Price you pay versus amount saved"></canvas><div class="mid"><span>Original price</span><b id="mid"></b></div></div>
+    <ul class="legend" id="legend"></ul>
+  </div>
+</section>
+
+<section class="about">
+  <h2>How discounts are calculated</h2>
+  <p>Sale price = original × (1 − discount ÷ 100). A second discount is applied to the already-reduced price, so 25% off plus an extra 10% off is a 32.5% total discount, not 35%. Tax is added after discounts.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Are two discounts the same as adding them together?</summary><p>No. Stacked discounts multiply: (1 − 0.25) × (1 − 0.10) = 0.675, which is 32.5% off.</p></details>
+  <details><summary>How do I calculate 30% off quickly?</summary><p>Multiply the price by 0.7. For example, 30% off 50 is 50 × 0.7 = 35.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+function calc() {
+  var p = num('#price'), sale = p * (1 - num('#d1') / 100) * (1 - num('#d2') / 100), tax = sale * num('#tax') / 100;
+  $('#final').text(fmt(sale + tax)); $('#save').text(fmt(p - sale)); $('#eff').text(p ? fmt((1 - sale / p) * 100) + '%' : '—');
+  $('#mid').text(fmt(p));
+  donut('pie', '#legend', [['You pay (before tax)', sale, COLORS[0]], ['You save', p - sale, COLORS[2]], ['Sales tax', tax, COLORS[1]]]);
+}
+</script>
+</body>
+</html>

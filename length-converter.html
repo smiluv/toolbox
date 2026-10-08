@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Length Converter – Meters, Feet, Inches, Cm, Km, Miles</title>
+<meta name="description" content="Free length and distance converter. Convert between meters, centimeters, millimeters, kilometers, inches, feet, yards, miles and nautical miles instantly.">
+<meta name="keywords" content="length converter, distance converter, cm to inches, inches to cm, feet to meters, meters to feet, km to miles, miles to km, mm to inches, unit converter, metric to imperial, how many feet in a meter, how many cm is 5 feet 8 inches, AI unit converter, free online converter">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Length Converter</h1>
+<p class="lead">Convert any length or distance between metric and imperial units.</p>
+
+<section class="card">
+  <div class="grid">
+    <label>Value<input id="val" type="number" value="1" step="any"></label>
+    <label>From<select id="from"></select></label>
+    <label>To<select id="to"></select></label>
+  </div>
+  <div class="btns"><button class="btn alt" id="swap">&#8645; Swap units</button></div>
+  <div class="result" id="out"></div>
+  <table class="tbl" id="all"></table>
+</section>
+
+<section class="about">
+  <h2>Common length conversions</h2>
+  <p>1 inch = 2.54 cm exactly · 1 foot = 30.48 cm · 1 yard = 0.9144 m · 1 mile = 1.609344 km · 1 nautical mile = 1,852 m. All conversions use these exact international definitions.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>How many feet are in a meter?</summary><p>One meter is about 3.28084 feet, or 3 feet 3.37 inches.</p></details>
+  <details><summary>How many centimeters is 6 feet?</summary><p>6 feet is 182.88 cm.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+unitConverter({
+  'Millimeter (mm)': 0.001, 'Centimeter (cm)': 0.01, 'Meter (m)': 1, 'Kilometer (km)': 1000, 'Micrometer (µm)': 1e-6,
+  'Inch (in)': 0.0254, 'Foot (ft)': 0.3048, 'Yard (yd)': 0.9144, 'Mile (mi)': 1609.344, 'Nautical mile (nmi)': 1852
+}, 'Meter (m)', 'Foot (ft)');
+</script>
+</body>
+</html>

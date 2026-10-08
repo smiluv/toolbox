@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BMI Calculator – Body Mass Index for Adults (Metric &amp; Imperial)</title>
+<meta name="description" content="Free BMI calculator. Calculate your body mass index in kg/cm or lb/ft, see your WHO weight category and the healthy weight range for your height.">
+<meta name="keywords" content="bmi calculator, body mass index calculator, bmi chart, healthy weight calculator, ideal weight for height, bmi for women, bmi for men, bmi kg cm, bmi lbs feet, overweight calculator, what is a healthy bmi, am I overweight for my height, AI health calculator, free online bmi tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>.scale{position:relative;height:14px;border-radius:7px;margin:26px 0 6px;background:linear-gradient(90deg,#60a5fa 0 14%,#22c55e 14% 40%,#f59e0b 40% 60%,#ef4444 60%)}.scale i{position:absolute;top:-8px;width:4px;height:30px;background:var(--fg);border-radius:2px;transform:translateX(-50%)}.ticks{position:relative;height:1.2em;font-size:.8rem;color:var(--muted)}.ticks span{position:absolute;transform:translateX(-50%)}</style>
+</head>
+<body>
+<main class="wrap">
+<h1>BMI Calculator</h1>
+<p class="lead">Calculate your body mass index and see where it falls on the WHO scale.</p>
+
+<section class="card">
+  <div class="grid">
+    <label>Units<select id="sys"><option value="met">Metric (kg, cm)</option><option value="imp">Imperial (lb, ft, in)</option></select></label>
+    <label class="met">Weight (kg)<input id="kg" type="number" value="70" min="1" step="0.1"></label>
+    <label class="met">Height (cm)<input id="cm" type="number" value="175" min="50" step="0.1"></label>
+    <label class="imp">Weight (lb)<input id="lb" type="number" value="154" min="1" step="0.1"></label>
+    <label class="imp">Height (ft)<input id="ft" type="number" value="5" min="1"></label>
+    <label class="imp">Height (in)<input id="in" type="number" value="9" min="0" max="11.9" step="0.1"></label>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="bmi"></b><span>Your BMI</span></div>
+    <div class="stat"><b id="cat"></b><span>Category</span></div>
+    <div class="stat"><b id="range"></b><span>Healthy weight for your height</span></div>
+  </div>
+  <div class="scale"><i id="mark"></i></div>
+  <div class="ticks"><span style="left:2%">15</span><span style="left:14%">18.5</span><span style="left:40%">25</span><span style="left:60%">30</span><span style="left:97%">40</span></div>
+</section>
+
+<section class="about">
+  <h2>BMI formula and categories</h2>
+  <p><code>BMI = weight (kg) ÷ height (m)²</code>. WHO adult categories: under 18.5 underweight, 18.5–24.9 healthy weight, 25–29.9 overweight, 30 and above obesity. BMI is a screening tool and does not measure body fat directly; athletes, older adults and some ethnic groups may need different cut-offs.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>What is a healthy BMI?</summary><p>For most adults a BMI between 18.5 and 24.9 is considered a healthy weight.</p></details>
+  <details><summary>Is BMI accurate for muscular people?</summary><p>No. Muscle is heavier than fat, so very muscular people can have a high BMI while being lean. Waist size or body-fat measurements give a fuller picture.</p></details>
+  <details><summary>Can children use this BMI calculator?</summary><p>No. Children and teens need age- and sex-specific BMI percentiles. This calculator is for adults aged 18 and over.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+function calc() {
+  var imp = $('#sys').val() === 'imp';
+  $('.met').toggle(!imp); $('.imp').toggle(imp);
+  var kg = imp ? num('#lb') * 0.45359237 : num('#kg'), m = imp ? (num('#ft') * 12 + num('#in')) * 0.0254 : num('#cm') / 100;
+  if (!kg || !m) return;
+  var bmi = kg / m / m, cat = bmi < 18.5 ? 'Underweight' : bmi < 25 ? 'Healthy weight' : bmi < 30 ? 'Overweight' : bmi < 35 ? 'Obesity class I' : bmi < 40 ? 'Obesity class II' : 'Obesity class III';
+  var lo = 18.5 * m * m, hi = 24.9 * m * m, f = imp ? 1 / 0.45359237 : 1, u = imp ? ' lb' : ' kg';
+  $('#bmi').text(fmt(bmi, 1)); $('#cat').text(cat); $('#range').text(fmt(lo * f, 1) + ' – ' + fmt(hi * f, 1) + u);
+  $('#mark').css('left', Math.min(Math.max((bmi - 15) / 25, 0), 1) * 100 + '%');
+}
+</script>
+</body>
+</html>

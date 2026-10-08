@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Percentage Calculator – What is X% of Y, Percent Change &amp; More</title>
+<meta name="description" content="Free percentage calculator. Find X% of Y, what percent one number is of another, percentage increase or decrease, and the original number from a percentage.">
+<meta name="keywords" content="percentage calculator, percent calculator, what is x percent of y, percentage change calculator, percentage increase calculator, percentage decrease, percent difference, how to calculate percentage, what percent of 200 is 30, AI percentage calculator, free online math tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Percentage Calculator</h1>
+<p class="lead">Four quick percentage calculators in one place. Results update as you type.</p>
+
+<div class="panes">
+  <section class="card">
+    <h2 class="ct">What is X% of Y?</h2>
+    <div class="cols2">
+      <label>Percentage (%)<input id="a1" type="number" value="15"></label>
+      <label>Of number<input id="b1" type="number" value="200"></label>
+    </div>
+    <div class="stats"><div class="stat"><b id="r1"></b><span>Result = X ÷ 100 × Y</span></div></div>
+  </section>
+  <section class="card">
+    <h2 class="ct">X is what % of Y?</h2>
+    <div class="cols2">
+      <label>Value<input id="a2" type="number" value="30"></label>
+      <label>Total<input id="b2" type="number" value="120"></label>
+    </div>
+    <div class="stats"><div class="stat"><b id="r2"></b><span>Percentage = X ÷ Y × 100</span></div></div>
+  </section>
+  <section class="card">
+    <h2 class="ct">Percentage change</h2>
+    <div class="cols2">
+      <label>From (old value)<input id="a3" type="number" value="80"></label>
+      <label>To (new value)<input id="b3" type="number" value="100"></label>
+    </div>
+    <div class="stats"><div class="stat"><b id="r3"></b><span>Change = (new − old) ÷ old × 100</span></div></div>
+  </section>
+  <section class="card">
+    <h2 class="ct">X is Y% of what?</h2>
+    <div class="cols2">
+      <label>Value<input id="a4" type="number" value="45"></label>
+      <label>Percentage (%)<input id="b4" type="number" value="30"></label>
+    </div>
+    <div class="stats"><div class="stat"><b id="r4"></b><span>Original = X ÷ (Y ÷ 100)</span></div></div>
+  </section>
+</div>
+
+<section class="about">
+  <h2>Percentage formulas</h2>
+  <p>X% of Y = X ÷ 100 × Y. A as a percent of B = A ÷ B × 100. Percentage change = (new − old) ÷ old × 100. The original number when A is X% of it = A ÷ (X ÷ 100).</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>How do I calculate a percentage increase?</summary><p>Subtract the old value from the new value, divide by the old value and multiply by 100. From 80 to 100 is a 25% increase.</p></details>
+  <details><summary>Is a 50% drop followed by a 50% rise back to the start?</summary><p>No. 100 down 50% is 50, and 50 up 50% is only 75. Percentages are always relative to the starting value.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+function calc() {
+  var a1 = num('#a1'), b1 = num('#b1'), a2 = num('#a2'), b2 = num('#b2'), a3 = num('#a3'), b3 = num('#b3'), a4 = num('#a4'), b4 = num('#b4');
+  $('#r1').text(fmtSig(a1 / 100 * b1));
+  $('#r2').text(b2 ? fmtSig(a2 / b2 * 100) + '%' : '—');
+  $('#r3').text(a3 ? (b3 >= a3 ? '+' : '') + fmtSig((b3 - a3) / Math.abs(a3) * 100) + '%' : '—');
+  $('#r4').text(b4 ? fmtSig(a4 / (b4 / 100)) : '—');
+}
+</script>
+</body>
+</html>

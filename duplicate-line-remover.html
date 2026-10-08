@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTWY717NR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PGTWY717NR');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Remove Duplicate Lines – Free Online Duplicate Line Remover</title>
+<meta name="description" content="Free duplicate line remover. Delete repeated lines from lists, emails, keywords or CSV data instantly, keeping the original order. Options for case, whitespace and empty lines.">
+<meta name="keywords" content="remove duplicate lines, duplicate line remover, dedupe list, remove duplicates from list, unique lines, delete repeated lines, remove duplicate emails, remove duplicate keywords, how to remove duplicates from a list, AI list cleaner, free online text tool">
+<link rel="stylesheet" href="assets/site.css">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="wrap">
+<h1>Duplicate Line Remover</h1>
+<p class="lead">Paste a list and get only unique lines back, in their original order.</p>
+
+<section class="card">
+  <div class="btns">
+    <label class="inline"><input type="checkbox" id="ic"> Ignore upper/lower case</label>
+    <label class="inline"><input type="checkbox" id="tr" checked> Trim spaces</label>
+    <label class="inline"><input type="checkbox" id="ne" checked> Remove empty lines</label>
+  </div>
+  <div class="cols2">
+    <label>Input<textarea id="in">apple
+banana
+Apple
+cherry
+banana
+apple</textarea></label>
+    <label>Unique lines<textarea id="out" readonly></textarea></label>
+  </div>
+  <div class="btns"><span id="st" class="muted"></span><button class="btn" data-copy="#out">Copy result</button></div>
+</section>
+
+<section class="about">
+  <h2>How it works</h2>
+  <p>Each line is compared with the lines before it. The first occurrence is kept and later copies are removed, so the order of your list is preserved.</p>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Can I remove duplicates without changing the order?</summary><p>Yes, that is exactly what this tool does. Use the text alphabetizer afterwards if you also want the list sorted.</p></details>
+  <details><summary>Is there a limit on how many lines I can paste?</summary><p>No fixed limit. Tens of thousands of lines are processed instantly in your browser.</p></details>
+</section>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+function calc() {
+  var seen = new Set(), lines = $('#in').val().split(/\r?\n/), out = [], ic = $('#ic').prop('checked'), tr = $('#tr').prop('checked'), ne = $('#ne').prop('checked');
+  lines.forEach(function (l) {
+    var v = tr ? l.trim() : l, k = ic ? v.toLowerCase() : v;
+    if (ne && !v.trim()) return;
+    if (!seen.has(k)) { seen.add(k); out.push(v); }
+  });
+  $('#out').val(out.join('\n'));
+  $('#st').text(lines.length + ' lines in · ' + out.length + ' unique · ' + (lines.length - out.length) + ' removed');
+}
+</script>
+</body>
+</html>
