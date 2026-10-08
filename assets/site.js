@@ -132,8 +132,8 @@ $(function () {
   // data-title / data-desc replace the H1, <title> and meta description, so each option is its own indexable URL.
   $('select[data-deeplink]').first().each(function () {
     var sel = $(this), key = sel.data('deeplink'), h1 = $('h1').first(), desc = $('meta[name=description]');
-    var base = { h1: h1.text(), title: document.title, desc: desc.attr('content') }, url = location.origin + location.pathname;
-    var canon = $('<link rel="canonical">').attr('href', url).appendTo('head');
+    var base = { h1: h1.text(), title: document.title, desc: desc.attr('content') }, canon = $('link[rel=canonical]');
+    var url = canon.attr('href') || location.origin + location.pathname;
     function show(push) {
       var o = sel.find(':selected'), slug = o.data('slug') || o.val();
       h1.text(o.data('h1') || base.h1); document.title = o.data('title') || base.title; desc.attr('content', o.data('desc') || base.desc);

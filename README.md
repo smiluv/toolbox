@@ -63,6 +63,7 @@ If you change calculation logic, add a case to the `TESTS` array in `selftest.ht
 
 1. Copy an existing tool page with a similar layout (e.g. `tip-calculator.html`) and rename it, using a lowercase, hyphenated, SEO-friendly filename.
 2. Update the `<title>`, `meta description`, `meta keywords`, `<h1>`, lead text and the "about" / FAQ section. The FAQ `<details>` items are turned into structured data automatically.
+   Also update the `canonical` link and the `og:url`, `og:title` and `og:description` tags to the new page's URL, title and description. These must stay in the HTML because search engines and social apps read them without running JavaScript.
 3. Put inputs inside `<section class="card">` and define a global `calc()` function. `site.js` calls it on load and on every input change.
 4. Register the tool in all of these places:
    - The `TOOLS` array in `assets/site.js` (this drives the menu, breadcrumbs and related links)
